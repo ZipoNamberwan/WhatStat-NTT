@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".indikator.TabelDetailActivity"
+    tools:showIn="@layout/activity_tabel_detail">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/control"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pilih_series_label"
+            android:text="Filter Tabel"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"/>
+        <android.support.v7.widget.AppCompatButton
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            style="?android:attr/spinnerStyle"
+            android:id="@+id/spinner_turvar"
+            android:spinnerMode="dialog"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/material_drawer_primary_text"/>
+    </LinearLayout>
+
+    <com.evrencoskun.tableview.TableView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/tabel"
+        app:column_header_height="@dimen/default_column_header_height"
+        app:row_header_width="@dimen/row_header_width"
+        app:shadow_color="@color/md_grey_300"
+        app:separator_color="@color/md_grey_300"
+        android:layout_below="@+id/control"/>
+
+</RelativeLayout>

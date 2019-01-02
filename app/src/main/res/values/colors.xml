@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>-->
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent2">#B8B8B8</color>
+    <color name="colorAccent3">#6F6F6F</color>
+    <color name="colorAccent4">#5D5D5D</color>
+
+    <color name="nav_item_other">#757575</color>
+    <color name="nav_item_home">#558b2f</color>
+    <color name="nav_item_brs">#d13135</color>
+    <color name="nav_item_berita">#FF9800</color>
+    <color name="nav_item_publikasi">#0277bd</color>
+    <color name="nav_item_tabel">#FF5722</color>
+    <color name="nav_item_infografis">#795548</color>
+    <color name="nav_text_selected">#66777f</color>
+
+    <color name="black">#000000</color>
+    <color name="green">#558b2f</color>
+    <color name="blue">#0277bd</color>
+    <color name="orange">#FF5722</color>
+    <color name="bookmark_button">#FF9800</color>
+    <color name="expand_button">#757575</color>
+    <color name="background">#eeeeee</color>
+    <color name="red">#FFFA0404</color>
+    <color name="black_overlay">#66000000</color>
+
+</resources>

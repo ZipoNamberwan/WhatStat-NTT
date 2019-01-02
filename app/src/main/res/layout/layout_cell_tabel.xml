@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TableRow
+            android:padding="10dp">
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.65"
+                android:id="@+id/vervar"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Nusa Tenggara Timur"/>
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.35"
+                android:id="@+id/value"
+                android:text="76"
+                android:gravity="end"
+                android:maxLines="1"/>
+        </TableRow>
+    </TableLayout>
+</RelativeLayout>

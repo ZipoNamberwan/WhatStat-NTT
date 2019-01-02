@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/header"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"/>
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/app_name"
+        android:textColor="@color/md_white_1000"
+        android:layout_alignParentBottom="true"
+        android:padding="16dp"/>
+</RelativeLayout>
+    <!-- From: file:/home/zipo/AndroidStudioProjects/BPS/app/src/main/res/layout/navigation_drawer_header.xml -->

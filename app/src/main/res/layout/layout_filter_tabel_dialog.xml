@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/spinner_tahun"
+        style="?android:attr/spinnerStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dialog"
+        android:minHeight="0dp"
+        android:minWidth="0dp"
+        android:layout_marginBottom="10dp"/>
+    <android.support.v7.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?android:attr/spinnerStyle"
+        android:id="@+id/spinner_turtahun"
+        android:layout_below="@+id/spinner_tahun"
+        android:spinnerMode="dialog"
+        android:minHeight="0dp"
+        android:minWidth="0dp"
+        android:layout_marginBottom="10dp"/>
+    <android.support.v7.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?android:attr/spinnerStyle"
+        android:id="@+id/spinner_turvar_tabel"
+        android:layout_below="@+id/spinner_turtahun"
+        android:spinnerMode="dialog"
+        android:minHeight="0dp"
+        android:minWidth="0dp"
+        android:layout_marginBottom="5dp"/>
+</RelativeLayout>
