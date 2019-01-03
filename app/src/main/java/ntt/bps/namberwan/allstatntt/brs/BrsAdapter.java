@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -28,7 +27,6 @@ import ntt.bps.namberwan.allstatntt.AppUtil;
 import ntt.bps.namberwan.allstatntt.DatabaseHelper;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.RecyclerViewClickListener;
-import ntt.bps.namberwan.allstatntt.indikator.IndikatorItem;
 
 public class BrsAdapter extends RecyclerView.Adapter<BrsAdapter.Holder>{
 
@@ -58,7 +56,7 @@ public class BrsAdapter extends RecyclerView.Adapter<BrsAdapter.Holder>{
         public Holder(View itemView) {
             super(itemView);
             judul = itemView.findViewById(R.id.judul);
-            subjek = itemView.findViewById(R.id.subjek);
+            subjek = itemView.findViewById(R.id.subjek_deskripsi);
             tgl = itemView.findViewById(R.id.tanggal);
             section = itemView.findViewById(R.id.tanggal_brs_section);
             bookmark = itemView.findViewById(R.id.bookmark_button);

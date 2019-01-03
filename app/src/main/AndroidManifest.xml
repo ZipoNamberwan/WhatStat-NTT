@@ -33,13 +33,13 @@
         <activity
             android:name=".indikator.GrafikDetailActivity"
             android:label="@string/title_activity_grafik_detail"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".indikator.TabelDetailActivity"
             android:label="@string/title_activity_tabel_detail"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

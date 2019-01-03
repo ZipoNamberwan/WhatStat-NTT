@@ -45,7 +45,7 @@
                     <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/subjek"
+                        android:id="@+id/subjek_deskripsi"
                         android:layout_marginLeft="5dp"
                         android:layout_marginStart="5dp"
                         android:layout_marginEnd="5dp"
@@ -68,7 +68,7 @@
                         android:paddingRight="5dp"
                         android:textStyle="bold"
                         android:textColor="@color/md_black_1000"
-                        android:layout_below="@+id/subjek"/>
+                        android:layout_below="@+id/subjek_deskripsi"/>
                 </RelativeLayout>
             </LinearLayout>
             <RelativeLayout

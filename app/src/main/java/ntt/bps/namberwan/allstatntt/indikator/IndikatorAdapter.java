@@ -8,12 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 import java.util.List;
-import java.util.Locale;
 
+import ntt.bps.namberwan.allstatntt.AppUtil;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.RecyclerViewClickListener;
 
@@ -41,13 +38,8 @@ public class IndikatorAdapter extends RecyclerView.Adapter<IndikatorAdapter.Hold
         final IndikatorItem item = list.get(position);
         holder.bind(item, listener);
         holder.judul.setText(item.getJudul());
-        DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
-        DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
 
-        symbols.setGroupingSeparator(' ');
-        formatter.setDecimalFormatSymbols(symbols);
-
-        holder.nilai.setText(formatter.format(Double.parseDouble(item.getNilai())));
+        holder.nilai.setText(AppUtil.formatNumberSeparator(Float.parseFloat(item.getNilai())));
 
         if (item.getSatuan().equals("Tidak Ada Satuan") | item.getSatuan().equals("")){
             holder.satuan.setVisibility(View.GONE);

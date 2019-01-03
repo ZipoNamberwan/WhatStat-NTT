@@ -4,10 +4,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -23,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -30,6 +34,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -42,14 +47,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 
+import ntt.bps.namberwan.allstatntt.AppUtil;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.VolleySingleton;
 
@@ -86,6 +89,13 @@ public class IndikatorViewActivity extends AppCompatActivity {
     private ImageButton filterTabelButton;
     private ImageButton moreTabelButton;
 
+    //Deskripsi View
+    private TextView judulDeskripsi;
+    private TextView lastUpdateDeskripsi;
+    private TextView subjekDeskripsi;
+    private TextView definisi;
+    private TextView sumber;
+
     private String idVerVar;
     private String labelVerVar;
     private String idTurvarGrafik;
@@ -114,6 +124,11 @@ public class IndikatorViewActivity extends AppCompatActivity {
     private String unitVar;
     private String defVar;
     private String subjekVar;
+    private String note;
+
+    private View tabelView;
+    private View grafikView;
+    private View deskripsiView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +172,9 @@ public class IndikatorViewActivity extends AppCompatActivity {
                             idTurvarTabel = turunanVertikalVariabels.get(turunanVertikalVariabels.size()-1).getId();
                             setUpDataTabel(jsonObject, idTahun, idTurTahun, idTurvarTabel);
                             setUpTabelStat();
+
+                            //setup deskripsi
+                            setUpDeskripsi();
 
                             //setup action bar
                             setTitle(labelVar);
@@ -209,6 +227,16 @@ public class IndikatorViewActivity extends AppCompatActivity {
     }
 
     private void setUpInitialView() {
+        BottomNavigationView navigation = findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        tabelView = findViewById(R.id.tabel_view);
+        grafikView = findViewById(R.id.grafik_view);
+        deskripsiView = findViewById(R.id.deskripsi_view);
+
+        tabelView.setVisibility(View.GONE);
+        grafikView.setVisibility(View.VISIBLE);
+        deskripsiView.setVisibility(View.GONE);
 
         judulGrafik = findViewById(R.id.judul_grafik);
         lineChart = findViewById(R.id.chart);
@@ -217,6 +245,13 @@ public class IndikatorViewActivity extends AppCompatActivity {
         tahunHighlight1Grafik = findViewById(R.id.tahun_grafik_highlight1);
         valueHighlight2Grafik = findViewById(R.id.value_grafik_highlight2);
         tahunHighlight2Grafik = findViewById(R.id.tahun_grafik_highlight2);
+
+        judulDeskripsi = findViewById(R.id.judul_deskripsi);
+        lastUpdateDeskripsi = findViewById(R.id.last_periode);
+        subjekDeskripsi = findViewById(R.id.subjek_deskripsi);
+        definisi = findViewById(R.id.definisi);
+        sumber = findViewById(R.id.sumber);
+
 /*        valueHighlight1Tabel = findViewById(R.id.value_tabel_highlight1);
         verVarHighlight1Tabel = findViewById(R.id.vervar_tabel_highlight1);
         valueHighlight2Tabel = findViewById(R.id.value_tabel_highlight2);
@@ -347,7 +382,7 @@ public class IndikatorViewActivity extends AppCompatActivity {
 
         for (int i = 0; i < vertikalVariabels.size(); i++){
             TableRow tr = new TableRow(this);
-            insertRow(tableLayout, tr, vertikalVariabels.get(i).getLabel(), tabelContents.get(i), false, i%2==0);
+            insertRow(tableLayout, tr, vertikalVariabels.get(i).getLabel(), AppUtil.formatNumberSeparator(Float.parseFloat(tabelContents.get(i))), false, i%2==0);
         }
     }
 
@@ -439,8 +474,7 @@ public class IndikatorViewActivity extends AppCompatActivity {
         dataSet.setValueFormatter(new IValueFormatter() {
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-                DecimalFormat decimalFormat = new DecimalFormat("#.####");
-                return decimalFormat.format(value);
+                return AppUtil.formatNumberSeparator(value);
             }
         });
         dataSet.setColor(getResources().getColor(R.color.primary));
@@ -473,6 +507,12 @@ public class IndikatorViewActivity extends AppCompatActivity {
         leftAxis.setEnabled(true);
         leftAxis.setTextSize(12f);
         leftAxis.setTextColor(getResources().getColor(R.color.material_drawer_secondary_text));
+        leftAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return AppUtil.formatNumberSeparator(value);
+            }
+        });
 
         Legend legend = lineChart.getLegend();
         legend.setEnabled(false);
@@ -493,14 +533,10 @@ public class IndikatorViewActivity extends AppCompatActivity {
         float value2 = subGrafikContents.get(subGrafikContents.size()-1).getY();
 
         //Setup Detail Statistik
-        DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
-        DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
 
-        symbols.setGroupingSeparator(' ');
-        formatter.setDecimalFormatSymbols(symbols);
-        valueHighlight1Grafik.setText(formatter.format(value1));
+        valueHighlight1Grafik.setText(AppUtil.formatNumberSeparator(value1));
         tahunHighlight1Grafik.setText(subAxisLabels.get(subAxisLabels.size()-2));
-        valueHighlight2Grafik.setText(formatter.format(value2));
+        valueHighlight2Grafik.setText(AppUtil.formatNumberSeparator(value2));
         tahunHighlight2Grafik.setText(subAxisLabels.get(subAxisLabels.size()-1));
         s = labelVar + " " + labelVerVar + " " + unitVar;
         detailStatGrafik.setText(s);
@@ -518,6 +554,15 @@ public class IndikatorViewActivity extends AppCompatActivity {
         if (turunanVertikalVariabels.size()==1){
             turVarSpinnerGrafik.setVisibility(View.GONE);
         }
+    }
+
+    private void setUpDeskripsi(){
+        judulDeskripsi.setText(labelVar);
+        subjekDeskripsi.setText(subjekVar);
+        definisi.setText(defVar);
+        sumber.setText(note);
+        String s = "Data terakhir: " + getPeriodeHeader(idTahun, idTurTahun);
+        lastUpdateDeskripsi.setText(s);
     }
 
     private List<TurunanTahunVariabel> sortTurTahunList(List<TurunanTahunVariabel> turunanTahunVariabels){
@@ -560,6 +605,7 @@ public class IndikatorViewActivity extends AppCompatActivity {
         if (!unitVar.equals("")){
             unitVar = "(" + unitVar + ")";
         }
+        note = varArrayJson.getJSONObject(0).getString("note");
 
         //setUpVerVar
         vertikalVariabels = new ArrayList<>();
@@ -788,4 +834,30 @@ public class IndikatorViewActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    tabelView.setVisibility(View.GONE);
+                    grafikView.setVisibility(View.VISIBLE);
+                    deskripsiView.setVisibility(View.GONE);
+                    return true;
+                case R.id.navigation_dashboard:
+                    tabelView.setVisibility(View.VISIBLE);
+                    grafikView.setVisibility(View.GONE);
+                    deskripsiView.setVisibility(View.GONE);
+                    return true;
+                case R.id.navigation_notifications:
+                    tabelView.setVisibility(View.GONE);
+                    grafikView.setVisibility(View.GONE);
+                    deskripsiView.setVisibility(View.VISIBLE);
+                    return true;
+            }
+            return false;
+        }
+    };
 }

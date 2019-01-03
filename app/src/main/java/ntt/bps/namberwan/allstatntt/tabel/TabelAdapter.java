@@ -28,7 +28,6 @@ import ntt.bps.namberwan.allstatntt.AppUtil;
 import ntt.bps.namberwan.allstatntt.DatabaseHelper;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.RecyclerViewClickListener;
-import ntt.bps.namberwan.allstatntt.brs.BrsItem;
 
 public class TabelAdapter extends RecyclerView.Adapter<TabelAdapter.Holder> {
 
@@ -172,7 +171,7 @@ public class TabelAdapter extends RecyclerView.Adapter<TabelAdapter.Holder> {
         public Holder(View itemView) {
             super(itemView);
             judul = itemView.findViewById(R.id.judul);
-            subjek = itemView.findViewById(R.id.subjek);
+            subjek = itemView.findViewById(R.id.subjek_deskripsi);
             tanggal = itemView.findViewById(R.id.tanggal);
             section = itemView.findViewById(R.id.tanggal_tabel_section);
             theme = itemView.findViewById(R.id.color_theme);

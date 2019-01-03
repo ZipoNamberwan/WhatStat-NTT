@@ -73,40 +73,45 @@ public class IndikatorFragment extends Fragment {
             @Override
             public void onItemClick(Object object) {
                 //do shit here
+                Intent i = new Intent(getActivity(), IndikatorViewActivity.class);
                 if (((IndikatorItem) object).getId().equals("2")){
                     //jumlah penduduk
-
+                    i.putExtra(IndikatorViewActivity.VAR_ID, "28");
+                    startActivity(i);
                 }else if (((IndikatorItem) object).getId().equals("3")){
                     //inflasi
-                    Intent i = new Intent(getActivity(), IndikatorViewActivity.class);
                     i.putExtra(IndikatorViewActivity.VAR_ID, "2");
                     startActivity(i);
                 }else if (((IndikatorItem) object).getId().equals("4")){
                     //jml penduduk miskin
-                    Intent i = new Intent(getActivity(), IndikatorViewActivity.class);
                     i.putExtra(IndikatorViewActivity.VAR_ID, "584");
                     startActivity(i);
                 }else if (((IndikatorItem) object).getId().equals("5")){
                     //pengangguran
-                    Intent i = new Intent(getActivity(), IndikatorViewActivity.class);
                     i.putExtra(IndikatorViewActivity.VAR_ID, "522");
                     startActivity(i);
                 }else if (((IndikatorItem) object).getId().equals("7")){
                     //pertumbuhan ekonomi
-                    Intent i = new Intent(getActivity(), IndikatorViewActivity.class);
                     i.putExtra(IndikatorViewActivity.VAR_ID, "438");
                     startActivity(i);
                 }else if (((IndikatorItem) object).getId().equals("8")){
                     //Harapan Hidup
+                    i.putExtra(IndikatorViewActivity.VAR_ID, "583");
+                    startActivity(i);
                 }else if (((IndikatorItem) object).getId().equals("9")){
                     //Ekspor
+                    i.putExtra(IndikatorViewActivity.VAR_ID, "107");
+                    startActivity(i);
                 }else if (((IndikatorItem) object).getId().equals("10")){
                     //Impor
+                    i.putExtra(IndikatorViewActivity.VAR_ID, "109");
+                    startActivity(i);
                 }else if (((IndikatorItem) object).getId().equals("11")){
                     //NTP
+                    i.putExtra(IndikatorViewActivity.VAR_ID, "104");
+                    startActivity(i);
                 }else if (((IndikatorItem) object).getId().equals("13")){
                     //Gini Rasio
-                    Intent i = new Intent(getActivity(), IndikatorViewActivity.class);
                     i.putExtra(IndikatorViewActivity.VAR_ID, "616");
                     startActivity(i);
                 }

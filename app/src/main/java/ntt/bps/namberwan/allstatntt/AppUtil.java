@@ -8,12 +8,16 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Parcelable;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by zipo on 16/04/16.
@@ -177,6 +181,18 @@ public class AppUtil {
         catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    public static String formatNumberSeparator(float f){
+        DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+        //formatter.applyPattern("#.####");
+        DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
+
+        symbols.setGroupingSeparator(' ');
+        symbols.setDecimalSeparator(',');
+        formatter.setDecimalFormatSymbols(symbols);
+
+        return formatter.format(f);
     }
 
 }

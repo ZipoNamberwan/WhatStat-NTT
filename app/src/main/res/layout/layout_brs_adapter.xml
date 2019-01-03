@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:id="@+id/subjek"
+                android:id="@+id/subjek_deskripsi"
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp"
                 android:layout_marginLeft="5dp"
