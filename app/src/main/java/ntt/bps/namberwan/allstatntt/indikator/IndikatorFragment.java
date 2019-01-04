@@ -16,6 +16,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,6 +46,7 @@ public class IndikatorFragment extends Fragment {
     private IndikatorAdapter adapter;
     private RecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
+    private ShimmerFrameLayout shimmerFrameLayout;
 
     public IndikatorFragment() {
         // Required empty public constructor
@@ -58,7 +60,9 @@ public class IndikatorFragment extends Fragment {
 
         db = new DatabaseHelper(getContext());
         queue = VolleySingleton.getInstance(getContext()).getRequestQueue();
-        isLoading = false;
+
+        shimmerFrameLayout = view.findViewById(R.id.shimmer);
+        shimmerFrameLayout.startShimmerAnimation();
 
         recyclerView = view.findViewById(R.id.listview);
         mLayoutManager = new GridLayoutManager(getActivity(),1);
@@ -66,54 +70,63 @@ public class IndikatorFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
 
         list = new ArrayList<>();
-        /*for (int i = 0; i < 3; i++){
-            list.add(new IndikatorItem("1","2","3","4", "5","6"));
-        }*/
+
         adapter = new IndikatorAdapter(list, getActivity(), new RecyclerViewClickListener() {
             @Override
             public void onItemClick(Object object) {
                 //do shit here
                 Intent i = new Intent(getActivity(), IndikatorViewActivity.class);
-                if (((IndikatorItem) object).getId().equals("2")){
-                    //jumlah penduduk
-                    i.putExtra(IndikatorViewActivity.VAR_ID, "28");
-                    startActivity(i);
-                }else if (((IndikatorItem) object).getId().equals("3")){
-                    //inflasi
-                    i.putExtra(IndikatorViewActivity.VAR_ID, "2");
-                    startActivity(i);
-                }else if (((IndikatorItem) object).getId().equals("4")){
-                    //jml penduduk miskin
-                    i.putExtra(IndikatorViewActivity.VAR_ID, "584");
-                    startActivity(i);
-                }else if (((IndikatorItem) object).getId().equals("5")){
-                    //pengangguran
-                    i.putExtra(IndikatorViewActivity.VAR_ID, "522");
-                    startActivity(i);
-                }else if (((IndikatorItem) object).getId().equals("7")){
-                    //pertumbuhan ekonomi
-                    i.putExtra(IndikatorViewActivity.VAR_ID, "438");
-                    startActivity(i);
-                }else if (((IndikatorItem) object).getId().equals("8")){
-                    //Harapan Hidup
-                    i.putExtra(IndikatorViewActivity.VAR_ID, "583");
-                    startActivity(i);
-                }else if (((IndikatorItem) object).getId().equals("9")){
-                    //Ekspor
-                    i.putExtra(IndikatorViewActivity.VAR_ID, "107");
-                    startActivity(i);
-                }else if (((IndikatorItem) object).getId().equals("10")){
-                    //Impor
-                    i.putExtra(IndikatorViewActivity.VAR_ID, "109");
-                    startActivity(i);
-                }else if (((IndikatorItem) object).getId().equals("11")){
-                    //NTP
-                    i.putExtra(IndikatorViewActivity.VAR_ID, "104");
-                    startActivity(i);
-                }else if (((IndikatorItem) object).getId().equals("13")){
-                    //Gini Rasio
-                    i.putExtra(IndikatorViewActivity.VAR_ID, "616");
-                    startActivity(i);
+                switch (((IndikatorItem) object).getId()) {
+                    case "2":
+                        //jumlah penduduk
+                        i.putExtra(IndikatorViewActivity.VAR_ID, "28");
+                        startActivity(i);
+                        break;
+                    case "3":
+                        //inflasi
+                        i.putExtra(IndikatorViewActivity.VAR_ID, "2");
+                        startActivity(i);
+                        break;
+                    case "4":
+                        //jml penduduk miskin
+                        i.putExtra(IndikatorViewActivity.VAR_ID, "584");
+                        startActivity(i);
+                        break;
+                    case "5":
+                        //pengangguran
+                        i.putExtra(IndikatorViewActivity.VAR_ID, "522");
+                        startActivity(i);
+                        break;
+                    case "7":
+                        //pertumbuhan ekonomi
+                        i.putExtra(IndikatorViewActivity.VAR_ID, "438");
+                        startActivity(i);
+                        break;
+                    case "8":
+                        //Harapan Hidup
+                        i.putExtra(IndikatorViewActivity.VAR_ID, "583");
+                        startActivity(i);
+                        break;
+                    case "9":
+                        //Ekspor
+                        i.putExtra(IndikatorViewActivity.VAR_ID, "107");
+                        startActivity(i);
+                        break;
+                    case "10":
+                        //Impor
+                        i.putExtra(IndikatorViewActivity.VAR_ID, "109");
+                        startActivity(i);
+                        break;
+                    case "11":
+                        //NTP
+                        i.putExtra(IndikatorViewActivity.VAR_ID, "104");
+                        startActivity(i);
+                        break;
+                    case "13":
+                        //Gini Rasio
+                        i.putExtra(IndikatorViewActivity.VAR_ID, "616");
+                        startActivity(i);
+                        break;
                 }
             }
         });
@@ -133,6 +146,9 @@ public class IndikatorFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
                         addJSONToAdapter(jsonObject);
+
+                        shimmerFrameLayout.stopShimmerAnimation();
+                        shimmerFrameLayout.setVisibility(View.GONE);
                         isLoading = false;
                     }
                 }, new Response.ErrorListener() {

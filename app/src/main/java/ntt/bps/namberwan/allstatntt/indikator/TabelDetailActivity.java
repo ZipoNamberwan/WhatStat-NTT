@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import ntt.bps.namberwan.allstatntt.AppUtil;
 import ntt.bps.namberwan.allstatntt.R;
 
 public class TabelDetailActivity extends AppCompatActivity {
@@ -58,8 +59,10 @@ public class TabelDetailActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         idVar = getIntent().getStringExtra(ID_VAR);
 
@@ -116,7 +119,7 @@ public class TabelDetailActivity extends AppCompatActivity {
                     String idVerVar = vertikalVariabels.get(k).getId();
                     String idDataContent = idVerVar + idVar + idTurVar + idTahun + idTurTahun;
                     if (dataContentJson.has(idDataContent)){
-                        cellsByColumn.add(new Cell(idDataContent, dataContentJson.getString(idDataContent)));
+                        cellsByColumn.add(new Cell(idDataContent, AppUtil.formatNumberSeparator(Float.parseFloat(dataContentJson.getString(idDataContent)))));
                     }else {
                         cellsByColumn.add(new Cell(idDataContent, "-"));
                     }
@@ -131,6 +134,7 @@ public class TabelDetailActivity extends AppCompatActivity {
                 }
             }
         }
+
         cellList = transpose(cellList);
 
         for (int i = 0; i < vertikalVariabels.size(); i++){

@@ -14,6 +14,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,6 +44,7 @@ public class BrsFragment extends Fragment {
     private BrsAdapter adapter;
     private RecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
+    private ShimmerFrameLayout shimmerFrameLayout;
 
     public BrsFragment() {
         // Required empty public constructor
@@ -55,9 +57,13 @@ public class BrsFragment extends Fragment {
         // Inflate the layout for this fragment
         db = new DatabaseHelper(getContext());
         queue = VolleySingleton.getInstance(getContext()).getRequestQueue();
-        isLoading = false;
+        isLoading = true;
 
         View view = inflater.inflate(R.layout.fragment_brs, container, false);
+
+        shimmerFrameLayout = view.findViewById(R.id.shimmer);
+        shimmerFrameLayout.startShimmerAnimation();
+
         recyclerView = view.findViewById(R.id.listview);
         mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -93,6 +99,8 @@ public class BrsFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
                         addJSONToAdapter(jsonObject, page);
+                        shimmerFrameLayout.stopShimmerAnimation();
+                        shimmerFrameLayout.setVisibility(View.GONE);
                         isLoading = false;
                     }
                 }, new Response.ErrorListener() {

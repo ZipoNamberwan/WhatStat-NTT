@@ -14,6 +14,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,6 +43,8 @@ public class BeritaFragment extends Fragment {
     private BeritaAdapter adapter;
     private RecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
+    private ShimmerFrameLayout shimmerFrameLayout;
+
     public BeritaFragment() {
         // Required empty public constructor
     }
@@ -54,7 +57,10 @@ public class BeritaFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_berita, container, false);
         db = new DatabaseHelper(getContext());
         queue = VolleySingleton.getInstance(getContext()).getRequestQueue();
-        isLoading = false;
+        isLoading = true;
+
+        shimmerFrameLayout = view.findViewById(R.id.shimmer);
+        shimmerFrameLayout.startShimmerAnimation();
 
         recyclerView = view.findViewById(R.id.listview);
         mLayoutManager = new LinearLayoutManager(getContext());
@@ -70,6 +76,7 @@ public class BeritaFragment extends Fragment {
 
             }
         });
+
         SlideInBottomAnimationAdapter animatedAdapter = new SlideInBottomAnimationAdapter(adapter);
         animatedAdapter.setDuration(500);
         recyclerView.setAdapter(new AlphaInAnimationAdapter(animatedAdapter));
@@ -92,6 +99,8 @@ public class BeritaFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
                         addJSONToAdapter(jsonObject, page);
+                        shimmerFrameLayout.stopShimmerAnimation();
+                        shimmerFrameLayout.setVisibility(View.GONE);
                         isLoading = false;
                     }
                 }, new Response.ErrorListener() {
@@ -118,5 +127,4 @@ public class BeritaFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
 }

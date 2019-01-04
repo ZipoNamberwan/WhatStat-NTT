@@ -15,6 +15,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,8 +42,9 @@ public class PublikasiFragment extends Fragment{
     private RecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
     private boolean isLoading;
-    private ProgressBar progressBar;
     private DatabaseHelper db;
+    private ShimmerFrameLayout shimmerFrameLayout;
+
 
     public PublikasiFragment() {
         // Required empty public constructor
@@ -54,6 +56,11 @@ public class PublikasiFragment extends Fragment{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_publikasi, container, false);
         db = new DatabaseHelper(getContext());
+
+        isLoading = true;
+        shimmerFrameLayout = view.findViewById(R.id.shimmer);
+        shimmerFrameLayout.startShimmerAnimation();
+
         recyclerView = view.findViewById(R.id.listview);
         mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -92,6 +99,8 @@ public class PublikasiFragment extends Fragment{
                     @Override
                     public void onResponse(JSONObject jsonObject) {
                         addJSONToAdapter(jsonObject, page);
+                        shimmerFrameLayout.stopShimmerAnimation();
+                        shimmerFrameLayout.setVisibility(View.GONE);
                         isLoading = false;
                     }
                 }, new Response.ErrorListener() {

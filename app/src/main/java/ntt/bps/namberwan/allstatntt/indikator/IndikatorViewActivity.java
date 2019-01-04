@@ -46,7 +46,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -136,6 +135,7 @@ public class IndikatorViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_indikator_view);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         if (getSupportActionBar()!=null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -382,7 +382,11 @@ public class IndikatorViewActivity extends AppCompatActivity {
 
         for (int i = 0; i < vertikalVariabels.size(); i++){
             TableRow tr = new TableRow(this);
-            insertRow(tableLayout, tr, vertikalVariabels.get(i).getLabel(), AppUtil.formatNumberSeparator(Float.parseFloat(tabelContents.get(i))), false, i%2==0);
+            if (tabelContents.get(i).equals("-")){
+                insertRow(tableLayout, tr, vertikalVariabels.get(i).getLabel(), tabelContents.get(i), false, i%2==0);
+            }else {
+                insertRow(tableLayout, tr, vertikalVariabels.get(i).getLabel(), AppUtil.formatNumberSeparator(Float.parseFloat(tabelContents.get(i))), false, i%2==0);
+            }
         }
     }
 

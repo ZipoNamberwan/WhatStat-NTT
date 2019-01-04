@@ -14,6 +14,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,6 +44,7 @@ public class TabelFragment extends Fragment {
     private TabelAdapter adapter;
     private RecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
+    private ShimmerFrameLayout shimmerFrameLayout;
 
     public TabelFragment() {
         // Required empty public constructor
@@ -62,6 +64,9 @@ public class TabelFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setHasFixedSize(true);
+
+        shimmerFrameLayout = view.findViewById(R.id.shimmer);
+        shimmerFrameLayout.startShimmerAnimation();
 
         list = new ArrayList<>();
         adapter = new TabelAdapter(list, getActivity(), new RecyclerViewClickListener() {
@@ -95,6 +100,8 @@ public class TabelFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
                         addJSONToAdapter(jsonObject, page);
+                        shimmerFrameLayout.stopShimmerAnimation();
+                        shimmerFrameLayout.setVisibility(View.GONE);
                         isLoading = false;
                     }
                 }, new Response.ErrorListener() {

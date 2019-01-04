@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/tabel_view"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="5dp"
+        android:text="Tabel"
+        android:textColor="@color/material_drawer_secondary_text"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/tabel_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginBottom="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/control2">
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/data_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Data"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"/>
+                <android.support.v7.widget.AppCompatImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/filter_button"
+                    android:layout_toLeftOf="@+id/more_tabel_button"
+                    android:layout_toStartOf="@+id/more_tabel_button"
+                    app:srcCompat="@drawable/baseline_filter_list_24"
+                    style="@style/Widget.AppCompat.ImageButton"
+                    android:backgroundTint="@color/md_white_1000"
+                    android:tint="@color/primary"/>
+                <android.support.v7.widget.AppCompatImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/more_tabel_button"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    app:srcCompat="@drawable/baseline_more_vert_24"
+                    android:backgroundTint="@color/md_white_1000"
+                    android:tint="@color/primary"/>
+            </RelativeLayout>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/judul_tabel"
+                android:layout_below="@+id/control2"
+                android:textColor="@color/material_drawer_primary_text"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                android:maxLines="3"/>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tabel"
+                android:layout_below="@+id/judul_tabel"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/keterangan_label"
+                android:text="(-) data tidak ada"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:textStyle="italic"
+                android:gravity="end"
+                android:layout_below="@+id/tabel"
+                android:layout_marginBottom="10dp"/>
+            <!--<View
+                android:id="@+id/divider_tabel"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/keterangan_label"
+                android:layout_marginBottom="10dp"
+                android:background="@color/md_grey_300"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/divider_tabel">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/rincian_statistik_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rincian Statistik"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                    android:layout_marginBottom="10dp"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/detail_judul_tabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="@dimen/linespaceextra"
+                    android:textColor="@color/material_drawer_primary_text"
+                    android:layout_below="@+id/rincian_statistik_label"
+                    android:maxLines="2"
+                    android:text="Fdasjdasdashdh"
+                    android:layout_marginBottom="5dp"/>
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/detail_judul_tabel"
+                    android:gravity="center_horizontal">
+
+                    <TableRow>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <android.support.v7.widget.AppCompatTextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="Max"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                                android:textColor="@color/md_green_600"
+                                android:textStyle="bold"/>
+                            <android.support.v7.widget.AppCompatTextView
+                                android:id="@+id/value_tabel_highlight1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                                android:textSize="35dp"
+                                android:gravity="center"
+                                android:maxLines="1"
+                                android:text="77"
+                                android:ellipsize="end"/>
+
+                            <android.support.v7.widget.AppCompatTextView
+                                android:id="@+id/vervar_tabel_highlight1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="2016"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <android.support.v7.widget.AppCompatTextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="Min"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                                android:textColor="@color/md_red_600"
+                                android:textStyle="bold"/>
+                            <android.support.v7.widget.AppCompatTextView
+                                android:id="@+id/value_tabel_highlight2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
+                                android:textSize="35dp"
+                                android:maxLines="1"
+                                android:ellipsize="end"
+                                android:gravity="center"
+                                android:text="77"/>
+
+                            <android.support.v7.widget.AppCompatTextView
+                                android:id="@+id/vervar_tabel_highlight2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="2017"/>
+                        </LinearLayout>
+                    </TableRow>
+                </TableLayout>
+            </RelativeLayout>-->
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>
