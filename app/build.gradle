@@ -57,5 +57,5 @@ dependencies {
 
     implementation 'com.evrencoskun.library:tableview:0.8.8'
 
-    implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
+    implementation 'com.facebook.shimmer:shimmer:0.3.0@aar'
 }

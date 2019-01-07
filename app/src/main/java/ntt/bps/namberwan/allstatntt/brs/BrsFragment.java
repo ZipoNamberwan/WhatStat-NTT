@@ -63,7 +63,7 @@ public class BrsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_brs, container, false);
 
         shimmerFrameLayout = view.findViewById(R.id.shimmer);
-        shimmerFrameLayout.startShimmerAnimation();
+        shimmerFrameLayout.startShimmer();
 
         recyclerView = view.findViewById(R.id.listview);
         mLayoutManager = new LinearLayoutManager(getContext());
@@ -103,7 +103,7 @@ public class BrsFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
                         addJSONToAdapter(jsonObject, page);
-                        shimmerFrameLayout.stopShimmerAnimation();
+                        shimmerFrameLayout.stopShimmer();
                         shimmerFrameLayout.setVisibility(View.GONE);
                         isLoading = false;
                     }

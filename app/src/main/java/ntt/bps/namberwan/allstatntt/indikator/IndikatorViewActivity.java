@@ -183,7 +183,7 @@ public class IndikatorViewActivity extends AppCompatActivity {
                             setTitle(labelVar);
 
                             //setup shimmer
-                            shimmerFrameLayout.stopShimmerAnimation();
+                            shimmerFrameLayout.stopShimmer();
                             shimmerFrameLayout.setVisibility(View.GONE);
 
                             //setup view
@@ -239,7 +239,7 @@ public class IndikatorViewActivity extends AppCompatActivity {
 
     private void setUpInitialView() {
         shimmerFrameLayout = findViewById(R.id.shimmer);
-        shimmerFrameLayout.startShimmerAnimation();
+        shimmerFrameLayout.startShimmer();
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

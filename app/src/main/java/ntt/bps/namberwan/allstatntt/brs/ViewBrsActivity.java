@@ -1,10 +1,8 @@
 package ntt.bps.namberwan.allstatntt.brs;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -97,7 +95,7 @@ public class ViewBrsActivity extends AppCompatActivity {
                 try {
                     jsonObject = response.getJSONObject("data");
                     setUpDetailView();
-                    shimmerFrameLayout.stopShimmerAnimation();
+                    shimmerFrameLayout.stopShimmer();
                     shimmerFrameLayout.setVisibility(View.GONE);
                     mainView.setVisibility(View.VISIBLE);
                 } catch (JSONException e) {
@@ -117,7 +115,7 @@ public class ViewBrsActivity extends AppCompatActivity {
         mainView = findViewById(R.id.main);
         mainView.setVisibility(View.GONE);
         shimmerFrameLayout = findViewById(R.id.shimmer);
-        shimmerFrameLayout.startShimmerAnimation();
+        shimmerFrameLayout.startShimmer();
         judulTv = findViewById(R.id.judul);
         releaseDateTv = findViewById(R.id.last_periode);
         sizeTv = findViewById(R.id.size);

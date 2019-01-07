@@ -62,7 +62,7 @@ public class IndikatorFragment extends Fragment {
         queue = VolleySingleton.getInstance(getContext()).getRequestQueue();
 
         shimmerFrameLayout = view.findViewById(R.id.shimmer);
-        shimmerFrameLayout.startShimmerAnimation();
+        shimmerFrameLayout.startShimmer();
 
         recyclerView = view.findViewById(R.id.listview);
         mLayoutManager = new GridLayoutManager(getActivity(),1);
@@ -146,7 +146,7 @@ public class IndikatorFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
                         addJSONToAdapter(jsonObject);
-                        shimmerFrameLayout.stopShimmerAnimation();
+                        shimmerFrameLayout.stopShimmer();
                         shimmerFrameLayout.setVisibility(View.GONE);
                         isLoading = false;
                     }

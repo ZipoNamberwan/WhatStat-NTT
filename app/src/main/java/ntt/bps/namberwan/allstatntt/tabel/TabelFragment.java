@@ -66,7 +66,7 @@ public class TabelFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
 
         shimmerFrameLayout = view.findViewById(R.id.shimmer);
-        shimmerFrameLayout.startShimmerAnimation();
+        shimmerFrameLayout.startShimmer();
 
         list = new ArrayList<>();
         adapter = new TabelAdapter(list, getActivity(), new RecyclerViewClickListener() {
@@ -100,7 +100,7 @@ public class TabelFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
                         addJSONToAdapter(jsonObject, page);
-                        shimmerFrameLayout.stopShimmerAnimation();
+                        shimmerFrameLayout.stopShimmer();
                         shimmerFrameLayout.setVisibility(View.GONE);
                         isLoading = false;
                     }
