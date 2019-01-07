@@ -146,7 +146,6 @@ public class IndikatorFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
                         addJSONToAdapter(jsonObject);
-
                         shimmerFrameLayout.stopShimmerAnimation();
                         shimmerFrameLayout.setVisibility(View.GONE);
                         isLoading = false;

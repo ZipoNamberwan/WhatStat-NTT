@@ -1,6 +1,7 @@
 package ntt.bps.namberwan.allstatntt.brs;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -74,6 +75,9 @@ public class BrsFragment extends Fragment {
             @Override
             public void onItemClick(Object object) {
                 //do shit here
+                Intent i = new Intent(getActivity(), ViewBrsActivity.class);
+                i.putExtra(ViewBrsActivity.ID_BRS, ((BrsItem) object).getId());
+                startActivity(i);
             }
         });
         SlideInBottomAnimationAdapter animatedAdapter = new SlideInBottomAnimationAdapter(adapter);

@@ -25,6 +25,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
@@ -74,7 +75,7 @@ public class IndikatorViewActivity extends AppCompatActivity {
     private TextView tahunHighlight2Grafik;
     private ImageView icon;
     private ImageView arrow;
-    private ImageButton moreGrafikButton;
+    private Button moreGrafikButton;
     private ImageButton saveGrafikButton;
     private Button verVarSpinner;
     private Button turVarSpinnerGrafik;
@@ -86,7 +87,7 @@ public class IndikatorViewActivity extends AppCompatActivity {
     private TextView judulTabel;
     private TableLayout tableLayout;
     private ImageButton filterTabelButton;
-    private ImageButton moreTabelButton;
+    private Button moreTabelButton;
 
     //Deskripsi View
     private TextView judulDeskripsi;
@@ -129,6 +130,8 @@ public class IndikatorViewActivity extends AppCompatActivity {
     private View grafikView;
     private View deskripsiView;
 
+    private ShimmerFrameLayout shimmerFrameLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,7 +145,7 @@ public class IndikatorViewActivity extends AppCompatActivity {
         }
 
         idVar = getIntent().getStringExtra(VAR_ID);
-        isLoading = false;
+        isLoading = true;
 
         setUpInitialView();
 
@@ -178,6 +181,14 @@ public class IndikatorViewActivity extends AppCompatActivity {
 
                             //setup action bar
                             setTitle(labelVar);
+
+                            //setup shimmer
+                            shimmerFrameLayout.stopShimmerAnimation();
+                            shimmerFrameLayout.setVisibility(View.GONE);
+
+                            //setup view
+                            setVisibilityView(true, false, false);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -227,6 +238,9 @@ public class IndikatorViewActivity extends AppCompatActivity {
     }
 
     private void setUpInitialView() {
+        shimmerFrameLayout = findViewById(R.id.shimmer);
+        shimmerFrameLayout.startShimmerAnimation();
+
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -234,9 +248,7 @@ public class IndikatorViewActivity extends AppCompatActivity {
         grafikView = findViewById(R.id.grafik_view);
         deskripsiView = findViewById(R.id.deskripsi_view);
 
-        tabelView.setVisibility(View.GONE);
-        grafikView.setVisibility(View.VISIBLE);
-        deskripsiView.setVisibility(View.GONE);
+        setVisibilityView(false, false, false);
 
         judulGrafik = findViewById(R.id.judul_grafik);
         lineChart = findViewById(R.id.chart);
@@ -846,22 +858,36 @@ public class IndikatorViewActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    tabelView.setVisibility(View.GONE);
-                    grafikView.setVisibility(View.VISIBLE);
-                    deskripsiView.setVisibility(View.GONE);
+                    setVisibilityView(true, false, false);
                     return true;
                 case R.id.navigation_dashboard:
-                    tabelView.setVisibility(View.VISIBLE);
-                    grafikView.setVisibility(View.GONE);
-                    deskripsiView.setVisibility(View.GONE);
+                    setVisibilityView(false, true, false);
                     return true;
                 case R.id.navigation_notifications:
-                    tabelView.setVisibility(View.GONE);
-                    grafikView.setVisibility(View.GONE);
-                    deskripsiView.setVisibility(View.VISIBLE);
+                    setVisibilityView(false, false, true);
                     return true;
             }
             return false;
         }
     };
+
+    private void setVisibilityView(boolean isGrafikVisible, boolean isTabelVisible, boolean isDeskripsiVisible){
+        if (isGrafikVisible){
+            grafikView.setVisibility(View.VISIBLE);
+        }else {
+            grafikView.setVisibility(View.GONE);
+        }
+
+        if (isTabelVisible){
+            tabelView.setVisibility(View.VISIBLE);
+        }else {
+            tabelView.setVisibility(View.GONE);
+        }
+
+        if (isDeskripsiVisible){
+            deskripsiView.setVisibility(View.VISIBLE);
+        }else {
+            deskripsiView.setVisibility(View.GONE);
+        }
+    }
 }

@@ -1,34 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/grafik_view_empty"
     xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/grafik_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginBottom="5dp"
-        android:text="Grafik"
-        android:textColor="@color/material_drawer_secondary_text"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline" />
 
     <android.support.v7.widget.CardView
         android:id="@+id/grafik_card"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
         android:layout_marginBottom="10dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginBottom="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginEnd="10dp"
@@ -42,92 +29,94 @@
                 android:id="@+id/control">
 
                 <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/series_label"
-                    android:layout_width="80dp"
+                    android:id="@+id/series_label_empty"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                     android:layout_centerVertical="true"
                     android:background="@color/md_grey_300"/>
                 <android.support.v7.widget.AppCompatImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/save_grafik_button"
-                    android:layout_toLeftOf="@+id/more_grafik_button"
-                    android:layout_toStartOf="@+id/more_grafik_button"
-                    app:srcCompat="@color/md_grey_300"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/save_grafik_button_empty"
+                    android:layout_toLeftOf="@+id/more_grafik_button_empty"
+                    android:layout_toStartOf="@+id/more_grafik_button_empty"
                     style="@style/Widget.AppCompat.ImageButton"
-                    android:tint="@color/primary"
+                    android:background="@color/md_grey_300"
                     android:layout_centerVertical="true"/>
+                <android.support.v7.widget.AppCompatImageButton
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/more_grafik_button_empty"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    style="@style/Widget.AppCompat.ImageButton"
+                    android:background="@color/md_grey_300"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"/>
                 <android.support.v7.widget.AppCompatImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/more_grafik_button"
+                    android:id="@+id/more_grafik_button_empty2"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
                     app:srcCompat="@drawable/baseline_more_vert_24"
-                    android:backgroundTint="@color/md_white_1000"
-                    android:tint="@color/primary"
                     android:visibility="invisible"/>
-                <android.support.v7.widget.AppCompatImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/more_grafik_button2"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    app:srcCompat="@color/md_grey_300"
-                    style="@style/Widget.AppCompat.ImageButton"
-                    android:tint="@color/primary"
-                    android:layout_centerVertical="true"/>
             </RelativeLayout>
 
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/judul_grafik"
+                android:id="@+id/judul_grafik_empty"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/control"
                 android:layout_marginBottom="5dp"
                 android:lineSpacingExtra="@dimen/linespaceextra"
+                android:lines="1"
                 android:ellipsize="end"
                 android:textColor="@color/material_drawer_primary_text"
                 android:textStyle="bold"
                 android:background="@color/md_grey_300"/>
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/chart"
+            <View
+                android:id="@+id/chart_empty"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:layout_below="@+id/judul_grafik"
-                android:background="@color/md_grey_300"/>
+                android:background="@color/md_grey_300"
+                android:layout_below="@+id/judul_grafik_empty" />
 
             <RelativeLayout
                 android:id="@+id/button_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/chart"
+                android:layout_below="@+id/chart_empty"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="5dp">
 
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/pilih_series_label"
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:background="@color/md_grey_300"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                    android:layout_marginBottom="10dp"/>
-
                 <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/spinner_vervar"
+                    android:id="@+id/spinner_vervar_empty"
                     style="?android:attr/spinnerStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/pilih_series_label"
+                    android:background="@color/md_grey_300"
                     android:spinnerMode="dialog"
                     android:minHeight="0dp"
                     android:minWidth="0dp"
                     android:layout_marginBottom="10dp"
                     android:textColor="@color/accent"
+                    android:textStyle="bold"/>
+                <android.support.v7.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="?android:attr/spinnerStyle"
+                    android:id="@+id/spinner_turvar_grafik_empty"
+                    android:layout_below="@+id/spinner_vervar_empty"
+                    android:spinnerMode="dialog"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:layout_marginBottom="5dp"
                     android:textStyle="bold"
+                    android:textColor="@color/accent"
                     android:background="@color/md_grey_300"/>
             </RelativeLayout>
             <View
@@ -137,30 +126,6 @@
                 android:layout_below="@+id/button_group"
                 android:layout_marginBottom="10dp"
                 android:background="@color/md_grey_300" />
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/divider">
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/detail_statistik_label"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:background="@color/md_grey_300"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                    android:layout_marginBottom="10dp"/>
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/detail_nama_indikator"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:lineSpacingExtra="@dimen/linespaceextra"
-                    android:textColor="@color/material_drawer_primary_text"
-                    android:layout_below="@+id/detail_statistik_label"
-                    android:maxLines="2"
-                    android:background="@color/md_grey_300"/>
-            </RelativeLayout>
-
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>

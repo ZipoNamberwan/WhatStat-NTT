@@ -56,16 +56,17 @@
                     app:srcCompat="@drawable/baseline_save_24"
                     style="@style/Widget.AppCompat.ImageButton"
                     android:backgroundTint="@color/md_white_1000"
-                    android:tint="@color/primary"/>
-                <android.support.v7.widget.AppCompatImageButton
+                    android:tint="@color/primary"
+                    android:layout_centerVertical="true"/>
+                <android.support.v7.widget.AppCompatButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/more_grafik_button"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
-                    app:srcCompat="@drawable/baseline_more_vert_24"
-                    android:backgroundTint="@color/md_white_1000"
-                    android:tint="@color/primary"/>
+                    android:text="@string/more"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:textColor="@color/primary"/>
             </RelativeLayout>
 
             <android.support.v7.widget.AppCompatTextView

@@ -28,7 +28,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".indikator.IndikatorViewActivity"
-            android:label="@string/title_activity_indikator_view"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".indikator.GrafikDetailActivity"
@@ -40,6 +39,10 @@
             android:label="@string/title_activity_tabel_detail"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".brs.ViewBrsActivity"
+            android:label="@string/title_activity_view_brs"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

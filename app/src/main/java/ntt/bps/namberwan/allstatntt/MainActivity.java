@@ -6,25 +6,14 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import com.mikepenz.community_material_typeface_library.CommunityMaterial;
-import com.mikepenz.fontawesome_typeface_library.FontAwesome;
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 
 import ntt.bps.namberwan.allstatntt.berita.BeritaFragment;
 import ntt.bps.namberwan.allstatntt.brs.BrsFragment;
@@ -50,6 +39,11 @@ public class MainActivity extends AppCompatActivity {
         tabLayout =findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+        if (getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setIcon(R.drawable.ic_icon_app);
+        }
+
         IndikatorFragment indikatorFragment = new IndikatorFragment();
         BrsFragment brsFragment = new BrsFragment();
         PublikasiFragment publikasiFragment= new PublikasiFragment();
@@ -67,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setOffscreenPageLimit(viewPagerAdapter.getCount());
 
         checkPermission();
+
         /*fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
