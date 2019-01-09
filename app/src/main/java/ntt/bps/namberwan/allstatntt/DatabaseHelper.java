@@ -127,7 +127,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_PUBLIKASI, null, contentValues);
     }
 
-    public void bookmarkTabel(int id, String subjek, String tanggal, String judul, String excel, String urlShare,
+    public void bookmarkTabel(String id, String subjek, String tanggal, String judul, String excel, String urlShare,
                               String html, int kategori, long time){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -158,7 +158,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete(TABLE_PUBLIKASI, PUBLIKASI_ID + "=?", new String[]{id+""});
     }
 
-    public void unbookmarkTabel(int id){
+    public void unbookmarkTabel(String id){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_TABEL, TABEL_ID + "=?", new String[]{id+""});
     }

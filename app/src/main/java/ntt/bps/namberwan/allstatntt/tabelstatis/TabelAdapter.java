@@ -1,4 +1,4 @@
-package ntt.bps.namberwan.allstatntt.tabel;
+package ntt.bps.namberwan.allstatntt.tabelstatis;
 
 import android.app.Activity;
 import android.content.Context;

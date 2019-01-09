@@ -35,9 +35,6 @@ import ntt.bps.namberwan.allstatntt.brs.BrsItem;
 
 public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.Holder> {
 
-
-    public static final String ID_BERITA = "id_berita";
-
     private List<BeritaItem> list;
     private Context context;
     private DatabaseHelper db;
@@ -68,8 +65,8 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.Holder> {
 
         Picasso.get()
                 .load(item.getUrlFoto())
-                .error(new IconicsDrawable(context).color(ContextCompat.getColor(context, R.color.material_grey_300)).icon(GoogleMaterial.Icon.gmd_broken_image))
-                .placeholder(new IconicsDrawable(context).color(ContextCompat.getColor(context, R.color.material_grey_300)).icon(GoogleMaterial.Icon.gmd_image))
+                .error(new IconicsDrawable(context).color(ContextCompat.getColor(context, R.color.md_grey_300)).icon(GoogleMaterial.Icon.gmd_broken_image))
+                .placeholder(new IconicsDrawable(context).color(ContextCompat.getColor(context, R.color.md_grey_300)).icon(GoogleMaterial.Icon.gmd_image))
                 .fit()
                 .into(holder.photo);
 

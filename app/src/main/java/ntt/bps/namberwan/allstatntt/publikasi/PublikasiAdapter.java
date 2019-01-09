@@ -30,7 +30,6 @@ import ntt.bps.namberwan.allstatntt.AppUtil;
 import ntt.bps.namberwan.allstatntt.DatabaseHelper;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.RecyclerViewClickListener;
-import ntt.bps.namberwan.allstatntt.brs.BrsItem;
 
 public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Holder> {
 
@@ -97,8 +96,8 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Hold
 
         Picasso.get()
                 .load(item.getUrlCover())
-                .error(new IconicsDrawable(context).color(ContextCompat.getColor(context, R.color.material_grey_300)).icon(GoogleMaterial.Icon.gmd_broken_image))
-                .placeholder(new IconicsDrawable(context).color(ContextCompat.getColor(context, R.color.material_grey_300)).icon(GoogleMaterial.Icon.gmd_image))
+                .error(new IconicsDrawable(context).color(ContextCompat.getColor(context, R.color.md_grey_300)).icon(GoogleMaterial.Icon.gmd_broken_image))
+                .placeholder(new IconicsDrawable(context).color(ContextCompat.getColor(context, R.color.md_grey_300)).icon(GoogleMaterial.Icon.gmd_image))
                 .fit()
                 .into(holder.cover);
 

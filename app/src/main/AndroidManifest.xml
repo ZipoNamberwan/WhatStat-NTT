@@ -42,6 +42,18 @@
         <activity
             android:name=".brs.ViewBrsActivity"
             android:label="@string/title_activity_view_brs"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".publikasi.ViewPublikasiActivity"
+            android:label="@string/title_activity_view_publikasi"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".tabelstatis.ViewTabelActivity"
+            android:label="@string/title_activity_view_tabel"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".auth.AuthActivity"
+            android:label="@string/title_activity_auth"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

@@ -154,12 +154,15 @@ public class IndikatorViewActivity extends AppCompatActivity {
     }
 
     private void getData(String idVar) {
+        isLoading = true;
         queue = VolleySingleton.getInstance(this).getRequestQueue();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getString(R.string.web_service_path_detail_indicators)
                 + getString(R.string.api_key) + "&var=" + idVar, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
+                        isLoading = false;
+
                         try {
                             //setup variabel
                             setUpVarAttribute(jsonObject);
@@ -192,7 +195,6 @@ public class IndikatorViewActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        isLoading = false;
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -872,22 +874,24 @@ public class IndikatorViewActivity extends AppCompatActivity {
     };
 
     private void setVisibilityView(boolean isGrafikVisible, boolean isTabelVisible, boolean isDeskripsiVisible){
-        if (isGrafikVisible){
-            grafikView.setVisibility(View.VISIBLE);
-        }else {
-            grafikView.setVisibility(View.GONE);
-        }
+        if (!isLoading){
+            if (isGrafikVisible){
+                grafikView.setVisibility(View.VISIBLE);
+            }else {
+                grafikView.setVisibility(View.GONE);
+            }
 
-        if (isTabelVisible){
-            tabelView.setVisibility(View.VISIBLE);
-        }else {
-            tabelView.setVisibility(View.GONE);
-        }
+            if (isTabelVisible){
+                tabelView.setVisibility(View.VISIBLE);
+            }else {
+                tabelView.setVisibility(View.GONE);
+            }
 
-        if (isDeskripsiVisible){
-            deskripsiView.setVisibility(View.VISIBLE);
-        }else {
-            deskripsiView.setVisibility(View.GONE);
+            if (isDeskripsiVisible){
+                deskripsiView.setVisibility(View.VISIBLE);
+            }else {
+                deskripsiView.setVisibility(View.GONE);
+            }
         }
     }
 }

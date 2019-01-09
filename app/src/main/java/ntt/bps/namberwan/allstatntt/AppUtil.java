@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Parcelable;
 
 import java.text.DecimalFormat;
@@ -19,10 +21,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * Created by zipo on 16/04/16.
  */
 public class AppUtil {
+
+    public static final String MY_SHARED_PREFERENCE = "bps provinsi ntt shared preference";
+
+    public static final String TOKEN_KEY = "token key";
 
     public static String getDate(String dateString, boolean isSection){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -134,11 +142,19 @@ public class AppUtil {
     }
 
     public static void downloadFile(Activity activity, String url, String title){
-        DownloadManager downloadManager = (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
+
         Uri uri = Uri.parse(url);
+
+        DownloadManager downloadManager = (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
         DownloadManager.Request request = new DownloadManager.Request(uri);
+
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
+        request.setAllowedOverRoaming(false);
+        request.setVisibleInDownloadsUi(true);
         request.setTitle(title);
-        downloadManager.enqueue(request);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "test.jpg");
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+        long downloadReference = downloadManager.enqueue(request);
 
     }
 
@@ -193,6 +209,17 @@ public class AppUtil {
         formatter.setDecimalFormatSymbols(symbols);
 
         return formatter.format(f);
+    }
+
+    public static void saveToken(Activity activity, String token){
+        SharedPreferences.Editor editor = activity.getSharedPreferences(MY_SHARED_PREFERENCE, MODE_PRIVATE).edit();
+        editor.putString(TOKEN_KEY, token);
+        editor.apply();
+    }
+
+    public static String getToken(Activity activity){
+        SharedPreferences prefs = activity.getSharedPreferences(MY_SHARED_PREFERENCE, MODE_PRIVATE);
+        return prefs.getString(TOKEN_KEY, null);
     }
 
 }

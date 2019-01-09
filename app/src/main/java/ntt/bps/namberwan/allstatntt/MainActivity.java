@@ -19,7 +19,7 @@ import ntt.bps.namberwan.allstatntt.berita.BeritaFragment;
 import ntt.bps.namberwan.allstatntt.brs.BrsFragment;
 import ntt.bps.namberwan.allstatntt.indikator.IndikatorFragment;
 import ntt.bps.namberwan.allstatntt.publikasi.PublikasiFragment;
-import ntt.bps.namberwan.allstatntt.tabel.TabelFragment;
+import ntt.bps.namberwan.allstatntt.tabelstatis.TabelFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         viewPager = findViewById(R.id.viewpager);
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter.addFragment(indikatorFragment, "Indikator");
         viewPagerAdapter.addFragment(brsFragment, "BRS");
         viewPagerAdapter.addFragment(publikasiFragment, "Publikasi");
-        viewPagerAdapter.addFragment(tabelFragment, "Tabel");
+        viewPagerAdapter.addFragment(tabelFragment, "Tabel Statis");
         viewPagerAdapter.addFragment(beritaFragment, "Berita");
 
         viewPager.setAdapter(viewPagerAdapter);

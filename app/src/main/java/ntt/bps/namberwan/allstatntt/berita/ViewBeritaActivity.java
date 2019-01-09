@@ -1,10 +1,8 @@
 package ntt.bps.namberwan.allstatntt.berita;
 
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -20,8 +18,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -34,27 +30,33 @@ import ntt.bps.namberwan.allstatntt.VolleySingleton;
 
 public class ViewBeritaActivity extends AppCompatActivity {
 
-    private DatabaseHelper db;
-    private RequestQueue requestQueue;
-    private String idBerita;
+    public static final String ID_BERITA = "id berita";
 
+    private DatabaseHelper db;
+
+    private TextView judul;
     private TextView jenis;
     private TextView tanggal;
-    private TextView rincian;
+    private WebView rincian;
     private ImageView gambar;
-    private CollapsingToolbarLayout toolbarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         db = new DatabaseHelper(this);
-        requestQueue = VolleySingleton.getInstance(this).getRequestQueue();
-        idBerita = getIntent().getStringExtra(BeritaAdapter.ID_BERITA);
+
+        RequestQueue requestQueue = VolleySingleton.getInstance(this).getRequestQueue();
+        String idBerita = getIntent().getStringExtra(ID_BERITA);
 
         setContentView(R.layout.activity_view_berita);
-        final Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("");
+
+        if (getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +67,7 @@ public class ViewBeritaActivity extends AppCompatActivity {
             }
         });
 
-        toolbarLayout = findViewById(R.id.collapsingToolbarLayout);
+        judul = findViewById(R.id.judul);
         jenis = findViewById(R.id.jenis_berita);
         tanggal = findViewById(R.id.tanggal_berita);
         rincian = findViewById(R.id.rincian_berita);
@@ -77,22 +79,19 @@ public class ViewBeritaActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     JSONObject jsonObject = response.getJSONObject("data");
-                    /*judul.setText(Html.fromHtml(jsonObject.getString("news_id")));*/
-                    toolbarLayout.setTitle(jsonObject.getString("title"));
+                    judul.setText(jsonObject.getString("title"));
                     jenis.setText(jsonObject.getString("news_type"));
                     tanggal.setText(AppUtil.getDate(jsonObject.getString("rl_date"), false));
-                    rincian.setText(stripHtml(jsonObject.getString("news")));
+                    rincian.loadData(Html.fromHtml(jsonObject.getString("news")).toString(), "text/html; charset=UTF-8", null);
+                    //rincian.loadData(Html.fromHtml(getString(R.string.lipsum)).toString(), "text/html; charset=UTF-8", null);
+
                     Picasso.get()
                             .load(jsonObject.getString("picture"))
-                            .error(new IconicsDrawable(getApplicationContext()).color(ContextCompat.getColor(getApplicationContext(), R.color.material_grey_300)).icon(GoogleMaterial.Icon.gmd_broken_image))
-                            .placeholder(new IconicsDrawable(getApplicationContext()).color(ContextCompat.getColor(getApplicationContext(), R.color.material_grey_300)).icon(GoogleMaterial.Icon.gmd_image))
                             .fit()
                             .into(gambar);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -126,11 +125,9 @@ public class ViewBeritaActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private String stripHtml(String html) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            return Html.fromHtml(html, Html.FROM_HTML_MODE_COMPACT).toString();
-        } else {
-            return Html.fromHtml(html).toString();
-        }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

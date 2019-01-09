@@ -1,11 +1,11 @@
-package ntt.bps.namberwan.allstatntt.tabel;
+package ntt.bps.namberwan.allstatntt.tabelstatis;
 
 /**
  * Created by zipo on 16/04/16.
  */
 public class TabelItem {
 
-    private int id;
+    private String id;
     private String subjek;
     private String tanggal;
     private String judul;
@@ -16,7 +16,7 @@ public class TabelItem {
     private boolean isBookmarked;
     private boolean isSection;
 
-    public TabelItem(int id, String subjek, String tanggal, String judul, String excel, String urlShare,
+    public TabelItem(String id, String subjek, String tanggal, String judul, String excel, String urlShare,
                      String html, int kategori, boolean isBookmarked, boolean isSection){
         this.id = id;
         this.subjek = subjek;
@@ -30,7 +30,7 @@ public class TabelItem {
         this.html = html;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

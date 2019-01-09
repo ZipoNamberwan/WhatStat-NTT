@@ -84,7 +84,7 @@ public class IndikatorFragment extends Fragment {
                         break;
                     case "3":
                         //inflasi
-                        i.putExtra(IndikatorViewActivity.VAR_ID, "2");
+                        i.putExtra(IndikatorViewActivity.VAR_ID, "1");
                         startActivity(i);
                         break;
                     case "4":

@@ -1,4 +1,4 @@
-package ntt.bps.namberwan.allstatntt.brs;
+package ntt.bps.namberwan.allstatntt.tabelstatis;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -27,9 +27,9 @@ import ntt.bps.namberwan.allstatntt.AppUtil;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.VolleySingleton;
 
-public class ViewBrsActivity extends AppCompatActivity {
+public class ViewTabelActivity extends AppCompatActivity {
 
-    public static final String ID_BRS = "id brs";
+    public static final String ID_TABEL = "id tabel";
 
     private String urlDownload;
     private String judul;
@@ -37,74 +37,33 @@ public class ViewBrsActivity extends AppCompatActivity {
     private TextView judulTv;
     private TextView releaseDateTv;
     private TextView sizeTv;
-    private WebView abstrakWebView;
+    private WebView tabelWebView;
 
     private View mainView;
     private ShimmerFrameLayout shimmerFrameLayout;
 
     private JSONObject jsonObject;
 
-    private ViewBrsActivity activity;
+    private ViewTabelActivity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_brs);
+        setContentView(R.layout.activity_view_tabel);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        activity = this;
 
         if (getSupportActionBar()!=null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        String idBrs = getIntent().getStringExtra(ID_BRS);
+        activity = this;
+        String idTabel = getIntent().getStringExtra(ID_TABEL);
 
         setUpInitView();
 
-        getData(idBrs);
-
-    }
-
-    private void setUpDetailView() throws JSONException {
-        judul = jsonObject.getString("title");
-        String tanggalUp = AppUtil.getDate(jsonObject.getString("rl_date"), false);
-        String size = "Size: " + jsonObject.getString("size");
-        String abstrak = Html.fromHtml(jsonObject.getString("abstract")).toString();
-        urlDownload = jsonObject.getString("pdf");
-
-        judulTv.setText(judul);
-        releaseDateTv.setText(tanggalUp);
-        sizeTv.setText(size);
-        abstrakWebView.loadData(abstrak, "text/html; charset=UTF-8", null);
-    }
-
-    private void getData(String idBrs) {
-        RequestQueue queue = VolleySingleton.getInstance(this).getRequestQueue();
-        String s = getResources()
-                .getString(R.string.web_service_path_detail_brs) + getResources().getString(R.string.api_key)
-                + "&id=" + idBrs;
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, s , null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    jsonObject = response.getJSONObject("data");
-                    setUpDetailView();
-                    shimmerFrameLayout.stopShimmer();
-                    shimmerFrameLayout.setVisibility(View.GONE);
-                    mainView.setVisibility(View.VISIBLE);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-        queue.add(request);
+        getData(idTabel);
     }
 
     private void setUpInitView(){
@@ -115,7 +74,7 @@ public class ViewBrsActivity extends AppCompatActivity {
         judulTv = findViewById(R.id.judul);
         releaseDateTv = findViewById(R.id.last_periode);
         sizeTv = findViewById(R.id.size);
-        abstrakWebView = findViewById(R.id.abstrak);
+        tabelWebView = findViewById(R.id.tabel);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,6 +101,47 @@ public class ViewBrsActivity extends AppCompatActivity {
                         .show();
             }
         });
+    }
+
+
+    private void setUpDetailView() throws JSONException {
+        judul = jsonObject.getString("title");
+        String tanggalUp = AppUtil.getDate(jsonObject.getString("updt_date"), false);
+        String size = "Size: " + jsonObject.getString("size");
+        String abstrak = Html.fromHtml(jsonObject.getString("table")).toString();
+        urlDownload = jsonObject.getString("excel");
+
+        judulTv.setText(judul);
+        releaseDateTv.setText(tanggalUp);
+        sizeTv.setText(size);
+        tabelWebView.loadData(abstrak, "text/html; charset=UTF-8", null);
+    }
+
+    private void getData(String idTabel) {
+        RequestQueue queue = VolleySingleton.getInstance(this).getRequestQueue();
+        String s = getResources()
+                .getString(R.string.web_service_path_detail_tabel) + getResources().getString(R.string.api_key)
+                + "&id=" + idTabel;
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, s , null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    jsonObject = response.getJSONObject("data");
+                    setUpDetailView();
+                    shimmerFrameLayout.stopShimmer();
+                    shimmerFrameLayout.setVisibility(View.GONE);
+                    mainView.setVisibility(View.VISIBLE);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        queue.add(request);
     }
 
     @Override

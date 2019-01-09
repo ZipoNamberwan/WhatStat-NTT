@@ -1,6 +1,7 @@
-package ntt.bps.namberwan.allstatntt.tabel;
+package ntt.bps.namberwan.allstatntt.tabelstatis;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -73,7 +74,10 @@ public class TabelFragment extends Fragment {
             @Override
             public void onItemClick(Object object) {
                 // do shit here
-
+                String s = ((TabelItem)object).getId();
+                Intent i = new Intent(getActivity(), ViewTabelActivity.class);
+                i.putExtra(ViewTabelActivity.ID_TABEL, s);
+                startActivity(i);
             }
         });
         SlideInBottomAnimationAdapter animatedAdapter = new SlideInBottomAnimationAdapter(adapter);
@@ -123,7 +127,7 @@ public class TabelFragment extends Fragment {
                 }else {
                     isSection = !AppUtil.getDate(jsonArray.getJSONObject(i).getString("updt_date"), true).equals(AppUtil.getDate(jsonArray.getJSONObject(i - 1).getString("updt_date"), true));
                 }
-                list.add(new TabelItem(jsonArray.getJSONObject(i).getInt("table_id"),
+                list.add(new TabelItem(jsonArray.getJSONObject(i).getString("table_id"),
                         jsonArray.getJSONObject(i).getString("subj"), jsonArray.getJSONObject(i).getString("updt_date"),
                         jsonArray.getJSONObject(i).getString("title"), jsonArray.getJSONObject(i).getString("excel"),
                         jsonArray.getJSONObject(i).getString("updt_date"),jsonArray.getJSONObject(i).getString("updt_date"),

@@ -1,6 +1,7 @@
 package ntt.bps.namberwan.allstatntt.berita;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -72,8 +73,9 @@ public class BeritaFragment extends Fragment {
             @Override
             public void onItemClick(Object object) {
                 //do shit here
-
-
+                Intent i = new Intent(getActivity(), ViewBeritaActivity.class);
+                i.putExtra(ViewBeritaActivity.ID_BERITA, ((BeritaItem) object).getId());
+                startActivity(i);
             }
         });
 

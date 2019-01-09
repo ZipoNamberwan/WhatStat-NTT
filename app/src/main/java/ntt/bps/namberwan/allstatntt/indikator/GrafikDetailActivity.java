@@ -34,6 +34,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import ntt.bps.namberwan.allstatntt.AppUtil;
 import ntt.bps.namberwan.allstatntt.R;
 
 public class GrafikDetailActivity extends AppCompatActivity {
@@ -178,8 +179,7 @@ public class GrafikDetailActivity extends AppCompatActivity {
         dataSet.setValueFormatter(new IValueFormatter() {
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-                DecimalFormat decimalFormat = new DecimalFormat("#.####");
-                return decimalFormat.format(value);
+                return AppUtil.formatNumberSeparator(value);
             }
         });
         dataSet.setColor(getResources().getColor(R.color.primary));

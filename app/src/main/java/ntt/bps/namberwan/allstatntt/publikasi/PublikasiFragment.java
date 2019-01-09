@@ -1,6 +1,7 @@
 package ntt.bps.namberwan.allstatntt.publikasi;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -76,6 +77,9 @@ public class PublikasiFragment extends Fragment{
             @Override
             public void onItemClick(Object object) {
                 //do shit here
+                Intent i = new Intent(getActivity(), ViewPublikasiActivity.class);
+                i.putExtra(ViewPublikasiActivity.ID_PUBLIKASI, ((PublikasiItem)object).getId());
+                startActivity(i);
             }
         });
         SlideInBottomAnimationAdapter animatedAdapter = new SlideInBottomAnimationAdapter(adapter);
