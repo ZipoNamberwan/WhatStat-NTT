@@ -169,7 +169,7 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Hold
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case DialogInterface.BUTTON_POSITIVE:
-                                AppUtil.downloadFile((Activity) context, item.getUrlPdf(), item.getJudul());
+                                AppUtil.downloadFile((Activity) context, item.getUrlPdf(), item.getJudul(), "");
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
                                 break;

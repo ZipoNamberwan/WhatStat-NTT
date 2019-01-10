@@ -142,7 +142,7 @@ public class BrsAdapter extends RecyclerView.Adapter<BrsAdapter.Holder>{
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case DialogInterface.BUTTON_POSITIVE:
-                                AppUtil.downloadFile((Activity) context, brsItem.getUrlPdf(), brsItem.getJudul());
+                                AppUtil.downloadFile((Activity) context, brsItem.getUrlPdf(), brsItem.getJudul(), "");
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
                                 break;

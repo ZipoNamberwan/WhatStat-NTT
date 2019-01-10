@@ -115,7 +115,7 @@ public class TabelAdapter extends RecyclerView.Adapter<TabelAdapter.Holder> {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case DialogInterface.BUTTON_POSITIVE:
-                                AppUtil.downloadFile((Activity) context, item.getExcel(), item.getJudul());
+                                AppUtil.downloadFile((Activity) context, item.getExcel(), item.getJudul(), "");
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
                                 break;

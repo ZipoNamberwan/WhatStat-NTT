@@ -125,7 +125,7 @@ public class ViewBrsActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case DialogInterface.BUTTON_POSITIVE:
-                                AppUtil.downloadFile(activity, urlDownload + "667e9fae3dfa0f334cf6d7c77462bdf0", judul);
+                                AppUtil.downloadFile(activity, urlDownload + "667e9fae3dfa0f334cf6d7c77462bdf0", judul, "");
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
                                 break;

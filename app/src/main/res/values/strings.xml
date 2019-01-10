@@ -32,6 +32,8 @@
 
     <string name="web_service_path_authentication"> https://webapi.bps.go.id/consumen/</string>
 
+    <string name="web_service_path_cek_token_valid"> https://webapi.bps.go.id/consumen/consumer/token/</string>
+
     <string name="web_service_path_view_news"> https://webapi.bps.go.id/v1/api/view/?model=news&amp;lang=ind&amp;domain=5300</string>
 
     <string name="label_network_problem">Masalah jaringan</string>
@@ -88,5 +90,11 @@ Quam libero nulla netus eu porta curae, ut nulla bibendum facilisis et urna sed,
     <string name="title_activity_view_tabel">Detail Tabel Statis</string>
     <string name="title_activity_auth">Autentikasi User</string>
     <string name="web_service_path_url_token_contain">webapi.bps.go.id/consumen/consumer/token/</string>
+    <string name="channel_name">Notifikation Channel Indikator Strategis NTT</string>
+    <string name="channel_description">notifikasi channel untuk aplikasi indikator strategis ntt</string>
 
+    <string name="download_eta_sec">%1$ds left</string>
+    <string name="download_eta_min">%1$dm %2$ds left</string>
+    <string name="download_eta_hrs">%1$dh %2$dm %3$ds left</string>
+    <string name="checking_user_auth_string">Checking User Authentication…</string>
 </resources>

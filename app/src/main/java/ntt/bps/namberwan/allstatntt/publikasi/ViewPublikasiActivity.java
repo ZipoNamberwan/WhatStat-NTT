@@ -1,9 +1,12 @@
 package ntt.bps.namberwan.allstatntt.publikasi;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -49,11 +52,15 @@ public class ViewPublikasiActivity extends AppCompatActivity {
     private ShimmerFrameLayout shimmerFrameLayout;
 
     private String urlPdf;
+    private String judul;
+    private boolean isTokenExpired;
 
     private View main1;
     private View main2;
 
     private JSONObject jsonObject;
+
+    private RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +74,8 @@ public class ViewPublikasiActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
+        queue = VolleySingleton.getInstance(this).getRequestQueue();
+
         String idPublikasi = getIntent().getStringExtra(ID_PUBLIKASI);
 
         setupInitView();
@@ -75,7 +84,6 @@ public class ViewPublikasiActivity extends AppCompatActivity {
     }
 
     private void getData(String idPublikasi) {
-        RequestQueue queue = VolleySingleton.getInstance(this).getRequestQueue();
         String s = getResources()
                 .getString(R.string.web_service_path_detail_publication) + getResources().getString(R.string.api_key)
                 + "&id=" + idPublikasi;
@@ -84,6 +92,7 @@ public class ViewPublikasiActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     jsonObject = response.getJSONObject("data");
+                    judul = jsonObject.getString("title");
                     judulTv.setText(jsonObject.getString("title"));
                     tanggalTv.setText(AppUtil.getDate(jsonObject.getString("rl_date"), false));
 
@@ -149,12 +158,53 @@ public class ViewPublikasiActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(activity, AuthActivity.class);
-                if (AppUtil.getToken(activity)==null){
-                    startActivity(i);
-                }else {
-                    String s = urlPdf + AppUtil.getToken(activity);
 
+                final Snackbar snackbar = Snackbar.make(view, R.string.checking_user_auth_string, Snackbar.LENGTH_INDEFINITE);
+                snackbar.show();
+
+                final Intent i = new Intent(activity, AuthActivity.class);
+                if (AppUtil.getToken(activity)==null){
+
+                    startActivity(i);
+
+                }else {
+                    String token = AppUtil.getToken(activity);
+
+                    final String s = urlPdf + token;
+
+                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, activity.getString(R.string.web_service_path_cek_token_valid) + token, null,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    try {
+                                        snackbar.dismiss();
+                                        isTokenExpired = response.getString("message").equals("Token is expired");
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+
+                                        builder.setTitle("Token Invalid").setMessage("Silakan login ulang")
+                                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialogInterface, int j) {
+                                                        startActivity(i);
+                                                    }
+                                                });
+
+                                        builder.show();
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            isTokenExpired = false;
+                            String namaFile = judul.replaceAll("\\W+", "");
+                            AppUtil.downloadFile(activity, s, judul, namaFile + ".pdf");
+                            snackbar.dismiss();
+                        }
+                    });
+                    queue.add(request);
                 }
             }
         });

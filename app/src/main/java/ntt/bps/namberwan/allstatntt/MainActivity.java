@@ -62,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
 
         checkPermission();
 
+        AppUtil.createNotificationChannel(this);
+
         /*fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

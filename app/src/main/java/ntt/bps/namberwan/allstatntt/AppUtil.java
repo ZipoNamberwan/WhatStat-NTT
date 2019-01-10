@@ -1,15 +1,36 @@
 package ntt.bps.namberwan.allstatntt;
 
 import android.app.Activity;
-import android.app.DownloadManager;
-import android.content.Context;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Parcelable;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.FileProvider;
+import android.webkit.MimeTypeMap;
 
+import com.tonyodev.fetch2.Download;
+import com.tonyodev.fetch2.Error;
+import com.tonyodev.fetch2.Fetch;
+import com.tonyodev.fetch2.FetchConfiguration;
+import com.tonyodev.fetch2.FetchListener;
+import com.tonyodev.fetch2.NetworkType;
+import com.tonyodev.fetch2.Priority;
+import com.tonyodev.fetch2.Request;
+import com.tonyodev.fetch2core.DownloadBlock;
+import com.tonyodev.fetch2core.Func;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.io.File;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -28,9 +49,13 @@ import static android.content.Context.MODE_PRIVATE;
  */
 public class AppUtil {
 
-    public static final String MY_SHARED_PREFERENCE = "bps provinsi ntt shared preference";
+    private static final String MY_SHARED_PREFERENCE = "bps provinsi ntt shared preference";
 
-    public static final String TOKEN_KEY = "token key";
+    private static final String TOKEN_KEY = "token key";
+
+    private static final String CHANNEL_ID = "id notifikasi channel indikator strategis NTT";
+
+    private static final int NOTIFICATION_DOWNLOAD_ID = 116951;
 
     public static String getDate(String dateString, boolean isSection){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -141,21 +166,149 @@ public class AppUtil {
         }
     }
 
-    public static void downloadFile(Activity activity, String url, String title){
+    public static void downloadFile(final Activity activity, String url, final String title, String file){
 
-        Uri uri = Uri.parse(url);
+        //Buat format notifikasi
+        final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(activity, CHANNEL_ID);
+        mBuilder.build();
 
-        DownloadManager downloadManager = (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
-        DownloadManager.Request request = new DownloadManager.Request(uri);
+        final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(activity);
 
-        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
-        request.setAllowedOverRoaming(false);
-        request.setVisibleInDownloadsUi(true);
-        request.setTitle(title);
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "test.jpg");
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
-        long downloadReference = downloadManager.enqueue(request);
+        //Konfigurasi download
+        FetchConfiguration fetchConfiguration = new FetchConfiguration.Builder(activity)
+                .setDownloadConcurrentLimit(3)
+                .enableFileExistChecks(false)
+                .build();
+        final Fetch fetch = Fetch.Impl.getInstance(fetchConfiguration);
 
+        //Listener download
+        FetchListener listener = new FetchListener() {
+            @Override
+            public void onAdded(@NotNull Download download) {
+                mBuilder.setSmallIcon(R.drawable.baseline_save_24)
+                        .setProgress(100, 0, false)
+                        .setContentTitle(title)
+                        .setOnlyAlertOnce(true)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+                notificationManager.notify(NOTIFICATION_DOWNLOAD_ID, mBuilder.build());
+            }
+
+            @Override
+            public void onQueued(@NotNull Download download, boolean b) {
+
+            }
+
+            @Override
+            public void onWaitingNetwork(@NotNull Download download) {
+
+            }
+
+            @Override
+            public void onCompleted(@NotNull Download download) {
+
+                String filePath = download.getFile();
+                File file = new File(filePath);
+                MimeTypeMap mime = MimeTypeMap.getSingleton();
+                String ext=file.getName().substring(file.getName().indexOf(".")+1);
+                String type = mime.getMimeTypeFromExtension(ext);
+
+                Uri uri = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + ".ntt.bps.namberwan.allstatntt.provider", file);
+
+                Intent openFile = new Intent(Intent.ACTION_VIEW, uri);
+                openFile.setDataAndType(uri, type);
+                openFile.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                openFile.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                PendingIntent pendingIntent = PendingIntent.getActivity(activity, 0, openFile, 0);
+
+                mBuilder.setSmallIcon(R.drawable.baseline_check_24)
+                        .setOngoing(false)
+                        .setContentText("Download Selesai")
+                        .setAutoCancel(true)
+                        .setContentIntent(pendingIntent);
+
+                notificationManager.notify(NOTIFICATION_DOWNLOAD_ID, mBuilder.build());
+
+                fetch.remove(download.getId());
+
+            }
+
+            @Override
+            public void onError(@NotNull Download download, @NotNull Error error, @Nullable Throwable throwable) {
+                mBuilder.setSmallIcon(R.drawable.baseline_error_24)
+                        .setOngoing(false)
+                        .setContentText("Download Gagal :(");
+
+                notificationManager.notify(NOTIFICATION_DOWNLOAD_ID, mBuilder.build());
+
+                fetch.remove(download.getId());
+            }
+
+            @Override
+            public void onDownloadBlockUpdated(@NotNull Download download, @NotNull DownloadBlock downloadBlock, int i) {
+
+            }
+
+            @Override
+            public void onStarted(@NotNull Download download, @NotNull List<? extends DownloadBlock> list, int i) {
+
+            }
+
+            @Override
+            public void onProgress(@NotNull Download download, long l, long l1) {
+                mBuilder.setProgress(100, download.getProgress(), false)
+                        .setOngoing(true)
+                        .setContentText(getETAString(activity, l));
+
+                notificationManager.notify(NOTIFICATION_DOWNLOAD_ID, mBuilder.build());
+            }
+
+            @Override
+            public void onPaused(@NotNull Download download) {
+
+            }
+
+            @Override
+            public void onResumed(@NotNull Download download) {
+
+            }
+
+            @Override
+            public void onCancelled(@NotNull Download download) {
+
+            }
+
+            @Override
+            public void onRemoved(@NotNull Download download) {
+
+            }
+
+            @Override
+            public void onDeleted(@NotNull Download download) {
+
+            }
+        };
+
+        //Download File
+        String destinationFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/" + file;
+
+        final Request request = new Request(url, destinationFile);
+        request.setPriority(Priority.HIGH);
+        request.setNetworkType(NetworkType.ALL);
+
+        fetch.addListener(listener);
+        fetch.enqueue(request, new Func<Request>() {
+            @Override
+            public void call(@NotNull Request result) {
+                int i = 0;
+            }
+        }, new Func<Error>() {
+            @Override
+            public void call(@NotNull Error result) {
+                int i = 0;
+            }
+        });
     }
 
     private static List<String> getShareApplication(){
@@ -222,4 +375,37 @@ public class AppUtil {
         return prefs.getString(TOKEN_KEY, null);
     }
 
+    public static void createNotificationChannel(Activity activity) {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = activity.getString(R.string.channel_name);
+            String description = activity.getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = activity.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    private static String getETAString(Activity activity, final long etaInMilliSeconds) {
+        if (etaInMilliSeconds < 0) {
+            return "";
+        }
+        int seconds = (int) (etaInMilliSeconds / 1000);
+        long hours = seconds / 3600;
+        seconds -= hours * 3600;
+        long minutes = seconds / 60;
+        seconds -= minutes * 60;
+        if (hours > 0) {
+            return activity.getString(R.string.download_eta_hrs, hours, minutes, seconds);
+        } else if (minutes > 0) {
+            return activity.getString(R.string.download_eta_min, minutes, seconds);
+        } else {
+            return activity.getString(R.string.download_eta_sec, seconds);
+        }
+    }
 }
