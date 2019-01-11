@@ -4,6 +4,13 @@
     android:orientation="vertical"
     android:background="@color/md_grey_200">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/view_failure">
+        <include layout="@layout/layout_connection_fail"/>
+    </RelativeLayout>
+
     <com.facebook.shimmer.ShimmerFrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

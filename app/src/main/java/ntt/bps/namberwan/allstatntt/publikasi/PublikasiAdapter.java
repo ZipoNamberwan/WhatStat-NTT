@@ -53,7 +53,7 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Hold
         private ImageView cover;
         private ImageButton download;
         private ImageButton bookmark;
-        private ImageButton expand;
+        private ImageButton share;
         private CardView cardView;
 
         private Holder(View itemView) {
@@ -65,7 +65,7 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Hold
             cover = itemView.findViewById(R.id.cover_publikasi);
             bookmark = itemView.findViewById(R.id.bookmark_button);
             download = itemView.findViewById(R.id.download_button);
-            expand = itemView.findViewById(R.id.expand_button);
+            share = itemView.findViewById(R.id.share_button);
             cardView = itemView.findViewById(R.id.card_view);
         }
 
@@ -101,7 +101,7 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Hold
                 .fit()
                 .into(holder.cover);
 
-        setupButton(holder.download, holder.bookmark, holder.expand, holder.abstrak, item);
+        setupButton(holder.download, holder.bookmark, holder.share, holder.abstrak, item);
 
         setupCardView(holder.cardView);
 
@@ -122,7 +122,7 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Hold
         }
     }
 
-    private void setupButton(ImageButton download, ImageButton bookmark, final ImageButton expand, final TextView abstrak, final PublikasiItem item) {
+    private void setupButton(ImageButton download, ImageButton bookmark, final ImageButton share, final TextView abstrak, final PublikasiItem item) {
         if (item.isBookmarked()){
             bookmark.setImageDrawable(new IconicsDrawable(context).color(ContextCompat.getColor(context, R.color.bookmark_button)).icon(CommunityMaterial.Icon.cmd_bookmark_check));
         }else {
@@ -131,13 +131,7 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Hold
 
         download.setImageDrawable(new IconicsDrawable(context).color(ContextCompat.getColor(context, R.color.blue)).icon(GoogleMaterial.Icon.gmd_file_download));
 
-        if(!item.isExpanded()){
-            expand.setImageDrawable(new IconicsDrawable(context).color(ContextCompat.getColor(context, R.color.expand_button)).icon(GoogleMaterial.Icon.gmd_expand_more));
-            abstrak.setVisibility(View.GONE);
-        } else {
-            expand.setImageDrawable(new IconicsDrawable(context).color(ContextCompat.getColor(context, R.color.expand_button)).icon(GoogleMaterial.Icon.gmd_expand_less));
-            abstrak.setVisibility(View.VISIBLE);
-        }
+        share.setImageDrawable(new IconicsDrawable(context).color(ContextCompat.getColor(context, R.color.green)).icon(GoogleMaterial.Icon.gmd_share));
 
         bookmark.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,25 +181,13 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Hold
             }
         });
 
-        /*expand.setOnClickListener(new View.OnClickListener() {
+        share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PublikasiItem item = getItem((int) v.getTag());
-                //Do Your Code Here
-                if (!item.isExpanded()) {
-                    abstrak.setVisibility(View.VISIBLE);
-                    Animation animation = AnimationUtils.loadAnimation(context, R.anim.abc_fade_in);
-                    animation.setDuration(400);
-                    abstrak.startAnimation(animation);
-                    expand.setImageDrawable(new IconicsDrawable(context).color(ContextCompat.getColor(context, R.color.material_grey_600)).icon(GoogleMaterial.Icon.gmd_expand_less));
-                    item.setIsExpanded(true);
-                } else {
-                    abstrak.setVisibility(View.GONE);
-                    expand.setImageDrawable(new IconicsDrawable(context).color(ContextCompat.getColor(context, R.color.material_grey_600)).icon(GoogleMaterial.Icon.gmd_expand_more));
-                    item.setIsExpanded(false);
-                }
+                String urlShare =  AppUtil.getUrlShare(context.getString(R.string.web_share_publication), item.getTanggal(), item.getId(), item.getJudul());
+                AppUtil.share((Activity) context, item.getJudul(), urlShare);
             }
-        });*/
+        });
     }
 
 }

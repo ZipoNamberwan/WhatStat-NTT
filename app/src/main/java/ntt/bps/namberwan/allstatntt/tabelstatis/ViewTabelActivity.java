@@ -1,6 +1,7 @@
 package ntt.bps.namberwan.allstatntt.tabelstatis;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -26,13 +28,16 @@ import org.json.JSONObject;
 import ntt.bps.namberwan.allstatntt.AppUtil;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.VolleySingleton;
+import ntt.bps.namberwan.allstatntt.auth.AuthActivity;
 
 public class ViewTabelActivity extends AppCompatActivity {
 
     public static final String ID_TABEL = "id tabel";
 
-    private String urlDownload;
+    private String idTabel;
     private String judul;
+    private String tanggal;
+    private String urlExcel;
 
     private TextView judulTv;
     private TextView releaseDateTv;
@@ -41,8 +46,14 @@ public class ViewTabelActivity extends AppCompatActivity {
 
     private View mainView;
     private ShimmerFrameLayout shimmerFrameLayout;
+    private View failureView;
+
+    private FloatingActionButton fab;
 
     private JSONObject jsonObject;
+
+    private boolean isTokenExpired;
+    private RequestQueue queue;
 
     private ViewTabelActivity activity;
 
@@ -59,7 +70,8 @@ public class ViewTabelActivity extends AppCompatActivity {
         }
 
         activity = this;
-        String idTabel = getIntent().getStringExtra(ID_TABEL);
+        idTabel = getIntent().getStringExtra(ID_TABEL);
+        queue = VolleySingleton.getInstance(this).getRequestQueue();
 
         setUpInitView();
 
@@ -67,24 +79,34 @@ public class ViewTabelActivity extends AppCompatActivity {
     }
 
     private void setUpInitView(){
+
         mainView = findViewById(R.id.main);
-        mainView.setVisibility(View.GONE);
         shimmerFrameLayout = findViewById(R.id.shimmer);
-        shimmerFrameLayout.startShimmer();
+        failureView = findViewById(R.id.view_failure);
+
         judulTv = findViewById(R.id.judul);
         releaseDateTv = findViewById(R.id.last_periode);
         sizeTv = findViewById(R.id.size);
         tabelWebView = findViewById(R.id.tabel);
-        FloatingActionButton fab = findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
+            public void onClick(final View view) {
+                final DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case DialogInterface.BUTTON_POSITIVE:
-                                AppUtil.downloadFile(activity, urlDownload + "667e9fae3dfa0f334cf6d7c77462bdf0", judul, "");
+                                //Do shit here
+                                Intent i = new Intent(activity, AuthActivity.class);
+                                String token = AppUtil.getToken(activity);
+                                if (token==null){
+                                    startActivity(i);
+                                }else {
+                                    String s = urlExcel + token;
+                                    String namaFile = judul.replaceAll("\\W+", "");
+                                    AppUtil.downloadFile(activity, s, judul, namaFile + ".xls");
+                                }
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
                                 break;
@@ -95,10 +117,18 @@ public class ViewTabelActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                 builder
                         .setTitle("Download")
-                        .setMessage("Download BRS?")
+                        .setMessage("Download Tabel?")
                         .setPositiveButton("Ya", onClickListener)
                         .setNegativeButton("Tidak", onClickListener)
                         .show();
+            }
+        });
+
+        Button refreshButton = findViewById(R.id.refresh_button);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getData(idTabel);
             }
         });
     }
@@ -106,10 +136,11 @@ public class ViewTabelActivity extends AppCompatActivity {
 
     private void setUpDetailView() throws JSONException {
         judul = jsonObject.getString("title");
-        String tanggalUp = AppUtil.getDate(jsonObject.getString("updt_date"), false);
+        tanggal = jsonObject.getString("updt_date");
+        String tanggalUp = AppUtil.getDate(tanggal, false);
         String size = "Size: " + jsonObject.getString("size");
         String abstrak = Html.fromHtml(jsonObject.getString("table")).toString();
-        urlDownload = jsonObject.getString("excel");
+        urlExcel = jsonObject.getString("excel");
 
         judulTv.setText(judul);
         releaseDateTv.setText(tanggalUp);
@@ -118,7 +149,7 @@ public class ViewTabelActivity extends AppCompatActivity {
     }
 
     private void getData(String idTabel) {
-        RequestQueue queue = VolleySingleton.getInstance(this).getRequestQueue();
+        setViewVisibility(false, true, false);
         String s = getResources()
                 .getString(R.string.web_service_path_detail_tabel) + getResources().getString(R.string.api_key)
                 + "&id=" + idTabel;
@@ -128,9 +159,7 @@ public class ViewTabelActivity extends AppCompatActivity {
                 try {
                     jsonObject = response.getJSONObject("data");
                     setUpDetailView();
-                    shimmerFrameLayout.stopShimmer();
-                    shimmerFrameLayout.setVisibility(View.GONE);
-                    mainView.setVisibility(View.VISIBLE);
+                    setViewVisibility(true, false, false);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -138,22 +167,56 @@ public class ViewTabelActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                setViewVisibility(false, false, true);
             }
         });
         queue.add(request);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+    private void setViewVisibility(boolean isMainVisible, boolean isShimmerVisible, boolean isFailureVisible) {
+
+        if (isMainVisible){
+            mainView.setVisibility(View.VISIBLE);
+            fab.setVisibility(View.VISIBLE);
+        }else {
+            mainView.setVisibility(View.GONE);
+            fab.setVisibility(View.GONE);
+        }
+
+        if (isShimmerVisible){
+            shimmerFrameLayout.startShimmer();
+            shimmerFrameLayout.setVisibility(View.VISIBLE);
+        }else {
+            shimmerFrameLayout.stopShimmer();
+            shimmerFrameLayout.setVisibility(View.GONE);
+        }
+
+        if (isFailureVisible){
+            failureView.setVisibility(View.VISIBLE);
+        }else {
+            failureView.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_view, menu);
+        return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_share) {
+            String urlShare = AppUtil.getUrlShare(getString(R.string.web_share_table), tanggal, idTabel, judul);
+            AppUtil.share(this, judul, urlShare);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

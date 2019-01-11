@@ -97,6 +97,13 @@
         tools:context=".publikasi.ViewPublikasiActivity"
         tools:showIn="@layout/activity_view_publikasi">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/view_failure">
+            <include layout="@layout/layout_connection_fail"/>
+        </RelativeLayout>
+
         <com.facebook.shimmer.ShimmerFrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

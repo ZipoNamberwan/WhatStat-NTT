@@ -10,6 +10,7 @@
     <string name="bookmark">Bookmark</string>
     <string name="pengaturan">Pengaturan</string>
     <string name="bantuan">Bantuan</string>
+
     <!--<string name="web_service_path">http://192.168.43.31/sikkawebservice/</string>-->
     <string name="web_service_path">http://sikkakab.bps.go.id/webservice/</string>
 
@@ -29,18 +30,20 @@
     <string name="web_service_path_detail_brs"> https://webapi.bps.go.id/v1/api/view?model=pressrelease&amp;domain=5300&amp;lang=ind</string>
     <string name="web_service_path_detail_tabel"> https://webapi.bps.go.id/v1/api/view?model=statictable&amp;domain=5300&amp;lang=ind</string>
     <string name="web_service_path_detail_publication"> https://webapi.bps.go.id/v1/api/view?model=publication&amp;domain=5300&amp;lang=ind</string>
+    <string name="web_service_path_detail_news"> https://webapi.bps.go.id/v1/api/view/?model=news&amp;lang=ind&amp;domain=5300</string>
 
     <string name="web_service_path_authentication"> https://webapi.bps.go.id/consumen/</string>
-
     <string name="web_service_path_cek_token_valid"> https://webapi.bps.go.id/consumen/consumer/token/</string>
 
-    <string name="web_service_path_view_news"> https://webapi.bps.go.id/v1/api/view/?model=news&amp;lang=ind&amp;domain=5300</string>
+    <string name="web_share_brs">https://ntt.bps.go.id/pressrelease/</string>
+    <string name="web_share_news">https://ntt.bps.go.id/news/</string>
+    <string name="web_share_publication">https://ntt.bps.go.id/publication/</string>
+    <string name="web_share_table">https://ntt.bps.go.id/statictable/</string>
 
     <string name="label_network_problem">Masalah jaringan</string>
     <string name="label_touch_to_refresh">Sentuh untuk mencoba lagi</string>
     <string name="tidak_bisa_load_data">Tidak Bisa Memuat Data Lebih Banyak</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="brs">Berita Resmi Statistik</string>
     <string name="berita">Kegiatan Statistik</string>
@@ -97,4 +100,9 @@ Quam libero nulla netus eu porta curae, ut nulla bibendum facilisis et urna sed,
     <string name="download_eta_min">%1$dm %2$ds left</string>
     <string name="download_eta_hrs">%1$dh %2$dm %3$ds left</string>
     <string name="checking_user_auth_string">Checking User Authentication…</string>
+    <string name="action_share">Share</string>
+
+    <string name="error_message">Aaaaahhh! Ada sesuatu yang aneh :(</string>
+    <string name="error_description">Kami akan perbaiki masalahnya. Kamu bisa coba refresh lagi atau cek kuota internetmu!</string>
+    <string name="refresh">Refresh</string>
 </resources>

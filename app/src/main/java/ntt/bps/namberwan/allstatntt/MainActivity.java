@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (getSupportActionBar()!=null){
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setIcon(R.drawable.ic_icon_app);
+            getSupportActionBar().setIcon(R.drawable.ic_bps_launcher);
         }
 
         IndikatorFragment indikatorFragment = new IndikatorFragment();

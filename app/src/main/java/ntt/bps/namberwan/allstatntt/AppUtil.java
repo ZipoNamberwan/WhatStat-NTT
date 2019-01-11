@@ -186,8 +186,8 @@ public class AppUtil {
             @Override
             public void onAdded(@NotNull Download download) {
                 mBuilder.setSmallIcon(R.drawable.baseline_save_24)
-                        .setProgress(100, 0, false)
-                        .setContentTitle(title)
+                        .setProgress(100, 0, true)
+                        .setContentTitle(title.substring(0, 35) + "...")
                         .setOnlyAlertOnce(true)
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
@@ -315,12 +315,10 @@ public class AppUtil {
         List<String> mList = new ArrayList<>();
         mList.add("com.facebook.katana");
         mList.add("com.twitter.android");
-        mList.add("com.google.android.apps.plus");
         mList.add("com.facebook.lite");
-        mList.add("com.tumblr");
-        mList.add("com.yahoo.mobile.client.android.flickr");
         mList.add("com.instagram.android");
-        mList.add("com.pinterest");
+        mList.add("com.whatsapp");
+        mList.add("org.telegram.messenger");
         return mList;
     }
 
@@ -407,5 +405,14 @@ public class AppUtil {
         } else {
             return activity.getString(R.string.download_eta_sec, seconds);
         }
+    }
+
+    public static String getUrlShare(String prefix, String tanggal, String id, String title){
+
+        String tanggalUrl = tanggal.replace("-", "/");
+        String titleUrl = title.toLowerCase().replaceAll("[^A-Za-z0-9]", "-");
+
+        return prefix + tanggalUrl + "/" + id +"/" + titleUrl + ".html";
+
     }
 }

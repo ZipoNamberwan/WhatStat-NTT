@@ -106,6 +106,7 @@ public class BrsAdapter extends RecyclerView.Adapter<BrsAdapter.Holder>{
         holder.download.setImageDrawable(new IconicsDrawable(context).color(ContextCompat.getColor(context, R.color.blue)).icon(GoogleMaterial.Icon.gmd_file_download));
 
         holder.share.setImageDrawable(new IconicsDrawable(context).color(ContextCompat.getColor(context, R.color.green)).icon(GoogleMaterial.Icon.gmd_share));
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) holder.cardView.getLayoutParams();
             layoutParams.setMargins(5, 4, 5, 4);
@@ -157,6 +158,14 @@ public class BrsAdapter extends RecyclerView.Adapter<BrsAdapter.Holder>{
                         .setPositiveButton("Ya", onClickListener)
                         .setNegativeButton("Tidak", onClickListener)
                         .show();
+            }
+        });
+
+        holder.share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String urlShare = AppUtil.getUrlShare(context.getString(R.string.web_share_brs), brsItem.getTanggalRilis(), brsItem.getId(), brsItem.getJudul());
+                AppUtil.share((Activity) context, brsItem.getJudul(), urlShare);
             }
         });
     }

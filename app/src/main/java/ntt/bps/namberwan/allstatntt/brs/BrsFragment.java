@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -46,6 +47,7 @@ public class BrsFragment extends Fragment {
     private RecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
     private ShimmerFrameLayout shimmerFrameLayout;
+    private View failureView;;
 
     public BrsFragment() {
         // Required empty public constructor
@@ -62,8 +64,16 @@ public class BrsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_brs, container, false);
 
+        failureView = view.findViewById(R.id.view_failure);
+        Button refreshButton = view.findViewById(R.id.refresh_button);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addDataToArray(1);
+            }
+        });
+
         shimmerFrameLayout = view.findViewById(R.id.shimmer);
-        shimmerFrameLayout.startShimmer();
 
         recyclerView = view.findViewById(R.id.listview);
         mLayoutManager = new LinearLayoutManager(getContext());
@@ -97,20 +107,27 @@ public class BrsFragment extends Fragment {
 
     private void addDataToArray(final int page) {
         isLoading = true;
+        if (list.isEmpty()){
+            setViewVisibility(false, true, false);
+        }
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getString(R.string.web_service_path_list_press_release)
                 + getString(R.string.api_key) + "&page="+page, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
+                        if (list.isEmpty()){
+                            setViewVisibility(true, false, false);
+                        }
                         addJSONToAdapter(jsonObject, page);
-                        shimmerFrameLayout.stopShimmer();
-                        shimmerFrameLayout.setVisibility(View.GONE);
                         isLoading = false;
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 isLoading = false;
+                if (list.isEmpty()){
+                    setViewVisibility(false, false, true);
+                }
             }
         });
         queue.add(request);
@@ -137,6 +154,30 @@ public class BrsFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void setViewVisibility(boolean isMainVisible, boolean isShimmerVisible, boolean isFailureVisible) {
+
+        if (isMainVisible){
+            recyclerView.setVisibility(View.VISIBLE);
+        }else {
+            recyclerView.setVisibility(View.GONE);
+        }
+
+        if (isShimmerVisible){
+            shimmerFrameLayout.startShimmer();
+            shimmerFrameLayout.setVisibility(View.VISIBLE);
+        }else {
+            shimmerFrameLayout.stopShimmer();
+            shimmerFrameLayout.setVisibility(View.GONE);
+        }
+
+        if (isFailureVisible){
+            failureView.setVisibility(View.VISIBLE);
+        }else {
+            failureView.setVisibility(View.GONE);
+        }
+
     }
 }
 

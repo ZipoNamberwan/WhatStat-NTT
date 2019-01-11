@@ -2,7 +2,6 @@ package ntt.bps.namberwan.allstatntt.berita;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -31,7 +30,6 @@ import ntt.bps.namberwan.allstatntt.AppUtil;
 import ntt.bps.namberwan.allstatntt.DatabaseHelper;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.RecyclerViewClickListener;
-import ntt.bps.namberwan.allstatntt.brs.BrsItem;
 
 public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.Holder> {
 
@@ -89,7 +87,7 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.Holder> {
             bookmark.setImageDrawable(new IconicsDrawable(context).color(ContextCompat.getColor(context, R.color.bookmark_button)).icon(CommunityMaterial.Icon.cmd_bookmark_plus_outline));
         }
 
-        share.setImageDrawable(new IconicsDrawable(context).color(ContextCompat.getColor(context, R.color.blue)).icon(GoogleMaterial.Icon.gmd_share));
+        share.setImageDrawable(new IconicsDrawable(context).color(ContextCompat.getColor(context, R.color.green)).icon(GoogleMaterial.Icon.gmd_share));
 
         if(!item.isExpanded()){
             expand.setImageDrawable(new IconicsDrawable(context).color(ContextCompat.getColor(context, R.color.expand_button)).icon(GoogleMaterial.Icon.gmd_expand_more));
@@ -123,7 +121,8 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.Holder> {
             @Override
             public void onClick(View v) {
                 //Do Your Code Here
-                AppUtil.share((Activity) context, item.getJudul(), item.getUrlShare());
+                String urlShare =  AppUtil.getUrlShare(context.getString(R.string.web_share_news), item.getTanggal(), item.getId(), item.getJudul());
+                AppUtil.share((Activity) context, item.getJudul(), urlShare);
             }
         });
 

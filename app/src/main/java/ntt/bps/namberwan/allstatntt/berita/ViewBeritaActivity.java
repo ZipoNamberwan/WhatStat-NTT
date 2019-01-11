@@ -39,6 +39,13 @@ public class ViewBeritaActivity extends AppCompatActivity {
     private TextView tanggal;
     private WebView rincian;
     private ImageView gambar;
+    private ImageView scheduleImage;
+    private FloatingActionButton fab;
+
+    private String idBerita;
+    private String judulString;
+    private String tanggalString;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +53,7 @@ public class ViewBeritaActivity extends AppCompatActivity {
         db = new DatabaseHelper(this);
 
         RequestQueue requestQueue = VolleySingleton.getInstance(this).getRequestQueue();
-        String idBerita = getIntent().getStringExtra(ID_BERITA);
+        idBerita = getIntent().getStringExtra(ID_BERITA);
 
         setContentView(R.layout.activity_view_berita);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -58,12 +65,11 @@ public class ViewBeritaActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                share();
             }
         });
 
@@ -72,18 +78,26 @@ public class ViewBeritaActivity extends AppCompatActivity {
         tanggal = findViewById(R.id.tanggal_berita);
         rincian = findViewById(R.id.rincian_berita);
         gambar = findViewById(R.id.gambar_berita);
+        scheduleImage = findViewById(R.id.image_schedule);
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getString(R.string.web_service_path_view_news)
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getString(R.string.web_service_path_detail_news)
                 + getString(R.string.api_key) + "&id=" + idBerita, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     JSONObject jsonObject = response.getJSONObject("data");
-                    judul.setText(jsonObject.getString("title"));
+
+                    judulString = jsonObject.getString("title");
+                    tanggalString = jsonObject.getString("rl_date");
+
+                    judul.setText(judulString);
                     jenis.setText(jsonObject.getString("news_type"));
-                    tanggal.setText(AppUtil.getDate(jsonObject.getString("rl_date"), false));
+                    tanggal.setText(AppUtil.getDate(tanggalString, false));
                     rincian.loadData(Html.fromHtml(jsonObject.getString("news")).toString(), "text/html; charset=UTF-8", null);
-                    //rincian.loadData(Html.fromHtml(getString(R.string.lipsum)).toString(), "text/html; charset=UTF-8", null);
+
+                    fab.setVisibility(View.VISIBLE);
+                    scheduleImage.setVisibility(View.VISIBLE);
+                    rincian.setVisibility(View.VISIBLE);
 
                     Picasso.get()
                             .load(jsonObject.getString("picture"))
@@ -103,21 +117,21 @@ public class ViewBeritaActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
+    private void share() {
+        String urlShare = AppUtil.getUrlShare(getString(R.string.web_share_news), tanggalString, idBerita, judulString);
+        AppUtil.share(this, judulString, urlShare);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }

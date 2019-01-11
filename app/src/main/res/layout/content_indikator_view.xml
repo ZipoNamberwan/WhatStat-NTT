@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,28 +10,41 @@
     tools:context=".indikator.IndikatorViewActivity"
     tools:showIn="@layout/activity_indikator_view">
 
-    <LinearLayout
+<!--    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp">
+        android:layout_height="match_parent"
+        android:id="@+id/view_failure">
+        <include layout="@layout/layout_connection_fail"/>
+    </RelativeLayout>-->
 
-        <com.facebook.shimmer.ShimmerFrameLayout
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/shimmer">
+            android:orientation="vertical"
+            android:padding="10dp">
 
-            <include layout="@layout/content_indikator_empty"/>
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/shimmer">
 
-        </com.facebook.shimmer.ShimmerFrameLayout>
+                <include layout="@layout/content_indikator_empty"/>
 
-        <include layout="@layout/content_indikator_deskripsi"/>
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
-        <include layout="@layout/content_indikator_grafik"/>
+            <include layout="@layout/content_indikator_deskripsi"/>
 
-        <include layout="@layout/content_indikator_tabel"/>
+            <include layout="@layout/content_indikator_grafik"/>
 
-    </LinearLayout>
-</ScrollView>
+            <include layout="@layout/content_indikator_tabel"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+</RelativeLayout>
 
 

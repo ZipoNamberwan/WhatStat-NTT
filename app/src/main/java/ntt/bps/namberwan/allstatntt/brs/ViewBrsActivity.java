@@ -1,6 +1,7 @@
 package ntt.bps.namberwan.allstatntt.brs;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -26,13 +28,16 @@ import org.json.JSONObject;
 import ntt.bps.namberwan.allstatntt.AppUtil;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.VolleySingleton;
+import ntt.bps.namberwan.allstatntt.auth.AuthActivity;
 
 public class ViewBrsActivity extends AppCompatActivity {
 
     public static final String ID_BRS = "id brs";
 
-    private String urlDownload;
+    private String idBrs;
+    private String urlBrs;
     private String judul;
+    private String tanggal;
 
     private TextView judulTv;
     private TextView releaseDateTv;
@@ -41,6 +46,9 @@ public class ViewBrsActivity extends AppCompatActivity {
 
     private View mainView;
     private ShimmerFrameLayout shimmerFrameLayout;
+    private View failureView;
+
+    private FloatingActionButton fab;
 
     private JSONObject jsonObject;
 
@@ -59,7 +67,7 @@ public class ViewBrsActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        String idBrs = getIntent().getStringExtra(ID_BRS);
+        idBrs = getIntent().getStringExtra(ID_BRS);
 
         setUpInitView();
 
@@ -69,18 +77,20 @@ public class ViewBrsActivity extends AppCompatActivity {
 
     private void setUpDetailView() throws JSONException {
         judul = jsonObject.getString("title");
-        String tanggalUp = AppUtil.getDate(jsonObject.getString("rl_date"), false);
+        tanggal = jsonObject.getString("rl_date");
+        String tanggalFormatted = AppUtil.getDate(tanggal, false);
         String size = "Size: " + jsonObject.getString("size");
         String abstrak = Html.fromHtml(jsonObject.getString("abstract")).toString();
-        urlDownload = jsonObject.getString("pdf");
+        urlBrs = jsonObject.getString("pdf");
 
         judulTv.setText(judul);
-        releaseDateTv.setText(tanggalUp);
+        releaseDateTv.setText(tanggalFormatted);
         sizeTv.setText(size);
         abstrakWebView.loadData(abstrak, "text/html; charset=UTF-8", null);
     }
 
     private void getData(String idBrs) {
+        setViewVisibility(false, true, false);
         RequestQueue queue = VolleySingleton.getInstance(this).getRequestQueue();
         String s = getResources()
                 .getString(R.string.web_service_path_detail_brs) + getResources().getString(R.string.api_key)
@@ -91,9 +101,7 @@ public class ViewBrsActivity extends AppCompatActivity {
                 try {
                     jsonObject = response.getJSONObject("data");
                     setUpDetailView();
-                    shimmerFrameLayout.stopShimmer();
-                    shimmerFrameLayout.setVisibility(View.GONE);
-                    mainView.setVisibility(View.VISIBLE);
+                    setViewVisibility(true, false, false);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -101,7 +109,7 @@ public class ViewBrsActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                setViewVisibility(false, false, true);
             }
         });
         queue.add(request);
@@ -109,14 +117,14 @@ public class ViewBrsActivity extends AppCompatActivity {
 
     private void setUpInitView(){
         mainView = findViewById(R.id.main);
-        mainView.setVisibility(View.GONE);
         shimmerFrameLayout = findViewById(R.id.shimmer);
-        shimmerFrameLayout.startShimmer();
+        failureView = findViewById(R.id.view_failure);
+
         judulTv = findViewById(R.id.judul);
         releaseDateTv = findViewById(R.id.last_periode);
         sizeTv = findViewById(R.id.size);
         abstrakWebView = findViewById(R.id.abstrak);
-        FloatingActionButton fab = findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,7 +133,16 @@ public class ViewBrsActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case DialogInterface.BUTTON_POSITIVE:
-                                AppUtil.downloadFile(activity, urlDownload + "667e9fae3dfa0f334cf6d7c77462bdf0", judul, "");
+                                Intent i = new Intent(activity, AuthActivity.class);
+                                String token = AppUtil.getToken(activity);
+
+                                if (token==null){
+                                    startActivity(i);
+                                }else {
+                                    String s = urlBrs + token;
+                                    String namaFile = judul.replaceAll("\\W+", "");
+                                    AppUtil.downloadFile(activity, s, judul, namaFile + ".pdf");
+                                }
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
                                 break;
@@ -142,16 +159,59 @@ public class ViewBrsActivity extends AppCompatActivity {
                         .show();
             }
         });
+
+        Button refreshButton = findViewById(R.id.refresh_button);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getData(idBrs);
+            }
+        });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+    private void setViewVisibility(boolean isMainVisible, boolean isShimmerVisible, boolean isFailureVisible) {
+
+        if (isMainVisible){
+            mainView.setVisibility(View.VISIBLE);
+            fab.setVisibility(View.VISIBLE);
+        }else {
+            mainView.setVisibility(View.GONE);
+            fab.setVisibility(View.GONE);
+        }
+
+        if (isShimmerVisible){
+            shimmerFrameLayout.startShimmer();
+            shimmerFrameLayout.setVisibility(View.VISIBLE);
+        }else {
+            shimmerFrameLayout.stopShimmer();
+            shimmerFrameLayout.setVisibility(View.GONE);
+        }
+
+        if (isFailureVisible){
+            failureView.setVisibility(View.VISIBLE);
+        }else {
+            failureView.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_view, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_share) {
+            String urlShare = AppUtil.getUrlShare(getString(R.string.web_share_brs), tanggal, idBrs, judul);
+            AppUtil.share(this, judul, urlShare);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
