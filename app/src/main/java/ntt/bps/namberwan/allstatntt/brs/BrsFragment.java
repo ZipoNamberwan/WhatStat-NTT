@@ -3,6 +3,7 @@ package ntt.bps.namberwan.allstatntt.brs;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -45,17 +46,18 @@ public class BrsFragment extends Fragment {
     private ArrayList<BrsItem> list;
     private BrsAdapter adapter;
     private RecyclerView recyclerView;
-    private LinearLayoutManager mLayoutManager;
     private ShimmerFrameLayout shimmerFrameLayout;
-    private View failureView;;
+    private View failureView;
+    private boolean isViewCreated;
 
     public BrsFragment() {
         // Required empty public constructor
+        isViewCreated = false;
     }
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         db = new DatabaseHelper(getContext());
@@ -76,7 +78,7 @@ public class BrsFragment extends Fragment {
         shimmerFrameLayout = view.findViewById(R.id.shimmer);
 
         recyclerView = view.findViewById(R.id.listview);
-        mLayoutManager = new LinearLayoutManager(getContext());
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setHasFixedSize(true);
 
@@ -100,10 +102,27 @@ public class BrsFragment extends Fragment {
             }
         });
 
-        addDataToArray(1);
+        setViewVisibility(false, true, false);
+
+        if (isVisible()){
+            addDataToArray(1);
+        }
+
+        isViewCreated = true;
 
         return view;
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isViewCreated & isVisibleToUser){
+            if (list.isEmpty()){
+                addDataToArray(1);
+            }
+        }
+    }
+
 
     private void addDataToArray(final int page) {
         isLoading = true;

@@ -3,6 +3,7 @@ package ntt.bps.namberwan.allstatntt.indikator;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,7 +47,6 @@ public class IndikatorFragment extends Fragment {
     private ArrayList<IndikatorItem> list;
     private IndikatorAdapter adapter;
     private RecyclerView recyclerView;
-    private LinearLayoutManager mLayoutManager;
     private ShimmerFrameLayout shimmerFrameLayout;
     private View failureView;
 
@@ -55,7 +55,7 @@ public class IndikatorFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_indikator, container, false);
@@ -75,7 +75,7 @@ public class IndikatorFragment extends Fragment {
         });
 
         recyclerView = view.findViewById(R.id.listview);
-        mLayoutManager = new GridLayoutManager(getActivity(),1);
+        LinearLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setHasFixedSize(true);
 
@@ -144,6 +144,8 @@ public class IndikatorFragment extends Fragment {
         SlideInBottomAnimationAdapter animatedAdapter = new SlideInBottomAnimationAdapter(adapter);
         animatedAdapter.setDuration(500);
         recyclerView.setAdapter(new AlphaInAnimationAdapter(animatedAdapter));
+
+        setViewVisibility(false,true,false);
 
         addDataToArray();
         return view;

@@ -3,6 +3,7 @@ package ntt.bps.namberwan.allstatntt.publikasi;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -42,19 +42,20 @@ public class PublikasiFragment extends Fragment{
     private ArrayList<PublikasiItem> list;
     private PublikasiAdapter adapter;
     private RecyclerView recyclerView;
-    private LinearLayoutManager mLayoutManager;
     private boolean isLoading;
     private DatabaseHelper db;
     private ShimmerFrameLayout shimmerFrameLayout;
     private View failureView;
+    private boolean isViewCreated;
 
 
     public PublikasiFragment() {
         // Required empty public constructor
+        isViewCreated = false;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_publikasi, container, false);
@@ -73,7 +74,7 @@ public class PublikasiFragment extends Fragment{
         });
 
         recyclerView = view.findViewById(R.id.listview);
-        mLayoutManager = new LinearLayoutManager(getContext());
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setHasFixedSize(true);
 
@@ -81,7 +82,6 @@ public class PublikasiFragment extends Fragment{
         isLoading = false;
 
         list = new ArrayList<>();
-        addDataToArray(1);
 
         adapter = new PublikasiAdapter(list, getActivity(), new RecyclerViewClickListener() {
             @Override
@@ -92,6 +92,7 @@ public class PublikasiFragment extends Fragment{
                 startActivity(i);
             }
         });
+
         SlideInBottomAnimationAdapter animatedAdapter = new SlideInBottomAnimationAdapter(adapter);
         animatedAdapter.setDuration(500);
         recyclerView.setAdapter(new AlphaInAnimationAdapter(animatedAdapter));
@@ -102,8 +103,27 @@ public class PublikasiFragment extends Fragment{
             }
         });
 
+        setViewVisibility(false, true, false);
+
+        if (isVisible()){
+            addDataToArray(1);
+        }
+
+        isViewCreated = true;
+
         return view;
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isViewCreated & isVisibleToUser){
+            if (list.isEmpty()){
+                addDataToArray(1);
+            }
+        }
+    }
+
 
     private void addDataToArray(final int page){
         isLoading = true;

@@ -3,6 +3,7 @@ package ntt.bps.namberwan.allstatntt.berita;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -43,25 +44,25 @@ public class BeritaFragment extends Fragment {
 
     private ArrayList<BeritaItem> list;
     private BeritaAdapter adapter;
-    private LinearLayoutManager mLayoutManager;
 
     private RecyclerView recyclerView;
     private ShimmerFrameLayout shimmerFrameLayout;
     private View failureView;
 
+    private boolean isViewCreated;
 
     public BeritaFragment() {
         // Required empty public constructor
+        isViewCreated = false;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_berita, container, false);
         db = new DatabaseHelper(getContext());
         queue = VolleySingleton.getInstance(getContext()).getRequestQueue();
-        isLoading = true;
 
         shimmerFrameLayout = view.findViewById(R.id.shimmer);
 
@@ -75,7 +76,7 @@ public class BeritaFragment extends Fragment {
         });
 
         recyclerView = view.findViewById(R.id.listview);
-        mLayoutManager = new LinearLayoutManager(getContext());
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setHasFixedSize(true);
 
@@ -100,8 +101,25 @@ public class BeritaFragment extends Fragment {
             }
         });
 
-        addDataToArray(1);
+        setViewVisibility(false, true, false);
+
+        if (isVisible()){
+            addDataToArray(1);
+        }
+
+        isViewCreated = true;
+
         return view;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isViewCreated & isVisibleToUser){
+            if (list.isEmpty()){
+                addDataToArray(1);
+            }
+        }
     }
 
     private void addDataToArray(final int page) {
