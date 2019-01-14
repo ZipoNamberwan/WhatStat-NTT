@@ -17,6 +17,7 @@ import android.view.MenuItem;
 
 import ntt.bps.namberwan.allstatntt.berita.BeritaFragment;
 import ntt.bps.namberwan.allstatntt.brs.BrsFragment;
+import ntt.bps.namberwan.allstatntt.chat.AskFragment;
 import ntt.bps.namberwan.allstatntt.indikator.IndikatorFragment;
 import ntt.bps.namberwan.allstatntt.publikasi.PublikasiFragment;
 import ntt.bps.namberwan.allstatntt.tabelstatis.TabelFragment;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         PublikasiFragment publikasiFragment= new PublikasiFragment();
         TabelFragment tabelFragment = new TabelFragment();
         BeritaFragment beritaFragment = new BeritaFragment();
+        AskFragment askFragment = new AskFragment();
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(indikatorFragment, "Indikator");
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter.addFragment(publikasiFragment, "Publikasi");
         viewPagerAdapter.addFragment(tabelFragment, "Tabel Statis");
         viewPagerAdapter.addFragment(beritaFragment, "Berita");
+        viewPagerAdapter.addFragment(askFragment, "Ask Me!");
 
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setOffscreenPageLimit(viewPagerAdapter.getCount());
