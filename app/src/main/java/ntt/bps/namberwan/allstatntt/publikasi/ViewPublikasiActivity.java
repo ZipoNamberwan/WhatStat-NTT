@@ -171,7 +171,7 @@ public class ViewPublikasiActivity extends AppCompatActivity {
 
                 snackbar.show();*/
 
-                final DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
+                DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
@@ -179,7 +179,7 @@ public class ViewPublikasiActivity extends AppCompatActivity {
                                 //Do shit here
                                 Intent i = new Intent(activity, AuthActivity.class);
                                 String token = AppUtil.getToken(activity);
-                                if (AppUtil.getToken(activity)==null){
+                                if (token==null){
                                     startActivity(i);
                                 }else {
                                     String s = urlPdf + token;

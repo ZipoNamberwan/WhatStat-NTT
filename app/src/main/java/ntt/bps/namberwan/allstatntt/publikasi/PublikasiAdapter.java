@@ -3,6 +3,7 @@ package ntt.bps.namberwan.allstatntt.publikasi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -30,6 +31,7 @@ import ntt.bps.namberwan.allstatntt.AppUtil;
 import ntt.bps.namberwan.allstatntt.DatabaseHelper;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.RecyclerViewClickListener;
+import ntt.bps.namberwan.allstatntt.auth.AuthActivity;
 
 public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Holder> {
 
@@ -163,7 +165,15 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Hold
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case DialogInterface.BUTTON_POSITIVE:
-                                AppUtil.downloadFile((Activity) context, item.getUrlPdf(), item.getJudul(), "");
+                                Intent i = new Intent(context, AuthActivity.class);
+                                String token = AppUtil.getToken((Activity) context);
+                                if (token==null){
+                                    context.startActivity(i);
+                                }else {
+                                    String s = item.getUrlPdf() + token;
+                                    String namaFile = item.getJudul().replaceAll("\\W+", "");
+                                    AppUtil.downloadFile((Activity) context, s, item.getJudul(), namaFile + ".pdf");
+                                }
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
                                 break;
