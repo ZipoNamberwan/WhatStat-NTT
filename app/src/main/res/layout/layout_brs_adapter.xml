@@ -68,7 +68,6 @@
                     android:layout_width="@dimen/image_button_util"
                     android:layout_height="@dimen/image_button_util"
                     android:id="@+id/download_button"
-                    app:srcCompat="@drawable/baseline_save_24"
                     style="@style/Widget.AppCompat.ActionButton"
                     android:contentDescription="@string/app_name"/>
                 <ImageButton
@@ -76,13 +75,14 @@
                     android:layout_height="@dimen/image_button_util"
                     android:id="@+id/share_button"
                     style="?android:attr/buttonBarButtonStyle"
-                    android:layout_toEndOf="@+id/download_button"
-                    android:layout_toRightOf="@+id/download_button"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:contentDescription="@string/app_name"/>
                 <ImageButton
                     android:layout_width="@dimen/image_button_util"
                     android:layout_height="@dimen/image_button_util"
                     android:id="@+id/bookmark_button"
+                    android:visibility="gone"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"

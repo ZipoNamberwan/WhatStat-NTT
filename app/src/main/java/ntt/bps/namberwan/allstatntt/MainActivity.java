@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter.addFragment(publikasiFragment, "Publikasi");
         viewPagerAdapter.addFragment(tabelFragment, "Tabel Statis");
         viewPagerAdapter.addFragment(beritaFragment, "Berita");
-        viewPagerAdapter.addFragment(askFragment, "Ask Me!");
+        //viewPagerAdapter.addFragment(askFragment, "Ask Me!");
 
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setOffscreenPageLimit(viewPagerAdapter.getCount());
@@ -130,9 +130,9 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        /*if (id == R.id.action_settings) {
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }

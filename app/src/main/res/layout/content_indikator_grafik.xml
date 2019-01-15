@@ -145,7 +145,7 @@
                     android:id="@+id/detail_statistik_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Detil Statistik"
+                    android:text="Detail Statistik"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                     android:layout_marginBottom="10dp"/>
 

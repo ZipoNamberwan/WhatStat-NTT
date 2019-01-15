@@ -84,6 +84,7 @@
                         android:layout_width="@dimen/image_button_util"
                         android:layout_height="@dimen/image_button_util"
                         android:id="@+id/bookmark_button"
+                        android:visibility="gone"
                         style="?android:attr/buttonBarButtonStyle"
                         android:layout_toEndOf="@+id/share_button"
                         android:layout_toRightOf="@+id/share_button"/>
