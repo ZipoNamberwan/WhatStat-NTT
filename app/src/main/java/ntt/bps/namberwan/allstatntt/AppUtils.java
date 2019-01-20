@@ -47,7 +47,7 @@ import static android.content.Context.MODE_PRIVATE;
 /**
  * Created by zipo on 16/04/16.
  */
-public class AppUtil {
+public class AppUtils {
 
     private static final String MY_SHARED_PREFERENCE = "bps provinsi ntt shared preference";
 

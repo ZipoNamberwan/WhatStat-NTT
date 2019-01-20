@@ -26,7 +26,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import ntt.bps.namberwan.allstatntt.AppUtil;
+import ntt.bps.namberwan.allstatntt.AppUtils;
 import ntt.bps.namberwan.allstatntt.DatabaseHelper;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.RecyclerViewClickListener;
@@ -57,7 +57,7 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.Holder> {
         BeritaItem item = list.get(position);
         holder.bind(item, listener);
         holder.judul.setText(Html.fromHtml(item.getJudul()));
-        holder.tgl.setText(AppUtil.getDate(item.getTanggal(), false));
+        holder.tgl.setText(AppUtils.getDate(item.getTanggal(), false));
         holder.jenis.setText(item.getJenis());
         holder.rincian.setText(Html.fromHtml(item.getRincian()));
 
@@ -121,8 +121,8 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.Holder> {
             @Override
             public void onClick(View v) {
                 //Do Your Code Here
-                String urlShare =  AppUtil.getUrlShare(context.getString(R.string.web_share_news), item.getTanggal(), item.getId(), item.getJudul());
-                AppUtil.share((Activity) context, item.getJudul(), urlShare);
+                String urlShare =  AppUtils.getUrlShare(context.getString(R.string.web_share_news), item.getTanggal(), item.getId(), item.getJudul());
+                AppUtils.share((Activity) context, item.getJudul(), urlShare);
             }
         });
 

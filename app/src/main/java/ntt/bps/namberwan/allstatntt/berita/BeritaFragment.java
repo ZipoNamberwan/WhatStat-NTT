@@ -33,6 +33,8 @@ import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.RecyclerViewClickListener;
 import ntt.bps.namberwan.allstatntt.VolleySingleton;
 
+import static ntt.bps.namberwan.allstatntt.MainActivity.SEARCH_KEYWORD;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -48,6 +50,7 @@ public class BeritaFragment extends Fragment {
     private RecyclerView recyclerView;
     private ShimmerFrameLayout shimmerFrameLayout;
     private View failureView;
+    private String keyword;
 
     private boolean isViewCreated;
 
@@ -63,6 +66,12 @@ public class BeritaFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_berita, container, false);
         db = new DatabaseHelper(getContext());
         queue = VolleySingleton.getInstance(getContext()).getRequestQueue();
+
+        if (getArguments()!=null){
+            keyword = "&keyword=" + getArguments().getString(SEARCH_KEYWORD);
+        }else {
+            keyword = "";
+        }
 
         shimmerFrameLayout = view.findViewById(R.id.shimmer);
 
@@ -127,8 +136,9 @@ public class BeritaFragment extends Fragment {
         if (list.isEmpty()){
             setViewVisibility(false, true, false);
         }
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getString(R.string.web_service_path_list_news)
-                + getString(R.string.api_key) + "&page="+page, null,
+        String url = getString(R.string.web_service_path_list_news)
+                + getString(R.string.api_key) + "&page="+page + keyword;
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
@@ -152,15 +162,17 @@ public class BeritaFragment extends Fragment {
 
     private void addJSONToAdapter(JSONObject jsonObject, int page) {
         try {
-            JSONArray jsonArray = jsonObject.getJSONArray("data").getJSONArray(1);
-            for (int i = 0; i < jsonArray.length(); i++){
-                list.add(new BeritaItem(jsonArray.getJSONObject(i).getString("news_id"),
-                        jsonArray.getJSONObject(i).getString("newscat_name"),jsonArray.getJSONObject(i).getString("rl_date"),
-                        jsonArray.getJSONObject(i).getString("news_id"),jsonArray.getJSONObject(i).getString("title"),
-                        jsonArray.getJSONObject(i).getString("news"),jsonArray.getJSONObject(i).getString("news_id"),
-                        db.isBeritaBookmarked(jsonArray.getJSONObject(i).getString("news_id")),false));
+            if (jsonObject.getString("data-availability").equals("available")){
+                JSONArray jsonArray = jsonObject.getJSONArray("data").getJSONArray(1);
+                for (int i = 0; i < jsonArray.length(); i++){
+                    list.add(new BeritaItem(jsonArray.getJSONObject(i).getString("news_id"),
+                            jsonArray.getJSONObject(i).getString("newscat_name"),jsonArray.getJSONObject(i).getString("rl_date"),
+                            jsonArray.getJSONObject(i).getString("news_id"),jsonArray.getJSONObject(i).getString("title"),
+                            jsonArray.getJSONObject(i).getString("news"),jsonArray.getJSONObject(i).getString("news_id"),
+                            db.isBeritaBookmarked(jsonArray.getJSONObject(i).getString("news_id")),false));
+                }
+                adapter.notifyItemRangeInserted(page * 10 + 1,jsonArray.length());
             }
-            adapter.notifyItemRangeInserted(page * 10 + 1,jsonArray.length());
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -27,7 +27,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import ntt.bps.namberwan.allstatntt.AppUtil;
+import ntt.bps.namberwan.allstatntt.AppUtils;
 import ntt.bps.namberwan.allstatntt.DatabaseHelper;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.RecyclerViewClickListener;
@@ -92,7 +92,7 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Hold
         PublikasiItem item = list.get(position);
         holder.bind(item, listener);
         holder.judul.setText(Html.fromHtml(item.getJudul()));
-        holder.tgl.setText(AppUtil.getDate(item.getTanggal(), false));
+        holder.tgl.setText(AppUtils.getDate(item.getTanggal(), false));
         holder.nomerKatalog.setText(String.format("%s/%s", item.getIsbn(), item.getNomerKatalog()));
         holder.abstrak.setText(Html.fromHtml(item.getAbstrak()));
 
@@ -166,13 +166,13 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Hold
                         switch (which) {
                             case DialogInterface.BUTTON_POSITIVE:
                                 Intent i = new Intent(context, AuthActivity.class);
-                                String token = AppUtil.getToken((Activity) context);
+                                String token = AppUtils.getToken((Activity) context);
                                 if (token==null){
                                     context.startActivity(i);
                                 }else {
                                     String s = item.getUrlPdf() + token;
                                     String namaFile = item.getJudul().replaceAll("\\W+", "");
-                                    AppUtil.downloadFile((Activity) context, s, item.getJudul(), namaFile + ".pdf");
+                                    AppUtils.downloadFile((Activity) context, s, item.getJudul(), namaFile + ".pdf");
                                 }
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
@@ -194,8 +194,8 @@ public class PublikasiAdapter extends RecyclerView.Adapter<PublikasiAdapter.Hold
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String urlShare =  AppUtil.getUrlShare(context.getString(R.string.web_share_publication), item.getTanggal(), item.getId(), item.getJudul());
-                AppUtil.share((Activity) context, item.getJudul(), urlShare);
+                String urlShare =  AppUtils.getUrlShare(context.getString(R.string.web_share_publication), item.getTanggal(), item.getId(), item.getJudul());
+                AppUtils.share((Activity) context, item.getJudul(), urlShare);
             }
         });
     }

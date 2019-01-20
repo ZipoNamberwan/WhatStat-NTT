@@ -2,7 +2,6 @@ package ntt.bps.namberwan.allstatntt.berita;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -23,7 +22,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ntt.bps.namberwan.allstatntt.AppUtil;
+import ntt.bps.namberwan.allstatntt.AppUtils;
 import ntt.bps.namberwan.allstatntt.DatabaseHelper;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.VolleySingleton;
@@ -92,7 +91,7 @@ public class ViewBeritaActivity extends AppCompatActivity {
 
                     judul.setText(judulString);
                     jenis.setText(jsonObject.getString("news_type"));
-                    tanggal.setText(AppUtil.getDate(tanggalString, false));
+                    tanggal.setText(AppUtils.getDate(tanggalString, false));
                     rincian.loadData(Html.fromHtml(jsonObject.getString("news")).toString(), "text/html; charset=UTF-8", null);
 
                     fab.setVisibility(View.VISIBLE);
@@ -118,8 +117,8 @@ public class ViewBeritaActivity extends AppCompatActivity {
     }
 
     private void share() {
-        String urlShare = AppUtil.getUrlShare(getString(R.string.web_share_news), tanggalString, idBerita, judulString);
-        AppUtil.share(this, judulString, urlShare);
+        String urlShare = AppUtils.getUrlShare(getString(R.string.web_share_news), tanggalString, idBerita, judulString);
+        AppUtils.share(this, judulString, urlShare);
     }
 
     @Override

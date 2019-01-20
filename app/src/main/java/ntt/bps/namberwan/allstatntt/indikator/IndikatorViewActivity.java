@@ -52,7 +52,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import ntt.bps.namberwan.allstatntt.AppUtil;
+import ntt.bps.namberwan.allstatntt.AppUtils;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.VolleySingleton;
 
@@ -399,7 +399,7 @@ public class IndikatorViewActivity extends AppCompatActivity {
             if (tabelContents.get(i).equals("-")){
                 insertRow(tableLayout, tr, vertikalVariabels.get(i).getLabel(), tabelContents.get(i), false, i%2==0);
             }else {
-                insertRow(tableLayout, tr, vertikalVariabels.get(i).getLabel(), AppUtil.formatNumberSeparator(Float.parseFloat(tabelContents.get(i))), false, i%2==0);
+                insertRow(tableLayout, tr, vertikalVariabels.get(i).getLabel(), AppUtils.formatNumberSeparator(Float.parseFloat(tabelContents.get(i))), false, i%2==0);
             }
         }
     }
@@ -492,7 +492,7 @@ public class IndikatorViewActivity extends AppCompatActivity {
         dataSet.setValueFormatter(new IValueFormatter() {
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-                return AppUtil.formatNumberSeparator(value);
+                return AppUtils.formatNumberSeparator(value);
             }
         });
         dataSet.setColor(getResources().getColor(R.color.primary));
@@ -528,7 +528,7 @@ public class IndikatorViewActivity extends AppCompatActivity {
         leftAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return AppUtil.formatNumberSeparator(value);
+                return AppUtils.formatNumberSeparator(value);
             }
         });
 
@@ -552,9 +552,9 @@ public class IndikatorViewActivity extends AppCompatActivity {
 
         //Setup Detail Statistik
 
-        valueHighlight1Grafik.setText(AppUtil.formatNumberSeparator(value1));
+        valueHighlight1Grafik.setText(AppUtils.formatNumberSeparator(value1));
         tahunHighlight1Grafik.setText(subAxisLabels.get(subAxisLabels.size()-2));
-        valueHighlight2Grafik.setText(AppUtil.formatNumberSeparator(value2));
+        valueHighlight2Grafik.setText(AppUtils.formatNumberSeparator(value2));
         tahunHighlight2Grafik.setText(subAxisLabels.get(subAxisLabels.size()-1));
         s = labelVar + " " + labelVerVar + " " + unitVar;
         detailStatGrafik.setText(s);

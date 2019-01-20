@@ -32,6 +32,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value="ntt.bps.namberwan.allstatntt.search.SearchResultActivity" />
         </activity>
         <activity
             android:name=".berita.ViewBeritaActivity"
@@ -66,8 +70,24 @@
             android:label="@string/title_activity_auth"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".chat.LoginChatActivity"
-            android:label="@string/title_activity_login_chat"></activity>
+            android:name=".chat.ViewChatAdminActivity"
+            android:label="@string/title_activity_view_chat"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".chat.ChatActivity"
+            android:label="@string/title_activity_chat"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".search.SearchResultActivity"
+            android:label="@string/title_activity_search_result"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+        </activity>
     </application>
 
 </manifest>

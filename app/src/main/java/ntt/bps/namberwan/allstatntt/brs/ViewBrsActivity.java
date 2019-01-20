@@ -25,7 +25,7 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ntt.bps.namberwan.allstatntt.AppUtil;
+import ntt.bps.namberwan.allstatntt.AppUtils;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.VolleySingleton;
 import ntt.bps.namberwan.allstatntt.auth.AuthActivity;
@@ -52,15 +52,12 @@ public class ViewBrsActivity extends AppCompatActivity {
 
     private JSONObject jsonObject;
 
-    private ViewBrsActivity activity;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_brs);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        activity = this;
 
         if (getSupportActionBar()!=null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -78,7 +75,7 @@ public class ViewBrsActivity extends AppCompatActivity {
     private void setUpDetailView() throws JSONException {
         judul = jsonObject.getString("title");
         tanggal = jsonObject.getString("rl_date");
-        String tanggalFormatted = AppUtil.getDate(tanggal, false);
+        String tanggalFormatted = AppUtils.getDate(tanggal, false);
         String size = "Size: " + jsonObject.getString("size");
         String abstrak = Html.fromHtml(jsonObject.getString("abstract")).toString();
         urlBrs = jsonObject.getString("pdf");
@@ -133,15 +130,15 @@ public class ViewBrsActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case DialogInterface.BUTTON_POSITIVE:
-                                Intent i = new Intent(activity, AuthActivity.class);
-                                String token = AppUtil.getToken(activity);
+                                Intent i = new Intent(ViewBrsActivity.this, AuthActivity.class);
+                                String token = AppUtils.getToken(ViewBrsActivity.this);
 
                                 if (token==null){
                                     startActivity(i);
                                 }else {
                                     String s = urlBrs + token;
                                     String namaFile = judul.replaceAll("\\W+", "");
-                                    AppUtil.downloadFile(activity, s, judul, namaFile + ".pdf");
+                                    AppUtils.downloadFile(ViewBrsActivity.this, s, judul, namaFile + ".pdf");
                                 }
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
@@ -150,7 +147,7 @@ public class ViewBrsActivity extends AppCompatActivity {
                     }
                 };
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ViewBrsActivity.this);
                 builder
                         .setTitle("Download")
                         .setMessage("Download BRS?")
@@ -206,8 +203,8 @@ public class ViewBrsActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_share) {
-            String urlShare = AppUtil.getUrlShare(getString(R.string.web_share_brs), tanggal, idBrs, judul);
-            AppUtil.share(this, judul, urlShare);
+            String urlShare = AppUtils.getUrlShare(getString(R.string.web_share_brs), tanggal, idBrs, judul);
+            AppUtils.share(this, judul, urlShare);
             return true;
         }
 

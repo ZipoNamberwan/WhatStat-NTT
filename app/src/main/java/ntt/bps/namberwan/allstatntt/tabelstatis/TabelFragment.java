@@ -27,12 +27,14 @@ import java.util.ArrayList;
 
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import ntt.bps.namberwan.allstatntt.AppUtil;
+import ntt.bps.namberwan.allstatntt.AppUtils;
 import ntt.bps.namberwan.allstatntt.DatabaseHelper;
 import ntt.bps.namberwan.allstatntt.EndlessRecyclerViewScrollListener;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.RecyclerViewClickListener;
 import ntt.bps.namberwan.allstatntt.VolleySingleton;
+
+import static ntt.bps.namberwan.allstatntt.MainActivity.SEARCH_KEYWORD;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,6 +51,7 @@ public class TabelFragment extends Fragment {
     private RecyclerView recyclerView;
     private ShimmerFrameLayout shimmerFrameLayout;
     private View failureView;
+    private String keyword;
 
     public TabelFragment() {
         // Required empty public constructor
@@ -64,6 +67,12 @@ public class TabelFragment extends Fragment {
         db = new DatabaseHelper(getContext());
         queue = VolleySingleton.getInstance(getContext()).getRequestQueue();
         isLoading = false;
+
+        if (getArguments()!=null){
+            keyword = "&keyword=" + getArguments().getString(SEARCH_KEYWORD);
+        }else {
+            keyword = "";
+        }
 
         failureView = view.findViewById(R.id.view_failure);
         Button refreshButton = view.findViewById(R.id.refresh_button);
@@ -129,7 +138,7 @@ public class TabelFragment extends Fragment {
             setViewVisibility(false, true, false);
         }
         String url = getString(R.string.web_service_path_list_table)
-                + getString(R.string.api_key) + "&page="+page;
+                + getString(R.string.api_key) + "&page="+page + keyword;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -154,22 +163,24 @@ public class TabelFragment extends Fragment {
 
     private void addJSONToAdapter(JSONObject jsonObject, int page) {
         try {
-            JSONArray jsonArray = jsonObject.getJSONArray("data").getJSONArray(1);
-            for (int i = 0; i < jsonArray.length(); i++){
-                boolean isSection;
-                if (i == 0) {
-                    isSection = list.isEmpty() || !AppUtil.getDate(list.get(list.size() - 1).getTanggal(), true).equals(AppUtil.getDate(jsonArray.getJSONObject(0).getString("updt_date"), true));
-                }else {
-                    isSection = !AppUtil.getDate(jsonArray.getJSONObject(i).getString("updt_date"), true).equals(AppUtil.getDate(jsonArray.getJSONObject(i - 1).getString("updt_date"), true));
+            if (jsonObject.getString("data-availability").equals("available")){
+                JSONArray jsonArray = jsonObject.getJSONArray("data").getJSONArray(1);
+                for (int i = 0; i < jsonArray.length(); i++){
+                    boolean isSection;
+                    if (i == 0) {
+                        isSection = list.isEmpty() || !AppUtils.getDate(list.get(list.size() - 1).getTanggal(), true).equals(AppUtils.getDate(jsonArray.getJSONObject(0).getString("updt_date"), true));
+                    }else {
+                        isSection = !AppUtils.getDate(jsonArray.getJSONObject(i).getString("updt_date"), true).equals(AppUtils.getDate(jsonArray.getJSONObject(i - 1).getString("updt_date"), true));
+                    }
+                    list.add(new TabelItem(jsonArray.getJSONObject(i).getString("table_id"),
+                            jsonArray.getJSONObject(i).getString("subj"), jsonArray.getJSONObject(i).getString("updt_date"),
+                            jsonArray.getJSONObject(i).getString("title"), jsonArray.getJSONObject(i).getString("excel"),
+                            jsonArray.getJSONObject(i).getString("updt_date"),jsonArray.getJSONObject(i).getString("updt_date"),
+                            4,
+                            db.isTabelBookmarked(jsonArray.getJSONObject(i).getInt("table_id")), isSection));
                 }
-                list.add(new TabelItem(jsonArray.getJSONObject(i).getString("table_id"),
-                        jsonArray.getJSONObject(i).getString("subj"), jsonArray.getJSONObject(i).getString("updt_date"),
-                        jsonArray.getJSONObject(i).getString("title"), jsonArray.getJSONObject(i).getString("excel"),
-                        jsonArray.getJSONObject(i).getString("updt_date"),jsonArray.getJSONObject(i).getString("updt_date"),
-                        4,
-                        db.isTabelBookmarked(jsonArray.getJSONObject(i).getInt("table_id")), isSection));
+                adapter.notifyItemRangeInserted(page * 10 + 1,jsonArray.length());
             }
-            adapter.notifyItemRangeInserted(page * 10 + 1,jsonArray.length());
         } catch (JSONException e) {
             e.printStackTrace();
         }

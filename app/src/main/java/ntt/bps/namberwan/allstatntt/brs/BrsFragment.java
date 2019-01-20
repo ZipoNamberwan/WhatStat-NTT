@@ -27,12 +27,14 @@ import java.util.ArrayList;
 
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import ntt.bps.namberwan.allstatntt.AppUtil;
+import ntt.bps.namberwan.allstatntt.AppUtils;
 import ntt.bps.namberwan.allstatntt.DatabaseHelper;
 import ntt.bps.namberwan.allstatntt.EndlessRecyclerViewScrollListener;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.RecyclerViewClickListener;
 import ntt.bps.namberwan.allstatntt.VolleySingleton;
+
+import static ntt.bps.namberwan.allstatntt.MainActivity.SEARCH_KEYWORD;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,6 +52,8 @@ public class BrsFragment extends Fragment {
     private View failureView;
     private boolean isViewCreated;
 
+    private String keyword;
+
     public BrsFragment() {
         // Required empty public constructor
         isViewCreated = false;
@@ -63,6 +67,12 @@ public class BrsFragment extends Fragment {
         db = new DatabaseHelper(getContext());
         queue = VolleySingleton.getInstance(getContext()).getRequestQueue();
         isLoading = true;
+
+        if (getArguments()!=null){
+            keyword = "&keyword=" + getArguments().getString(SEARCH_KEYWORD);
+        }else {
+            keyword = "";
+        }
 
         View view = inflater.inflate(R.layout.fragment_brs, container, false);
 
@@ -92,6 +102,7 @@ public class BrsFragment extends Fragment {
                 startActivity(i);
             }
         });
+
         SlideInBottomAnimationAdapter animatedAdapter = new SlideInBottomAnimationAdapter(adapter);
         animatedAdapter.setDuration(500);
         recyclerView.setAdapter(new AlphaInAnimationAdapter(animatedAdapter));
@@ -129,8 +140,9 @@ public class BrsFragment extends Fragment {
         if (list.isEmpty()){
             setViewVisibility(false, true, false);
         }
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getString(R.string.web_service_path_list_press_release)
-                + getString(R.string.api_key) + "&page="+page, null,
+        String url = getString(R.string.web_service_path_list_press_release)
+                + getString(R.string.api_key) + "&page="+page + keyword;
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
@@ -154,22 +166,24 @@ public class BrsFragment extends Fragment {
 
     private void addJSONToAdapter(JSONObject jsonObject, int page){
         try {
-            JSONArray jsonArray = jsonObject.getJSONArray("data").getJSONArray(1);
-            for (int i = 0; i < jsonArray.length(); i++){
-                boolean isSection;
-                if (i == 0) {
-                    isSection = list.isEmpty() || !AppUtil.getDate(list.get(list.size() - 1).getTanggalRilis(), true).equals(AppUtil.getDate(jsonArray.getJSONObject(0).getString("rl_date"), true));
-                }else {
-                    isSection = !AppUtil.getDate(jsonArray.getJSONObject(i).getString("rl_date"), true).equals(AppUtil.getDate(jsonArray.getJSONObject(i - 1).getString("rl_date"), true));
+            if (jsonObject.getString("data-availability").equals("available")){
+                JSONArray jsonArray = jsonObject.getJSONArray("data").getJSONArray(1);
+                for (int i = 0; i < jsonArray.length(); i++){
+                    boolean isSection;
+                    if (i == 0) {
+                        isSection = list.isEmpty() || !AppUtils.getDate(list.get(list.size() - 1).getTanggalRilis(), true).equals(AppUtils.getDate(jsonArray.getJSONObject(0).getString("rl_date"), true));
+                    }else {
+                        isSection = !AppUtils.getDate(jsonArray.getJSONObject(i).getString("rl_date"), true).equals(AppUtils.getDate(jsonArray.getJSONObject(i - 1).getString("rl_date"), true));
+                    }
+                    list.add(new BrsItem(jsonArray.getJSONObject(i).getString("brs_id"),
+                            jsonArray.getJSONObject(i).getString("title"), jsonArray.getJSONObject(i).getString("brs_id"),
+                            jsonArray.getJSONObject(i).getString("rl_date"), jsonArray.getJSONObject(i).getString("pdf"),
+                            jsonArray.getJSONObject(i).getString("subj"), jsonArray.getJSONObject(i).getString("title"),
+                            4,
+                            db.isBrsBookmarked(jsonArray.getJSONObject(i).getString("brs_id")), isSection));
                 }
-                list.add(new BrsItem(jsonArray.getJSONObject(i).getString("brs_id"),
-                        jsonArray.getJSONObject(i).getString("title"), jsonArray.getJSONObject(i).getString("brs_id"),
-                        jsonArray.getJSONObject(i).getString("rl_date"), jsonArray.getJSONObject(i).getString("pdf"),
-                        jsonArray.getJSONObject(i).getString("subj"), jsonArray.getJSONObject(i).getString("title"),
-                        4,
-                        db.isBrsBookmarked(jsonArray.getJSONObject(i).getString("brs_id")), isSection));
+                adapter.notifyItemRangeInserted(page * 10 + 1,jsonArray.length());
             }
-            adapter.notifyItemRangeInserted(page * 10 + 1,jsonArray.length());
         } catch (JSONException e) {
             e.printStackTrace();
         }

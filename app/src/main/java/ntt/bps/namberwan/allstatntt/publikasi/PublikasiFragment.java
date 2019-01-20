@@ -33,6 +33,8 @@ import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.RecyclerViewClickListener;
 import ntt.bps.namberwan.allstatntt.VolleySingleton;
 
+import static ntt.bps.namberwan.allstatntt.MainActivity.SEARCH_KEYWORD;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -47,6 +49,7 @@ public class PublikasiFragment extends Fragment{
     private ShimmerFrameLayout shimmerFrameLayout;
     private View failureView;
     private boolean isViewCreated;
+    private String keyword;
 
 
     public PublikasiFragment() {
@@ -60,6 +63,12 @@ public class PublikasiFragment extends Fragment{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_publikasi, container, false);
         db = new DatabaseHelper(getContext());
+
+        if (getArguments()!=null){
+            keyword = "&keyword=" + getArguments().getString(SEARCH_KEYWORD);
+        }else {
+            keyword = "";
+        }
 
         isLoading = true;
         shimmerFrameLayout = view.findViewById(R.id.shimmer);
@@ -130,8 +139,9 @@ public class PublikasiFragment extends Fragment{
         if (list.isEmpty()){
             setViewVisibility(false, true, false);
         }
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getString(R.string.web_service_path_list_publication)
-                + getString(R.string.api_key) + "&page="+page, null,
+        String url = getString(R.string.web_service_path_list_publication)
+                + getString(R.string.api_key) + "&page="+page + keyword;
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
@@ -155,16 +165,18 @@ public class PublikasiFragment extends Fragment{
 
     private void addJSONToAdapter(JSONObject jsonObject, int page) {
         try {
-            JSONArray jsonArray = jsonObject.getJSONArray("data").getJSONArray(1);
-            for(int i = 0; i < jsonArray.length() ; i++){
-                list.add(new PublikasiItem(jsonArray.getJSONObject(i).getString("pub_id"),
-                        jsonArray.getJSONObject(i).getString("title"),jsonArray.getJSONObject(i).getString("rl_date"),
-                        jsonArray.getJSONObject(i).getString("issn"),jsonArray.getJSONObject(i).getString("title"),
-                        jsonArray.getJSONObject(i).getString("issn"),jsonArray.getJSONObject(i).getString("cover"),
-                        jsonArray.getJSONObject(i).getString("pdf"),
-                        db.isPublikasiBookmarked(jsonArray.getJSONObject(i).getString("pub_id")), false));
+            if (jsonObject.getString("data-availability").equals("available")){
+                JSONArray jsonArray = jsonObject.getJSONArray("data").getJSONArray(1);
+                for(int i = 0; i < jsonArray.length() ; i++){
+                    list.add(new PublikasiItem(jsonArray.getJSONObject(i).getString("pub_id"),
+                            jsonArray.getJSONObject(i).getString("title"),jsonArray.getJSONObject(i).getString("rl_date"),
+                            jsonArray.getJSONObject(i).getString("issn"),jsonArray.getJSONObject(i).getString("title"),
+                            jsonArray.getJSONObject(i).getString("issn"),jsonArray.getJSONObject(i).getString("cover"),
+                            jsonArray.getJSONObject(i).getString("pdf"),
+                            db.isPublikasiBookmarked(jsonArray.getJSONObject(i).getString("pub_id")), false));
+                }
+                adapter.notifyItemRangeInserted(page * 10 + 1,jsonArray.length());
             }
-            adapter.notifyItemRangeInserted(page * 10 + 1,jsonArray.length());
         } catch (JSONException e) {
             e.printStackTrace();
         }

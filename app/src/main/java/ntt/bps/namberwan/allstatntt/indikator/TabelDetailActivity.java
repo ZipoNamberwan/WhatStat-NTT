@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import ntt.bps.namberwan.allstatntt.AppUtil;
+import ntt.bps.namberwan.allstatntt.AppUtils;
 import ntt.bps.namberwan.allstatntt.R;
 
 public class TabelDetailActivity extends AppCompatActivity {
@@ -119,7 +119,7 @@ public class TabelDetailActivity extends AppCompatActivity {
                     String idVerVar = vertikalVariabels.get(k).getId();
                     String idDataContent = idVerVar + idVar + idTurVar + idTahun + idTurTahun;
                     if (dataContentJson.has(idDataContent)){
-                        cellsByColumn.add(new Cell(idDataContent, AppUtil.formatNumberSeparator(Float.parseFloat(dataContentJson.getString(idDataContent)))));
+                        cellsByColumn.add(new Cell(idDataContent, AppUtils.formatNumberSeparator(Float.parseFloat(dataContentJson.getString(idDataContent)))));
                     }else {
                         cellsByColumn.add(new Cell(idDataContent, "-"));
                     }

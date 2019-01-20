@@ -29,7 +29,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ntt.bps.namberwan.allstatntt.AppUtil;
+import ntt.bps.namberwan.allstatntt.AppUtils;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.VolleySingleton;
 import ntt.bps.namberwan.allstatntt.auth.AuthActivity;
@@ -102,7 +102,7 @@ public class ViewPublikasiActivity extends AppCompatActivity {
                     judul = jsonObject.getString("title");
                     tanggal = jsonObject.getString("rl_date");
                     judulTv.setText(jsonObject.getString("title"));
-                    tanggalTv.setText(AppUtil.getDate(tanggal, false));
+                    tanggalTv.setText(AppUtils.getDate(tanggal, false));
 
                     Picasso.get()
                             .load(jsonObject.getString("cover"))
@@ -178,13 +178,13 @@ public class ViewPublikasiActivity extends AppCompatActivity {
                             case DialogInterface.BUTTON_POSITIVE:
                                 //Do shit here
                                 Intent i = new Intent(activity, AuthActivity.class);
-                                String token = AppUtil.getToken(activity);
+                                String token = AppUtils.getToken(activity);
                                 if (token==null){
                                     startActivity(i);
                                 }else {
                                     String s = urlPdf + token;
                                     String namaFile = judul.replaceAll("\\W+", "");
-                                    AppUtil.downloadFile(activity, s, judul, namaFile + ".pdf");
+                                    AppUtils.downloadFile(activity, s, judul, namaFile + ".pdf");
                                 }
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
@@ -229,7 +229,7 @@ public class ViewPublikasiActivity extends AppCompatActivity {
                         public void onErrorResponse(VolleyError error) {
                             isTokenExpired = false;
                             String namaFile = judul.replaceAll("\\W+", "");
-                            AppUtil.downloadFile(activity, s, judul, namaFile + ".pdf");
+                            AppUtils.downloadFile(activity, s, judul, namaFile + ".pdf");
                             snackbar.dismiss();
                         }
                     });
@@ -294,8 +294,8 @@ public class ViewPublikasiActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_share) {
-            String urlShare = AppUtil.getUrlShare(getString(R.string.web_share_publication), tanggal, idPublikasi, judul);
-            AppUtil.share(this, judul, urlShare);
+            String urlShare = AppUtils.getUrlShare(getString(R.string.web_share_publication), tanggal, idPublikasi, judul);
+            AppUtils.share(this, judul, urlShare);
             return true;
         }
 

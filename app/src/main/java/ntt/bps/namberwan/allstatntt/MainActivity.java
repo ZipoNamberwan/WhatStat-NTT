@@ -2,27 +2,37 @@ package ntt.bps.namberwan.allstatntt;
 
 
 import android.Manifest;
+import android.app.SearchManager;
+import android.app.SearchableInfo;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SearchEvent;
+import android.view.View;
 
 import ntt.bps.namberwan.allstatntt.berita.BeritaFragment;
 import ntt.bps.namberwan.allstatntt.brs.BrsFragment;
 import ntt.bps.namberwan.allstatntt.chat.AskFragment;
+import ntt.bps.namberwan.allstatntt.chat.ViewChatAdminActivity;
 import ntt.bps.namberwan.allstatntt.indikator.IndikatorFragment;
 import ntt.bps.namberwan.allstatntt.publikasi.PublikasiFragment;
 import ntt.bps.namberwan.allstatntt.tabelstatis.TabelFragment;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static final String SEARCH_KEYWORD = "search keyword";
 
     private Toolbar toolbar;
     private FloatingActionButton fab;
@@ -37,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         viewPager = findViewById(R.id.viewpager);
-        tabLayout =findViewById(R.id.tabs);
+        tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
         if (getSupportActionBar()!=null){
@@ -65,16 +75,16 @@ public class MainActivity extends AppCompatActivity {
 
         checkPermission();
 
-        AppUtil.createNotificationChannel(this);
+        AppUtils.createNotificationChannel(this);
 
-        /*fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent i = new Intent(getBaseContext(), ViewChatAdminActivity.class);
+                startActivity(i);
             }
-        });*/
+        });
 
         //PublikasiFragment publikasiFragment = new PublikasiFragment();
         //getSupportFragmentManager().beginTransaction().replace(R.id.container, publikasiFragment).commit();
@@ -119,6 +129,33 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchManager searchManager = (SearchManager) MainActivity.this.getSystemService(SEARCH_SERVICE);
+
+        SearchView searchView = null;
+        if (searchItem != null) {
+            searchView = (SearchView) searchItem.getActionView();
+            SearchableInfo searchableInfo = searchManager.getSearchableInfo(getComponentName());
+            searchView.setSearchableInfo(searchableInfo);
+            searchView.setOnSearchClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onSearchRequested();
+                }
+            });
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    return true;
+                }
+            });
+        }
         return true;
     }
 
@@ -130,10 +167,18 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        /*if (id == R.id.action_settings) {
+        if (id == R.id.action_settings) {
             return true;
-        }*/
+        }else if (id == R.id.action_search){
+            onSearchRequested();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onSearchRequested(@Nullable SearchEvent searchEvent) {
+        return super.onSearchRequested(searchEvent);
     }
 }

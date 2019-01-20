@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import ntt.bps.namberwan.allstatntt.AppUtil;
+import ntt.bps.namberwan.allstatntt.AppUtils;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.RecyclerViewClickListener;
 
@@ -39,7 +39,7 @@ public class IndikatorAdapter extends RecyclerView.Adapter<IndikatorAdapter.Hold
         holder.bind(item, listener);
         holder.judul.setText(item.getJudul());
 
-        holder.nilai.setText(AppUtil.formatNumberSeparator(Float.parseFloat(item.getNilai())));
+        holder.nilai.setText(AppUtils.formatNumberSeparator(Float.parseFloat(item.getNilai())));
 
         if (item.getSatuan().equals("Tidak Ada Satuan") | item.getSatuan().equals("")){
             holder.satuan.setVisibility(View.GONE);

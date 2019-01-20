@@ -1,0 +1,45 @@
+package ntt.bps.namberwan.allstatntt.chat;
+
+import com.stfalcon.chatkit.commons.models.IMessage;
+import com.stfalcon.chatkit.commons.models.IUser;
+
+import java.util.Date;
+
+public class Message implements IMessage {
+
+    private String id;
+    private String text;
+    private Date createdAt;
+    private User user;
+
+    public Message(String id, User user, String text) {
+        this(id, user, text, new Date());
+    }
+
+    public Message(String id, User user, String text, Date createdAt) {
+        this.id = id;
+        this.text = text;
+        this.user = user;
+        this.createdAt = createdAt;
+    }
+
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    @Override
+    public String getText() {
+        return this.text;
+    }
+
+    @Override
+    public IUser getUser() {
+        return this.user;
+    }
+
+    @Override
+    public Date getCreatedAt() {
+        return this.createdAt;
+    }
+}

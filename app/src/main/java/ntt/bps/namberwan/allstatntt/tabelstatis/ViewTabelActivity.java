@@ -25,7 +25,7 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ntt.bps.namberwan.allstatntt.AppUtil;
+import ntt.bps.namberwan.allstatntt.AppUtils;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.VolleySingleton;
 import ntt.bps.namberwan.allstatntt.auth.AuthActivity;
@@ -99,13 +99,13 @@ public class ViewTabelActivity extends AppCompatActivity {
                             case DialogInterface.BUTTON_POSITIVE:
                                 //Do shit here
                                 Intent i = new Intent(activity, AuthActivity.class);
-                                String token = AppUtil.getToken(activity);
+                                String token = AppUtils.getToken(activity);
                                 if (token==null){
                                     startActivity(i);
                                 }else {
                                     String s = urlExcel + token;
                                     String namaFile = judul.replaceAll("\\W+", "");
-                                    AppUtil.downloadFile(activity, s, judul, namaFile + ".xls");
+                                    AppUtils.downloadFile(activity, s, judul, namaFile + ".xls");
                                 }
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
@@ -137,7 +137,7 @@ public class ViewTabelActivity extends AppCompatActivity {
     private void setUpDetailView() throws JSONException {
         judul = jsonObject.getString("title");
         tanggal = jsonObject.getString("updt_date");
-        String tanggalUp = AppUtil.getDate(tanggal, false);
+        String tanggalUp = AppUtils.getDate(tanggal, false);
         String size = "Size: " + jsonObject.getString("size");
         String abstrak = Html.fromHtml(jsonObject.getString("table")).toString();
         urlExcel = jsonObject.getString("excel");
@@ -210,8 +210,8 @@ public class ViewTabelActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_share) {
-            String urlShare = AppUtil.getUrlShare(getString(R.string.web_share_table), tanggal, idTabel, judul);
-            AppUtil.share(this, judul, urlShare);
+            String urlShare = AppUtils.getUrlShare(getString(R.string.web_share_table), tanggal, idTabel, judul);
+            AppUtils.share(this, judul, urlShare);
             return true;
         }
 

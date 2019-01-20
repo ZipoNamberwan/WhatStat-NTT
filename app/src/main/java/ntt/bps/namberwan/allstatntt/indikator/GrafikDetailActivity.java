@@ -1,7 +1,6 @@
 package ntt.bps.namberwan.allstatntt.indikator;
 
 import android.content.DialogInterface;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -28,13 +27,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import ntt.bps.namberwan.allstatntt.AppUtil;
+import ntt.bps.namberwan.allstatntt.AppUtils;
 import ntt.bps.namberwan.allstatntt.R;
 
 public class GrafikDetailActivity extends AppCompatActivity {
@@ -179,7 +177,7 @@ public class GrafikDetailActivity extends AppCompatActivity {
         dataSet.setValueFormatter(new IValueFormatter() {
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-                return AppUtil.formatNumberSeparator(value);
+                return AppUtils.formatNumberSeparator(value);
             }
         });
         dataSet.setColor(getResources().getColor(R.color.primary));

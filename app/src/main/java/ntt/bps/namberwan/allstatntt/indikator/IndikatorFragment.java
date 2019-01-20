@@ -150,6 +150,7 @@ public class IndikatorFragment extends Fragment {
         addDataToArray();
         return view;
     }
+
     private void addDataToArray() {
         isLoading = true;
         if (list.isEmpty()){

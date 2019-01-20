@@ -25,7 +25,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.List;
 
-import ntt.bps.namberwan.allstatntt.AppUtil;
+import ntt.bps.namberwan.allstatntt.AppUtils;
 import ntt.bps.namberwan.allstatntt.DatabaseHelper;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.RecyclerViewClickListener;
@@ -58,11 +58,11 @@ public class TabelAdapter extends RecyclerView.Adapter<TabelAdapter.Holder> {
         holder.bind(item, listener);
         holder.judul.setText(Html.fromHtml(item.getJudul()));
         holder.subjek.setText(item.getSubjek());
-        holder.tanggal.setText(AppUtil.getDate(item.getTanggal(), false));
-        holder.theme.setBackgroundColor(ContextCompat.getColor(context, AppUtil.getColorTheme(item.getKategori())));
+        holder.tanggal.setText(AppUtils.getDate(item.getTanggal(), false));
+        holder.theme.setBackgroundColor(ContextCompat.getColor(context, AppUtils.getColorTheme(item.getKategori())));
 
         if (item.isSection()){
-            holder.section.setText(AppUtil.getDate(item.getTanggal(),true));
+            holder.section.setText(AppUtils.getDate(item.getTanggal(),true));
             holder.section.setClickable(false);
             holder.section.setVisibility(View.VISIBLE);
         }else {
@@ -118,13 +118,13 @@ public class TabelAdapter extends RecyclerView.Adapter<TabelAdapter.Holder> {
                         switch (which) {
                             case DialogInterface.BUTTON_POSITIVE:
                                 Intent i = new Intent(context, AuthActivity.class);
-                                String token = AppUtil.getToken((Activity) context);
+                                String token = AppUtils.getToken((Activity) context);
                                 if (token==null){
                                     context.startActivity(i);
                                 }else {
                                     String s = item.getExcel() + token;
                                     String namaFile = item.getJudul().replaceAll("\\W+", "");
-                                    AppUtil.downloadFile((Activity) context, s, item.getJudul(), namaFile + ".xls");
+                                    AppUtils.downloadFile((Activity) context, s, item.getJudul(), namaFile + ".xls");
                                 }
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
@@ -147,7 +147,7 @@ public class TabelAdapter extends RecyclerView.Adapter<TabelAdapter.Holder> {
             @Override
             public void onClick(View v) {
                 //Do Your Code Here
-                AppUtil.share((Activity) context, item.getJudul(), item.getUrlShare());
+                AppUtils.share((Activity) context, item.getJudul(), item.getUrlShare());
             }
         });
     }

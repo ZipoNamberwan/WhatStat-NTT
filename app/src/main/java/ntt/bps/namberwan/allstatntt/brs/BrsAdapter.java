@@ -24,7 +24,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.List;
 
-import ntt.bps.namberwan.allstatntt.AppUtil;
+import ntt.bps.namberwan.allstatntt.AppUtils;
 import ntt.bps.namberwan.allstatntt.DatabaseHelper;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.RecyclerViewClickListener;
@@ -89,10 +89,10 @@ public class BrsAdapter extends RecyclerView.Adapter<BrsAdapter.Holder>{
         holder.bind(brsItem, listener);
         holder.judul.setText(brsItem.getJudul());
         holder.subjek.setText(brsItem.getSubjek());
-        holder.tgl.setText(AppUtil.getDate(brsItem.getTanggalRilis(), false));
+        holder.tgl.setText(AppUtils.getDate(brsItem.getTanggalRilis(), false));
 
         if (brsItem.isSection()){
-            holder.section.setText(AppUtil.getDate(brsItem.getTanggalRilis(),true));
+            holder.section.setText(AppUtils.getDate(brsItem.getTanggalRilis(),true));
             holder.section.setClickable(false);
             holder.section.setVisibility(View.VISIBLE);
         }else {
@@ -146,14 +146,14 @@ public class BrsAdapter extends RecyclerView.Adapter<BrsAdapter.Holder>{
                         switch (which) {
                             case DialogInterface.BUTTON_POSITIVE:
                                 Intent i = new Intent(context, AuthActivity.class);
-                                String token = AppUtil.getToken((Activity) context);
+                                String token = AppUtils.getToken((Activity) context);
 
                                 if (token==null){
                                     context.startActivity(i);
                                 }else {
                                     String s = brsItem.getUrlPdf() + token;
                                     String namaFile = brsItem.getJudul().replaceAll("\\W+", "");
-                                    AppUtil.downloadFile((Activity) context, s, brsItem.getJudul(), namaFile + ".pdf");
+                                    AppUtils.downloadFile((Activity) context, s, brsItem.getJudul(), namaFile + ".pdf");
                                 }
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
@@ -175,8 +175,8 @@ public class BrsAdapter extends RecyclerView.Adapter<BrsAdapter.Holder>{
         holder.share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String urlShare = AppUtil.getUrlShare(context.getString(R.string.web_share_brs), brsItem.getTanggalRilis(), brsItem.getId(), brsItem.getJudul());
-                AppUtil.share((Activity) context, brsItem.getJudul(), urlShare);
+                String urlShare = AppUtils.getUrlShare(context.getString(R.string.web_share_brs), brsItem.getTanggalRilis(), brsItem.getId(), brsItem.getJudul());
+                AppUtils.share((Activity) context, brsItem.getJudul(), urlShare);
             }
         });
     }

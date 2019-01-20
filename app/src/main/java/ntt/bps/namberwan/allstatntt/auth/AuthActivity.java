@@ -12,7 +12,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
-import ntt.bps.namberwan.allstatntt.AppUtil;
+import ntt.bps.namberwan.allstatntt.AppUtils;
 import ntt.bps.namberwan.allstatntt.R;
 
 public class AuthActivity extends AppCompatActivity {
@@ -79,7 +79,7 @@ public class AuthActivity extends AppCompatActivity {
         if (url.contains(getString(R.string.web_service_path_url_token_contain))){
             String[] params = url.split("/");
             String token = params[params.length-1];
-            AppUtil.saveToken(this, token);
+            AppUtils.saveToken(this, token);
         }
     }
 }

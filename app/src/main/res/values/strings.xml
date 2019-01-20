@@ -40,6 +40,8 @@
     <string name="web_share_publication">https://ntt.bps.go.id/publication/</string>
     <string name="web_share_table">https://ntt.bps.go.id/statictable/</string>
 
+    <!--<string name="firebase_db">https://indikator-strategis-ntt.firebaseio.com/</string>-->
+
     <string name="label_network_problem">Masalah jaringan</string>
     <string name="label_touch_to_refresh">Sentuh untuk mencoba lagi</string>
     <string name="tidak_bisa_load_data">Tidak Bisa Memuat Data Lebih Banyak</string>
@@ -119,4 +121,12 @@ Quam libero nulla netus eu porta curae, ut nulla bibendum facilisis et urna sed,
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="title_activity_view_chat">ViewChatActivity</string>
+    <string name="sign_out">Sign out</string>
+    <string name="title_activity_chat">ChatActivity</string>
+    <string name="hint_enter_a_message">Type a message…</string>
+    <string name="date_header_today">Today</string>
+    <string name="date_header_yesterday">Yesterday</string>
+    <string name="search_hint">Search Anything…</string>
+    <string name="title_activity_search_result">SearchResultActivity</string>
 </resources>
