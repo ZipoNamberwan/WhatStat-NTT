@@ -1,7 +1,6 @@
 package ntt.bps.namberwan.allstatntt.tabelstatis;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -28,7 +27,6 @@ import org.json.JSONObject;
 import ntt.bps.namberwan.allstatntt.AppUtils;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.VolleySingleton;
-import ntt.bps.namberwan.allstatntt.auth.AuthActivity;
 
 public class ViewTabelActivity extends AppCompatActivity {
 
@@ -97,8 +95,7 @@ public class ViewTabelActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case DialogInterface.BUTTON_POSITIVE:
-                                //Do shit here
-                                Intent i = new Intent(activity, AuthActivity.class);
+                                /*Intent i = new Intent(activity, AuthActivity.class);
                                 String token = AppUtils.getToken(activity);
                                 if (token==null){
                                     startActivity(i);
@@ -106,7 +103,10 @@ public class ViewTabelActivity extends AppCompatActivity {
                                     String s = urlExcel + token;
                                     String namaFile = judul.replaceAll("\\W+", "");
                                     AppUtils.downloadFile(activity, s, judul, namaFile + ".xls");
-                                }
+                                }*/
+                                String s = urlExcel.replace("&tokenuser=", "");
+                                String namaFile = judul.replaceAll("\\W+", "");
+                                AppUtils.downloadFile(activity, s, judul, namaFile + ".xls");
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
                                 break;

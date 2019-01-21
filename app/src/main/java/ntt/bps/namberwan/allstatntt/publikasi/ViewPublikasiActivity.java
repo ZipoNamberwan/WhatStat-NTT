@@ -1,7 +1,6 @@
 package ntt.bps.namberwan.allstatntt.publikasi;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -32,7 +31,6 @@ import org.json.JSONObject;
 import ntt.bps.namberwan.allstatntt.AppUtils;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.VolleySingleton;
-import ntt.bps.namberwan.allstatntt.auth.AuthActivity;
 
 public class ViewPublikasiActivity extends AppCompatActivity {
 
@@ -176,8 +174,7 @@ public class ViewPublikasiActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case DialogInterface.BUTTON_POSITIVE:
-                                //Do shit here
-                                Intent i = new Intent(activity, AuthActivity.class);
+                                /*Intent i = new Intent(activity, AuthActivity.class);
                                 String token = AppUtils.getToken(activity);
                                 if (token==null){
                                     startActivity(i);
@@ -185,7 +182,10 @@ public class ViewPublikasiActivity extends AppCompatActivity {
                                     String s = urlPdf + token;
                                     String namaFile = judul.replaceAll("\\W+", "");
                                     AppUtils.downloadFile(activity, s, judul, namaFile + ".pdf");
-                                }
+                                }*/
+                                String s = urlPdf.replace("&tokenuser=", "");
+                                String namaFile = judul.replaceAll("\\W+", "");
+                                AppUtils.downloadFile(activity, s, judul, namaFile + ".pdf");
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
                                 break;
@@ -200,40 +200,6 @@ public class ViewPublikasiActivity extends AppCompatActivity {
                         .setPositiveButton("Ya", onClickListener)
                         .setNegativeButton("Tidak", onClickListener)
                         .show();
-
-                    /*JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, activity.getString(R.string.web_service_path_cek_token_valid) + token, null,
-                            new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    try {
-                                        snackbar.dismiss();
-                                        isTokenExpired = response.getString("message").equals("Token is expired");
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-
-                                        builder.setTitle("Token Invalid").setMessage("Silakan login ulang")
-                                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialogInterface, int j) {
-                                                        startActivity(i);
-                                                    }
-                                                });
-
-                                        builder.show();
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            isTokenExpired = false;
-                            String namaFile = judul.replaceAll("\\W+", "");
-                            AppUtils.downloadFile(activity, s, judul, namaFile + ".pdf");
-                            snackbar.dismiss();
-                        }
-                    });
-                    queue.add(request);*/
             }
         });
 

@@ -24,7 +24,6 @@ import android.view.View;
 
 import ntt.bps.namberwan.allstatntt.berita.BeritaFragment;
 import ntt.bps.namberwan.allstatntt.brs.BrsFragment;
-import ntt.bps.namberwan.allstatntt.chat.AskFragment;
 import ntt.bps.namberwan.allstatntt.chat.ViewChatAdminActivity;
 import ntt.bps.namberwan.allstatntt.indikator.IndikatorFragment;
 import ntt.bps.namberwan.allstatntt.publikasi.PublikasiFragment;
@@ -60,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
         PublikasiFragment publikasiFragment= new PublikasiFragment();
         TabelFragment tabelFragment = new TabelFragment();
         BeritaFragment beritaFragment = new BeritaFragment();
-        AskFragment askFragment = new AskFragment();
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(indikatorFragment, "Indikator");
@@ -68,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter.addFragment(publikasiFragment, "Publikasi");
         viewPagerAdapter.addFragment(tabelFragment, "Tabel Statis");
         viewPagerAdapter.addFragment(beritaFragment, "Berita");
-        //viewPagerAdapter.addFragment(askFragment, "Ask Me!");
 
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setOffscreenPageLimit(viewPagerAdapter.getCount());
@@ -86,33 +83,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //PublikasiFragment publikasiFragment = new PublikasiFragment();
-        //getSupportFragmentManager().beginTransaction().replace(R.id.container, publikasiFragment).commit();
-
-        //BrsFragment brsFragment = new BrsFragment();
-        //getSupportFragmentManager().beginTransaction().replace(R.id.container, brsFragment).commit();
-
-        //BeritaFragment beritaFragment = new BeritaFragment();
-        //getSupportFragmentManager().beginTransaction().replace(R.id.container, beritaFragment).commit();
-
-        /*Drawer drawer = new DrawerBuilder(this)
-                .withToolbar(toolbar)
-                .withActivity(this)
-                .withActionBarDrawerToggleAnimated(true)
-                .withHeader(R.layout.navigation_drawer_header)
-                .addDrawerItems(
-                        new PrimaryDrawerItem().withName(R.string.home).withIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_home).color(ContextCompat.getColor(this, R.color.nav_item_home))),
-                        new PrimaryDrawerItem().withName(R.string.brs).withIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_sigma).color(ContextCompat.getColor(this, R.color.nav_item_brs))),
-                        new PrimaryDrawerItem().withName(R.string.berita).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_newspaper_o).color(ContextCompat.getColor(this, R.color.nav_item_berita))),
-                        new PrimaryDrawerItem().withName(R.string.tabel).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_table).color(ContextCompat.getColor(this, R.color.nav_item_tabel))),
-                        new PrimaryDrawerItem().withName(R.string.publikasi).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_book).color(ContextCompat.getColor(this, R.color.nav_item_publikasi))),
-                        new PrimaryDrawerItem().withName(R.string.infografis).withIcon(new IconicsDrawable(this).icon(CommunityMaterial.Icon.cmd_chart_pie).color(ContextCompat.getColor(this, R.color.nav_item_infografis))),
-                        new SectionDrawerItem().withName(R.string.lainnya),
-                        new PrimaryDrawerItem().withName(R.string.bookmark).withIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_collections_bookmark).color(ContextCompat.getColor(this, R.color.nav_item_other))),
-                        new PrimaryDrawerItem().withName(R.string.pengaturan).withIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_settings).color(ContextCompat.getColor(this, R.color.nav_item_other))),
-                        new PrimaryDrawerItem().withName(R.string.bantuan).withIcon(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_info_outline).color(ContextCompat.getColor(this, R.color.nav_item_other))))
-                .withSliderBackgroundColor(ContextCompat.getColor(this, R.color.md_white_1000))
-                .build();*/
+        fab.setVisibility(View.GONE);
 
     }
 
@@ -132,29 +103,30 @@ public class MainActivity extends AppCompatActivity {
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchManager searchManager = (SearchManager) MainActivity.this.getSystemService(SEARCH_SERVICE);
 
-        SearchView searchView = null;
         if (searchItem != null) {
-            searchView = (SearchView) searchItem.getActionView();
-            SearchableInfo searchableInfo = searchManager.getSearchableInfo(getComponentName());
-            searchView.setSearchableInfo(searchableInfo);
-            searchView.setOnSearchClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onSearchRequested();
-                }
-            });
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
+            SearchView searchView = (SearchView) searchItem.getActionView();
+            if (searchManager!=null){
+                SearchableInfo searchableInfo = searchManager.getSearchableInfo(getComponentName());
+                searchView.setSearchableInfo(searchableInfo);
+                searchView.setOnSearchClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onSearchRequested();
+                    }
+                });
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
 
-                    return true;
-                }
+                        return true;
+                    }
 
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    return true;
-                }
-            });
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        return true;
+                    }
+                });
+            }
         }
         return true;
     }
@@ -167,9 +139,9 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        /*if (id == R.id.action_settings) {
             return true;
-        }else if (id == R.id.action_search){
+        }else*/ if (id == R.id.action_search){
             onSearchRequested();
             return true;
         }

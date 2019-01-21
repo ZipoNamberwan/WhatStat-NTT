@@ -38,7 +38,7 @@
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="50sp"
+                    android:textSize="35sp"
                     android:id="@+id/nilai"
                     android:paddingLeft="2dp"
                     android:paddingRight="2dp"

@@ -1,7 +1,6 @@
 package ntt.bps.namberwan.allstatntt.brs;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -28,7 +27,6 @@ import org.json.JSONObject;
 import ntt.bps.namberwan.allstatntt.AppUtils;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.VolleySingleton;
-import ntt.bps.namberwan.allstatntt.auth.AuthActivity;
 
 public class ViewBrsActivity extends AppCompatActivity {
 
@@ -130,7 +128,7 @@ public class ViewBrsActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case DialogInterface.BUTTON_POSITIVE:
-                                Intent i = new Intent(ViewBrsActivity.this, AuthActivity.class);
+                                /*Intent i = new Intent(ViewBrsActivity.this, AuthActivity.class);
                                 String token = AppUtils.getToken(ViewBrsActivity.this);
 
                                 if (token==null){
@@ -139,7 +137,10 @@ public class ViewBrsActivity extends AppCompatActivity {
                                     String s = urlBrs + token;
                                     String namaFile = judul.replaceAll("\\W+", "");
                                     AppUtils.downloadFile(ViewBrsActivity.this, s, judul, namaFile + ".pdf");
-                                }
+                                }*/
+                                String s = urlBrs.replace("&tokenuser=", "");
+                                String namaFile = judul.replaceAll("\\W+", "");
+                                AppUtils.downloadFile(ViewBrsActivity.this, s, judul, namaFile + ".pdf");
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
                                 break;

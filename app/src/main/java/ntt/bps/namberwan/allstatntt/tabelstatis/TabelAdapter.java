@@ -3,7 +3,6 @@ package ntt.bps.namberwan.allstatntt.tabelstatis;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -29,7 +28,6 @@ import ntt.bps.namberwan.allstatntt.AppUtils;
 import ntt.bps.namberwan.allstatntt.DatabaseHelper;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.RecyclerViewClickListener;
-import ntt.bps.namberwan.allstatntt.auth.AuthActivity;
 
 public class TabelAdapter extends RecyclerView.Adapter<TabelAdapter.Holder> {
 
@@ -117,7 +115,7 @@ public class TabelAdapter extends RecyclerView.Adapter<TabelAdapter.Holder> {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case DialogInterface.BUTTON_POSITIVE:
-                                Intent i = new Intent(context, AuthActivity.class);
+                                /*Intent i = new Intent(context, AuthActivity.class);
                                 String token = AppUtils.getToken((Activity) context);
                                 if (token==null){
                                     context.startActivity(i);
@@ -125,7 +123,10 @@ public class TabelAdapter extends RecyclerView.Adapter<TabelAdapter.Holder> {
                                     String s = item.getExcel() + token;
                                     String namaFile = item.getJudul().replaceAll("\\W+", "");
                                     AppUtils.downloadFile((Activity) context, s, item.getJudul(), namaFile + ".xls");
-                                }
+                                }*/
+                                String s = item.getExcel().replace("&tokenuser=", "");
+                                String namaFile = item.getJudul().replaceAll("\\W+", "");
+                                AppUtils.downloadFile((Activity) context, s, item.getJudul(), namaFile + ".xls");
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
                                 break;

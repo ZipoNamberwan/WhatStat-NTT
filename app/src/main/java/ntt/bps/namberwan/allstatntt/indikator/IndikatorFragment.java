@@ -31,6 +31,7 @@ import java.util.Comparator;
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import ntt.bps.namberwan.allstatntt.DatabaseHelper;
+import ntt.bps.namberwan.allstatntt.EndlessRecyclerViewScrollListener;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.RecyclerViewClickListener;
 import ntt.bps.namberwan.allstatntt.VolleySingleton;
@@ -70,7 +71,7 @@ public class IndikatorFragment extends Fragment {
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addDataToArray();
+                addDataToArray(1);
             }
         });
 
@@ -87,6 +88,11 @@ public class IndikatorFragment extends Fragment {
                 //do shit here
                 Intent i = new Intent(getActivity(), IndikatorViewActivity.class);
                 switch (((IndikatorItem) object).getId()) {
+                    case "1":
+                        //IPM
+                        i.putExtra(IndikatorViewActivity.VAR_ID, "46");
+                        startActivity(i);
+                        break;
                     case "2":
                         //jumlah penduduk
                         i.putExtra(IndikatorViewActivity.VAR_ID, "28");
@@ -132,6 +138,11 @@ public class IndikatorFragment extends Fragment {
                         i.putExtra(IndikatorViewActivity.VAR_ID, "104");
                         startActivity(i);
                         break;
+                    case "12":
+                        //Jumlah Wisman
+                        i.putExtra(IndikatorViewActivity.VAR_ID, "67");
+                        startActivity(i);
+                        break;
                     case "13":
                         //Gini Rasio
                         i.putExtra(IndikatorViewActivity.VAR_ID, "616");
@@ -144,27 +155,33 @@ public class IndikatorFragment extends Fragment {
         SlideInBottomAnimationAdapter animatedAdapter = new SlideInBottomAnimationAdapter(adapter);
         animatedAdapter.setDuration(500);
         recyclerView.setAdapter(new AlphaInAnimationAdapter(animatedAdapter));
+        recyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(mLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                addDataToArray(page + 1);
+            }
+        });
 
         setViewVisibility(false,true,false);
 
-        addDataToArray();
+        addDataToArray(1);
         return view;
     }
 
-    private void addDataToArray() {
+    private void addDataToArray(final int page) {
         isLoading = true;
         if (list.isEmpty()){
             setViewVisibility(false, true, false);
         }
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getString(R.string.web_service_path_list_indicators)
-                + getString(R.string.api_key), null,
+                + getString(R.string.api_key) + "&page="+page, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
                         if (list.isEmpty()){
                             setViewVisibility(true, false, false);
                         }
-                        addJSONToAdapter(jsonObject);
+                        addJSONToAdapter(jsonObject, page);
                         isLoading = false;
                     }
                 }, new Response.ErrorListener() {
@@ -179,25 +196,29 @@ public class IndikatorFragment extends Fragment {
         queue.add(request);
     }
 
-    private void addJSONToAdapter(JSONObject jsonObject){
+    private void addJSONToAdapter(JSONObject jsonObject, int page){
         try {
-            JSONArray jsonArray = jsonObject.getJSONArray("data").getJSONArray(1);
-            for (int i = 0; i < jsonArray.length(); i++){
-                list.add(new IndikatorItem(jsonArray.getJSONObject(i).getString("indicator_id"),
-                        jsonArray.getJSONObject(i).getString("title"), jsonArray.getJSONObject(i).getString("name"),
-                        jsonArray.getJSONObject(i).getString("data_source"), jsonArray.getJSONObject(i).getString("value"),
-                        jsonArray.getJSONObject(i).getString("unit")));
-            }
-            Collections.sort(list, new Comparator<IndikatorItem>() {
-                @Override
-                public int compare(IndikatorItem o1, IndikatorItem o2) {
-                    Integer a = Integer.parseInt(o1.getId());
-                    Integer b = Integer.parseInt(o2.getId());
-                    return a.compareTo(b);
+            if (jsonObject.getString("data-availability").equals("available")){
+                JSONArray jsonArray = jsonObject.getJSONArray("data").getJSONArray(1);
+                ArrayList<IndikatorItem> subList = new ArrayList<>();
+                for (int i = 0; i < jsonArray.length(); i++){
+                    subList.add(new IndikatorItem(jsonArray.getJSONObject(i).getString("indicator_id"),
+                            jsonArray.getJSONObject(i).getString("title"), jsonArray.getJSONObject(i).getString("name"),
+                            jsonArray.getJSONObject(i).getString("data_source"), jsonArray.getJSONObject(i).getString("value"),
+                            jsonArray.getJSONObject(i).getString("unit")));
                 }
-            });
+                Collections.sort(subList, new Comparator<IndikatorItem>() {
+                    @Override
+                    public int compare(IndikatorItem o1, IndikatorItem o2) {
+                        Integer a = Integer.parseInt(o1.getId());
+                        Integer b = Integer.parseInt(o2.getId());
+                        return a.compareTo(b);
+                    }
+                });
 
-            adapter.notifyItemRangeInserted(0,jsonArray.length());
+                list.addAll(subList);
+                adapter.notifyItemRangeInserted(page * 10 + 1,jsonArray.length());
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

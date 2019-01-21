@@ -654,6 +654,12 @@ public class IndikatorViewActivity extends AppCompatActivity {
         turunanTahunVariabels = new ArrayList<>();
         JSONArray turTahunArrayJson = jsonObject.getJSONArray("turtahun");
         for (int i = 0; i < turTahunArrayJson.length(); i++){
+            //special case inflasi dan pertumbuhan ekonomi
+            if (i == turTahunArrayJson.length()-1){
+                if (idVar.equals("1") | idVar.equals("438")){
+                    break;
+                }
+            }
             turunanTahunVariabels.add(new TurunanTahunVariabel(turTahunArrayJson.getJSONObject(i).getString("val"),
                     turTahunArrayJson.getJSONObject(i).getString("label")));
         }

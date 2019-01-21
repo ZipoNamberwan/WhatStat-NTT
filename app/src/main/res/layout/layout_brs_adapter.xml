@@ -44,7 +44,8 @@
                 android:paddingRight="2dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:textColor="@color/material_drawer_secondary_text"/>
+                android:textColor="@color/material_drawer_secondary_text"
+                android:layout_marginTop="5dp"/>
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
