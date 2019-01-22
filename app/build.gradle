@@ -13,10 +13,11 @@ android {
         renderscriptSupportModeEnabled true
         resConfigs "id"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -80,6 +81,8 @@ dependencies {
     implementation 'com.github.stfalcon:chatkit:0.3.3'
 
     implementation 'de.hdodenhof:circleimageview:3.0.0'
+
+    implementation 'com.android.support:multidex:1.0.3'
 
 }
 apply plugin: 'com.google.gms.google-services'
