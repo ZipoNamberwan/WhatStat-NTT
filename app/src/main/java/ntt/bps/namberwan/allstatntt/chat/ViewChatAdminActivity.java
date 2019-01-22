@@ -85,7 +85,6 @@ public class ViewChatAdminActivity extends AppCompatActivity {
         });
 
         recyclerView.setAdapter(adapter);
-
     }
 
     @Override

@@ -7,30 +7,37 @@ import java.util.Date;
 
 public class Message implements IMessage {
 
-    private String id;
-    private String text;
+    private String idSender;
+    private String message;
     private Date createdAt;
     private User user;
+    private String idReceiver;
+
+    public Message(){
+
+    }
 
     public Message(String id, User user, String text) {
         this(id, user, text, new Date());
+        this.idReceiver = user.getId();
     }
 
-    public Message(String id, User user, String text, Date createdAt) {
-        this.id = id;
-        this.text = text;
+    public Message(String idSender, User user, String message, Date createdAt) {
+        this.idSender = idSender;
+        this.message = message;
         this.user = user;
         this.createdAt = createdAt;
+        this.idReceiver = user.getId();
     }
 
     @Override
     public String getId() {
-        return this.id;
+        return this.idSender;
     }
 
     @Override
     public String getText() {
-        return this.text;
+        return this.message;
     }
 
     @Override
@@ -41,5 +48,27 @@ public class Message implements IMessage {
     @Override
     public Date getCreatedAt() {
         return this.createdAt;
+    }
+
+    public void setSender(String idSender){
+        this.idSender = idSender;
+    }
+
+    public void setReceiver(String idReceiver){
+        this.idReceiver = idReceiver;
+    }
+
+    public void setMessage(String message){
+        this.message = message;
+    }
+
+    public String getSender(){
+        return this.idSender;
+    }
+    public String getReceiver(){
+        return this.idReceiver;
+    }
+    public String getMessage(){
+        return this.message;
     }
 }

@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        fab.setVisibility(View.GONE);
+        //fab.setVisibility(View.GONE);
 
     }
 

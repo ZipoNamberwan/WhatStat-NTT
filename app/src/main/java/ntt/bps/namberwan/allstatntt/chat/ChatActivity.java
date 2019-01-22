@@ -1,11 +1,18 @@
 package ntt.bps.namberwan.allstatntt.chat;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
@@ -14,7 +21,10 @@ import com.stfalcon.chatkit.utils.DateFormatter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 import ntt.bps.namberwan.allstatntt.R;
@@ -56,6 +66,7 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
         messagesList = findViewById(R.id.messages_list);
 
         setUser();
+
         initAdapter();
 
     }
@@ -94,13 +105,12 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
 
         adapter.setDateHeadersFormatter(formatter);
 
-        //Display older Message
-        displayMessage();
+        displayMessage(idSender, idReceiver);
     }
 
-    private void displayMessage() {
+    private void displayMessage(final String idSender, final String idReceiver) {
 
-        String string = "December 24, 2018";
+        /*String string = "December 24, 2018";
         DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
         Date date = null;
         try {
@@ -110,7 +120,31 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
         }
 
         Message message = new Message(idReceiver, receiver, "test kaka", date);
-        adapter.addToStart(message, true);
+        adapter.addToStart(message, true);*/
+
+        final List<Message> messages = new ArrayList<>();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Message temp = snapshot.getValue(Message.class);
+                    if (temp.getSender().equals(idSender) && temp.getReceiver().equals(idReceiver)
+                            || temp.getSender().equals(idReceiver) && temp.getReceiver().equals(idSender)){
+
+                        User user = new User(temp.getReceiver(), "", "", "", false);
+                        Message message = new Message(temp.getSender(), user, temp.getMessage());
+                        messages.add(message);
+                    }
+                }
+                adapter.addToEnd(messages, false);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -121,11 +155,26 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
 
     @Override
     public boolean onSubmit(CharSequence input) {
-        sendMessage(input);
+        if (!input.equals("")){
+            sendMessage(input);
+        } else {
+            Toast.makeText(ChatActivity.this, "Isi pesan kosong, mau kirim apa?", Toast.LENGTH_SHORT).show();
+        }
+
         return true;
     }
 
     private void sendMessage(CharSequence input) {
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("sender", sender.getId());
+        hashMap.put("receiver", receiver.getId());
+        hashMap.put("message", input.toString());
+
+        reference.child("Chats").push().setValue(hashMap);
+
         Message message = new Message(idSender, sender, input.toString());
         adapter.addToStart(message, true);
     }
