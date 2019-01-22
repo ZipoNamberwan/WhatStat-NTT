@@ -50,14 +50,16 @@ public class SearchResultActivity extends AppCompatActivity {
         Bundle args = new Bundle();
         args.putString(MainActivity.SEARCH_KEYWORD, query);
 
-        BrsFragment brsFragment = new BrsFragment();
-        brsFragment.setArguments(args);
         PublikasiFragment publikasiFragment = new PublikasiFragment();
         publikasiFragment.setArguments(args);
         TabelFragment tabelFragment = new TabelFragment();
         tabelFragment.setArguments(args);
         BeritaFragment beritaFragment = new BeritaFragment();
         beritaFragment.setArguments(args);
+
+        BrsFragment brsFragment = new BrsFragment();
+        args.putBoolean(BrsFragment.IS_FIRST_FRAGMENT, true);
+        brsFragment.setArguments(args);
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(brsFragment, "BRS");

@@ -42,7 +42,8 @@ public class IndikatorAdapter extends RecyclerView.Adapter<IndikatorAdapter.Hold
         holder.nilai.setText(AppUtils.formatNumberSeparator(Float.parseFloat(item.getNilai())));
 
         if (item.getSatuan().equals("Tidak Ada Satuan") | item.getSatuan().equals("")){
-            holder.satuan.setVisibility(View.GONE);
+            holder.satuan.setText("");
+            //holder.satuan.setVisibility(View.GONE);
         } else {
             holder.satuan.setText(item.getSatuan());
         }

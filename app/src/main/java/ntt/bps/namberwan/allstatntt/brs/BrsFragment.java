@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -54,6 +55,8 @@ public class BrsFragment extends Fragment {
 
     private String keyword;
 
+    public static final String IS_FIRST_FRAGMENT = "first fragment";
+
     public BrsFragment() {
         // Required empty public constructor
         isViewCreated = false;
@@ -88,7 +91,7 @@ public class BrsFragment extends Fragment {
         shimmerFrameLayout = view.findViewById(R.id.shimmer);
 
         recyclerView = view.findViewById(R.id.listview);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        LinearLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setHasFixedSize(true);
 
@@ -117,6 +120,12 @@ public class BrsFragment extends Fragment {
 
         if (isVisible()){
             addDataToArray(1);
+        }else {
+            if (getArguments()!=null){
+                if (getArguments().getBoolean(IS_FIRST_FRAGMENT)){
+                    addDataToArray(1);
+                }
+            }
         }
 
         isViewCreated = true;

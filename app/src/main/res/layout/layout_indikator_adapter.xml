@@ -1,11 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:foreground="?android:attr/selectableItemBackground"
     android:descendantFocusability="blocksDescendants">
     <android.support.v7.widget.CardView
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/card_view"
         app:cardCornerRadius="5dp"
@@ -18,9 +18,8 @@
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="17sp"
                 android:textStyle="bold"
-                android:maxLines="2"
+                android:lines="2"
                 android:ellipsize="end"
                 android:id="@+id/judul"
                 android:paddingLeft="2dp"
@@ -34,28 +33,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp">
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="35sp"
+                    android:textSize="25sp"
                     android:id="@+id/nilai"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="2dp"
+                    android:background="@drawable/rounded_corner"
+                    android:padding="7dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:textColor="@color/material_drawer_primary_text"
                     android:gravity="center"
-                    android:maxLines="1"
+                    android:lines="1"
                     android:ellipsize="end"/>
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/satuan"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:padding="2dp"
+                    android:lines="1"
                     android:lineSpacingExtra="2dp"
                     android:gravity="center"/>
             </LinearLayout>
@@ -82,7 +82,7 @@
                     android:padding="2dp"
                     android:textStyle="italic"
                     android:lineSpacingExtra="7sp"
-                    android:maxLines="1"
+                    android:lines="1"
                     android:ellipsize="end"/>
             </RelativeLayout>
         </LinearLayout>

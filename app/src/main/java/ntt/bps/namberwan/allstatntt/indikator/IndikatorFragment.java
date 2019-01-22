@@ -76,7 +76,7 @@ public class IndikatorFragment extends Fragment {
         });
 
         recyclerView = view.findViewById(R.id.listview);
-        LinearLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
+        LinearLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setHasFixedSize(true);
 
@@ -165,6 +165,7 @@ public class IndikatorFragment extends Fragment {
         setViewVisibility(false,true,false);
 
         addDataToArray(1);
+
         return view;
     }
 
