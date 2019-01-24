@@ -11,8 +11,8 @@ public class ChatUtils {
                 true));
         adminUsers.add(new User("xZMJl3pua3N5BIj96O4PcZ5iPB53", "Test Admin 2", "", "Yesterday",
                 true));
-        adminUsers.add(new User("mzbjj2NkC8Yo17F0BeA7LCP78l33", "Test Admin 3",  "", "Yesterday",
-                true));
+        /*adminUsers.add(new User("mzbjj2NkC8Yo17F0BeA7LCP78l33", "Test Admin 3",  "", "Yesterday",
+                true));*/
 
         return adminUsers;
     }

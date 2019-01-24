@@ -15,8 +15,13 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.RecyclerViewClickListener;
@@ -28,6 +33,9 @@ public class ViewChatAdminActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
 
     private String idUser;
+
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +53,9 @@ public class ViewChatAdminActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
-        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        if(firebaseAuth == null) {
             // Start sign in/sign up activity
             startActivityForResult(
                     AuthUI.getInstance()
@@ -64,10 +74,37 @@ public class ViewChatAdminActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG)
                     .show();
 
-            // Load chat room contents
-            idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            firebaseAuth = FirebaseAuth.getInstance();
+            reference = FirebaseDatabase.getInstance().getReference();
+            idUser = firebaseAuth.getCurrentUser().getUid();
+            updateUserInformation(System.currentTimeMillis(), true);
             displayListAdmin();
         }
+    }
+
+    private void updateUserInformation(long lastSeen, boolean isOnline) {
+
+        String key = reference.child(idUser).getKey();
+
+        Map<String, Object> update = new HashMap<>();
+        update.put("username", firebaseAuth.getCurrentUser().getDisplayName());
+        if (firebaseAuth.getCurrentUser().getPhotoUrl() != null){
+            update.put("urlPhoto", firebaseAuth.getCurrentUser().getPhotoUrl().getPath());
+        } else {
+            update.put("urlPhoto", "");
+        }
+
+        update.put("lastSeen", lastSeen);
+        if (isOnline){
+            update.put("isOnline", true);
+        } else {
+            update.put("isOnline", false);
+        }
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/Users/" + key + "/information/", update);
+
+        reference.updateChildren(childUpdates);
     }
 
     private void displayListAdmin() {
@@ -85,6 +122,18 @@ public class ViewChatAdminActivity extends AppCompatActivity {
         });
 
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        updateUserInformation(System.currentTimeMillis(), false);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateUserInformation(System.currentTimeMillis(), true);
     }
 
     @Override
