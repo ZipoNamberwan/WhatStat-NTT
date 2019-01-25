@@ -1,9 +1,13 @@
 package ntt.bps.namberwan.allstatntt.chat;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ChatUtils {
+
+    private static boolean isOnline = true;
 
     public static List<User> getAdminList(){
         ArrayList<User> adminUsers = new ArrayList<>();
@@ -25,7 +29,39 @@ public class ChatUtils {
                 break;
             }
         }
-
         return u;
+    }
+
+    public static Map<String, Object> updateUserInformation(String key, String username, String urlPhoto, long lastSeen, boolean isOnline, boolean isTyping) {
+
+        Map<String, Object> update = new HashMap<>();
+        update.put("username", username);
+        if (urlPhoto != null){
+            update.put("urlPhoto", urlPhoto);
+        } else {
+            update.put("urlPhoto", "");
+        }
+
+        update.put("lastSeen", lastSeen);
+        if (isOnline){
+            update.put("isOnline", true);
+        } else {
+            update.put("isOnline", false);
+        }
+
+        update.put("isTyping", isTyping);
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/Users/" + key + "/information/", update);
+
+        return childUpdates;
+    }
+
+    public static boolean isIsOnline() {
+        return isOnline;
+    }
+
+    public static void setIsOnline(boolean isOnline) {
+        ChatUtils.isOnline = isOnline;
     }
 }

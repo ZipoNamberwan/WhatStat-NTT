@@ -18,8 +18,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,10 +30,9 @@ public class ViewChatAdminActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
 
-    private String idUser;
-
     private FirebaseAuth firebaseAuth;
     private DatabaseReference reference;
+    private UserModel userModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,33 +73,36 @@ public class ViewChatAdminActivity extends AppCompatActivity {
 
             firebaseAuth = FirebaseAuth.getInstance();
             reference = FirebaseDatabase.getInstance().getReference();
-            idUser = firebaseAuth.getCurrentUser().getUid();
-            updateUserInformation(System.currentTimeMillis(), true);
+
+            createUserModel();
+
+            updateUserInformation(userModel.getId(), userModel.getUsername(),
+                    userModel.getUrlPhoto(), userModel.getLastSeen(), true, false);
+
             displayListAdmin();
         }
     }
 
-    private void updateUserInformation(long lastSeen, boolean isOnline) {
+    private void createUserModel() {
+        String idUser = firebaseAuth.getCurrentUser().getUid();
+        String username = "";
+        if (firebaseAuth.getCurrentUser().getDisplayName() != null){
+            username = firebaseAuth.getCurrentUser().getDisplayName();
+        }
+        String urlPhoto = "";
+        if (firebaseAuth.getCurrentUser().getPhotoUrl() != null){
+            urlPhoto = firebaseAuth.getCurrentUser().getPhotoUrl().getPath();
+        }
+        long lastSeen = System.currentTimeMillis();
+
+        userModel = new UserModel(idUser, username, urlPhoto, lastSeen);
+    }
+
+    private void updateUserInformation(String idUser, String username, String urlPhoto, long lastSeen, boolean isOnline, boolean isTyping) {
 
         String key = reference.child(idUser).getKey();
 
-        Map<String, Object> update = new HashMap<>();
-        update.put("username", firebaseAuth.getCurrentUser().getDisplayName());
-        if (firebaseAuth.getCurrentUser().getPhotoUrl() != null){
-            update.put("urlPhoto", firebaseAuth.getCurrentUser().getPhotoUrl().getPath());
-        } else {
-            update.put("urlPhoto", "");
-        }
-
-        update.put("lastSeen", lastSeen);
-        if (isOnline){
-            update.put("isOnline", true);
-        } else {
-            update.put("isOnline", false);
-        }
-
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/Users/" + key + "/information/", update);
+        Map<String, Object> childUpdates = ChatUtils.updateUserInformation(key, username, urlPhoto, lastSeen, isOnline, isTyping);
 
         reference.updateChildren(childUpdates);
     }
@@ -116,7 +116,7 @@ public class ViewChatAdminActivity extends AppCompatActivity {
             public void onItemClick(Object object) {
                 Intent i = new Intent(ViewChatAdminActivity.this, ChatActivity.class);
                 i.putExtra(ChatActivity.ID_ADMIN_RECEIVER, ((User) object).getId());
-                i.putExtra(ChatActivity.ID_USER_SENDER, idUser);
+                i.putExtra(ChatActivity.ID_USER_SENDER, userModel.getId());
                 startActivity(i);
             }
         });
@@ -125,15 +125,11 @@ public class ViewChatAdminActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        updateUserInformation(System.currentTimeMillis(), false);
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
-        updateUserInformation(System.currentTimeMillis(), true);
+        updateUserInformation(userModel.getId(), userModel.getUsername(),
+                userModel.getUrlPhoto(), System.currentTimeMillis(),
+                true, false);
     }
 
     @Override

@@ -25,10 +25,11 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ntt.bps.namberwan.allstatntt.R;
 
-public class ChatActivity extends AppCompatActivity implements MessageInput.InputListener, MessageInput.AttachmentsListener {
+public class ChatActivity extends AppCompatActivity implements MessageInput.InputListener {
 
     public static final String ID_ADMIN_RECEIVER = "id receiver";
     public static final String ID_USER_SENDER = "id sender";
@@ -46,6 +47,10 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
 
     private FirebaseDatabase firebaseDatabase;
     private FirebaseUser firebaseUser;
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference reference;
+
+    private UserModel userModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,11 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
 
         setupFirebase();
 
+        createUserModel();
+
+        updateUserInformation(userModel.getId(), userModel.getUsername(),
+                userModel.getUrlPhoto(), userModel.getLastSeen(), true, false);
+
         setupChatRoom();
 
         setupReceiverInformation();
@@ -69,28 +79,53 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
 
     }
 
+    private void createUserModel() {
+        String idUser = firebaseAuth.getCurrentUser().getUid();
+        String username = "";
+        if (firebaseAuth.getCurrentUser().getDisplayName() != null){
+            username = firebaseAuth.getCurrentUser().getDisplayName();
+        }
+        String urlPhoto = "";
+        if (firebaseAuth.getCurrentUser().getPhotoUrl() != null){
+            urlPhoto = firebaseAuth.getCurrentUser().getPhotoUrl().getPath();
+        }
+        long lastSeen = System.currentTimeMillis();
+
+        userModel = new UserModel(idUser, username, urlPhoto, lastSeen);
+    }
+
+    private void updateUserInformation(String idUser, String username, String urlPhoto, long lastSeen, boolean isOnline, boolean isTyping) {
+
+        String key = reference.child(idUser).getKey();
+
+        Map<String, Object> childUpdates = ChatUtils.updateUserInformation(key, username, urlPhoto, lastSeen, isOnline, isTyping);
+
+        reference.updateChildren(childUpdates);
+    }
+
     private void setupReceiverInformation() {
 
         setTitle(receiver.getName());
-        if (getSupportActionBar()!=null){
-            DatabaseReference reference = firebaseDatabase.getReference("Users").child(receiver.getId());
 
+        if (getSupportActionBar()!=null){
+
+            DatabaseReference reference = firebaseDatabase.getReference("Users").child(receiver.getId());
             reference.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                    UserModel temp = dataSnapshot.getValue(UserModel.class);
+                    String status = getStatusString(temp);
+                    if (getSupportActionBar()!=null){
+                        getSupportActionBar().setSubtitle(status);
+                    }
                 }
 
                 @Override
                 public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                        /*Object temp = snapshot.getValue();*/
-
-                        UserModel temp = snapshot.getValue(UserModel.class);
-                        /*if (getSupportActionBar()!=null){
-                            getSupportActionBar().setSubtitle(temp.getIsOnline());
-                        }*/
-                        int i = 0;
+                    UserModel temp = dataSnapshot.getValue(UserModel.class);
+                    String status = getStatusString(temp);
+                    if (getSupportActionBar()!=null){
+                        getSupportActionBar().setSubtitle(status);
                     }
                 }
 
@@ -112,8 +147,29 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
         }
     }
 
+    private String getStatusString(UserModel temp) {
+        String status;
+        if (temp.getIsOnline()){
+            status = "Online";
+        }else {
+            Date date = new Date(temp.getLastSeen());
+            status = "last seen ";
+            String time = DateFormatter.format(date, DateFormatter.Template.TIME);
+            if (DateFormatter.isToday(date)){
+                status = status + getString(R.string.date_header_today) + " at " + time;
+            } else if (DateFormatter.isYesterday(date)){
+                status = status + getString(R.string.date_header_yesterday) + " at " + time;
+            } else {
+                status = status + DateFormatter.format(date, DateFormatter.Template.STRING_DAY_MONTH_YEAR) + " at " + time;
+            }
+        }
+        return status;
+    }
+
     private void setupFirebase() {
         firebaseDatabase = FirebaseDatabase.getInstance();
+        reference = FirebaseDatabase.getInstance().getReference();
+        firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
@@ -147,7 +203,6 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
 
         messageInput = findViewById(R.id.input);
         messageInput.setInputListener(this);
-        messageInput.setAttachmentsListener(this);
 
         messagesList = findViewById(R.id.messages_list);
 
@@ -204,23 +259,6 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
         });
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return super.onSupportNavigateUp();
-    }
-
-    @Override
-    public boolean onSubmit(CharSequence input) {
-        if (!input.equals("")){
-            sendMessage(input);
-        } else {
-            Toast.makeText(ChatActivity.this, "Isi pesan kosong, mau kirim apa?", Toast.LENGTH_SHORT).show();
-        }
-
-        return true;
-    }
-
     private void sendMessage(CharSequence input) {
 
         DatabaseReference reference = firebaseDatabase.getReference();
@@ -238,12 +276,32 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
     }
 
     @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
+    }
+
+    @Override
+    public boolean onSubmit(CharSequence input) {
+        if (!input.equals("")){
+            sendMessage(input);
+        } else {
+            Toast.makeText(ChatActivity.this, "Isi pesan kosong, mau kirim apa?", Toast.LENGTH_SHORT).show();
+        }
+
+        return true;
+    }
+
+    @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
 
     @Override
-    public void onAddAttachments() {
-
+    protected void onResume() {
+        super.onResume();
+        updateUserInformation(userModel.getId(), userModel.getUsername(),
+                userModel.getUrlPhoto(), System.currentTimeMillis(),
+                true, false);
     }
 }

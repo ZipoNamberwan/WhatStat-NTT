@@ -7,17 +7,26 @@ public class UserModel {
     private String urlPhoto;
     private long lastSeen;
     private boolean isOnline;
+    private boolean isTyping;
 
     public UserModel(){
 
     }
 
-    public UserModel(String id, String username, String urlPhoto, long lastSeen, boolean isOnline){
+    public UserModel(String id, String username, String urlPhoto, long lastSeen){
+        this.setId(id);
+        this.setUsername(username);
+        this.setUrlPhoto(urlPhoto);
+        this.setLastSeen(lastSeen);
+    }
+
+    public UserModel(String id, String username, String urlPhoto, long lastSeen, boolean isOnline, boolean isTyping){
         this.setId(id);
         this.setUsername(username);
         this.setUrlPhoto(urlPhoto);
         this.setLastSeen(lastSeen);
         this.setOnline(isOnline);
+        this.setTyping(isTyping);
     }
 
     public String getId() {
@@ -52,7 +61,7 @@ public class UserModel {
         this.lastSeen = lastSeen;
     }
 
-    public boolean isOnline() {
+    public boolean getIsOnline() {
         return isOnline;
     }
 
@@ -60,17 +69,12 @@ public class UserModel {
         isOnline = online;
     }
 
+    public boolean getIsTyping() {
+        return isTyping;
+    }
 
+    public void setTyping(boolean typing) {
+        isTyping = typing;
+    }
 
-/*    public Map<String, Object> toMap() {
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("id", id);
-        result.put("isOnline", isOnline);
-        result.put("lastSeen", lastSeen);
-        result.put("urlPhoto", urlPhoto);
-        result.put("username", username);
-
-        return result;
-    }*/
 }
