@@ -29,7 +29,7 @@ import java.util.Map;
 
 import ntt.bps.namberwan.allstatntt.R;
 
-public class ChatActivity extends AppCompatActivity implements MessageInput.InputListener {
+public class ChatActivity extends AppCompatActivity implements MessageInput.InputListener, MessageInput.TypingListener {
 
     public static final String ID_ADMIN_RECEIVER = "id receiver";
     public static final String ID_USER_SENDER = "id sender";
@@ -114,7 +114,7 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     UserModel temp = dataSnapshot.getValue(UserModel.class);
-                    String status = getStatusString(temp);
+                    String status = ChatUtils.getStatusString(ChatActivity.this, temp);
                     if (getSupportActionBar()!=null){
                         getSupportActionBar().setSubtitle(status);
                     }
@@ -123,7 +123,7 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
                 @Override
                 public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     UserModel temp = dataSnapshot.getValue(UserModel.class);
-                    String status = getStatusString(temp);
+                    String status = ChatUtils.getStatusString(ChatActivity.this, temp);
                     if (getSupportActionBar()!=null){
                         getSupportActionBar().setSubtitle(status);
                     }
@@ -147,25 +147,6 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
         }
     }
 
-    private String getStatusString(UserModel temp) {
-        String status;
-        if (temp.getIsOnline()){
-            status = "Online";
-        }else {
-            Date date = new Date(temp.getLastSeen());
-            status = "last seen ";
-            String time = DateFormatter.format(date, DateFormatter.Template.TIME);
-            if (DateFormatter.isToday(date)){
-                status = status + getString(R.string.date_header_today) + " at " + time;
-            } else if (DateFormatter.isYesterday(date)){
-                status = status + getString(R.string.date_header_yesterday) + " at " + time;
-            } else {
-                status = status + DateFormatter.format(date, DateFormatter.Template.STRING_DAY_MONTH_YEAR) + " at " + time;
-            }
-        }
-        return status;
-    }
-
     private void setupFirebase() {
         firebaseDatabase = FirebaseDatabase.getInstance();
         reference = FirebaseDatabase.getInstance().getReference();
@@ -186,7 +167,11 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
         }
 
         sender = new User(idSender, firebaseUser.getDisplayName(), urlAvatar, "",true);
-        receiver = ChatUtils.getAdminById(idReceiver);
+
+        UserModel receiverUM = ChatUtils.getAdminById(idReceiver);
+
+        receiver = new User(receiverUM.getId(), receiverUM.getUsername(), receiverUM.getUrlPhoto(), "", receiverUM.getIsOnline());
+
         idChat = createIdChat(idSender, idReceiver);
 
     }
@@ -203,6 +188,7 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
 
         messageInput = findViewById(R.id.input);
         messageInput.setInputListener(this);
+        messageInput.setTypingListener(this);
 
         messagesList = findViewById(R.id.messages_list);
 
@@ -300,6 +286,28 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
     @Override
     protected void onResume() {
         super.onResume();
+        updateUserInformation(userModel.getId(), userModel.getUsername(),
+                userModel.getUrlPhoto(), System.currentTimeMillis(),
+                true, false);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        updateUserInformation(userModel.getId(), userModel.getUsername(),
+                userModel.getUrlPhoto(), System.currentTimeMillis(),
+                false, false);
+    }
+
+    @Override
+    public void onStartTyping() {
+        updateUserInformation(userModel.getId(), userModel.getUsername(),
+                userModel.getUrlPhoto(), System.currentTimeMillis(),
+                true, true);
+    }
+
+    @Override
+    public void onStopTyping() {
         updateUserInformation(userModel.getId(), userModel.getUsername(),
                 userModel.getUrlPhoto(), System.currentTimeMillis(),
                 true, false);

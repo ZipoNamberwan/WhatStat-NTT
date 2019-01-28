@@ -1,29 +1,32 @@
 package ntt.bps.namberwan.allstatntt.chat;
 
+import android.app.Activity;
+
+import com.stfalcon.chatkit.utils.DateFormatter;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ntt.bps.namberwan.allstatntt.R;
+
 public class ChatUtils {
 
-    private static boolean isOnline = true;
-
-    public static List<User> getAdminList(){
-        ArrayList<User> adminUsers = new ArrayList<>();
-        adminUsers.add(new User("HV8p5WYKBDVewiRiYyJkePhpNbi1", "Test Admin", "", "Yesterday",
-                true));
-        adminUsers.add(new User("xZMJl3pua3N5BIj96O4PcZ5iPB53", "Test Admin 2", "", "Yesterday",
-                true));
+    public static List<UserModel> getAdminList(){
+        ArrayList<UserModel> adminUsers = new ArrayList<>();
+        adminUsers.add(new UserModel("HV8p5WYKBDVewiRiYyJkePhpNbi1", "Test Admin"));
+        adminUsers.add(new UserModel("xZMJl3pua3N5BIj96O4PcZ5iPB53", "Test Admin 2"));
         /*adminUsers.add(new User("mzbjj2NkC8Yo17F0BeA7LCP78l33", "Test Admin 3",  "", "Yesterday",
                 true));*/
 
         return adminUsers;
     }
 
-    public static User getAdminById(String id){
-        User u = null;
-        for (User user : getAdminList()){
+    public static UserModel getAdminById(String id){
+        UserModel u = null;
+        for (UserModel user : getAdminList()){
             if (id.equals(user.getId())){
                 u = user;
                 break;
@@ -57,11 +60,31 @@ public class ChatUtils {
         return childUpdates;
     }
 
-    public static boolean isIsOnline() {
-        return isOnline;
+
+    public static String getStatusString(Activity activity, UserModel temp) {
+        String status;
+        if (temp.getIsOnline()){
+            status = "Online";
+            if (temp.getIsTyping()){
+                status = "is typing...";
+            }
+        }else {
+            status = getLastSeen(activity, temp.getLastSeen());
+        }
+        return status;
     }
 
-    public static void setIsOnline(boolean isOnline) {
-        ChatUtils.isOnline = isOnline;
+    public static String getLastSeen(Activity activity, long lastSeen){
+        Date date = new Date(lastSeen);
+        String status = "last seen ";
+        String time = DateFormatter.format(date, DateFormatter.Template.TIME);
+        if (DateFormatter.isToday(date)){
+            status = status + activity.getString(R.string.date_header_today) + " at " + time;
+        } else if (DateFormatter.isYesterday(date)){
+            status = status + activity.getString(R.string.date_header_yesterday) + " at " + time;
+        } else {
+            status = status + DateFormatter.format(date, DateFormatter.Template.STRING_DAY_MONTH_YEAR) + " at " + time;
+        }
+        return status;
     }
 }

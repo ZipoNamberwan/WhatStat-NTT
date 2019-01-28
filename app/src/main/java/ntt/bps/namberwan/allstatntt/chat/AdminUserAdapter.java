@@ -1,5 +1,6 @@
 package ntt.bps.namberwan.allstatntt.chat;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -22,12 +23,12 @@ import ntt.bps.namberwan.allstatntt.RecyclerViewClickListener;
 
 public class AdminUserAdapter extends RecyclerView.Adapter<AdminUserAdapter.Holder> {
 
-    private List<User> list;
+    private List<UserModel> list;
     private Context context;
     private DatabaseHelper db;
     private RecyclerViewClickListener listener;
 
-    public AdminUserAdapter(List<User> list, Context context, RecyclerViewClickListener listener) {
+    public AdminUserAdapter(List<UserModel> list, Context context, RecyclerViewClickListener listener) {
         this.list = list;
         this.context = context;
         db = new DatabaseHelper(context);
@@ -42,27 +43,39 @@ public class AdminUserAdapter extends RecyclerView.Adapter<AdminUserAdapter.Hold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Holder holder, int position) {
-        User user = list.get(position);
+    public void onBindViewHolder(@NonNull final Holder holder, int position) {
+        final UserModel user = getList().get(position);
         holder.bind(user, listener);
-        holder.nama.setText(user.getName());
-        String adminNoString = "Admin-"+ (position+1);
+        holder.nama.setText(user.getUsername());
+        String adminNoString = "Admin - "+ (position+1);
         holder.adminNo.setText(adminNoString);
-        holder.lastSeen.setText(user.getLastSeen());
 
-        if (!user.getAvatar().equals("")){
-            Picasso.get()
-                    .load(user.getAvatar())
-                    .error(new IconicsDrawable(context).color(ContextCompat.getColor(context, R.color.md_grey_300)).icon(GoogleMaterial.Icon.gmd_broken_image))
-                    .placeholder(new IconicsDrawable(context).color(ContextCompat.getColor(context, R.color.md_grey_300)).icon(GoogleMaterial.Icon.gmd_image))
-                    .fit()
-                    .into(holder.photo);
+        if (user.getIsOnline()){
+            holder.lastSeen.setText("Online");
+            holder.lastSeen.setTextColor(context.getResources().getColor(R.color.md_green_500));
+        }else {
+            holder.lastSeen.setText(ChatUtils.getLastSeen((Activity) context, user.getLastSeen()));
+        }
+
+        if (user.getUrlPhoto() != null){
+            if (!user.getUrlPhoto().equals("")){
+                Picasso.get()
+                        .load(user.getUrlPhoto())
+                        .error(new IconicsDrawable(context).color(ContextCompat.getColor(context, R.color.md_grey_300)).icon(GoogleMaterial.Icon.gmd_broken_image))
+                        .placeholder(new IconicsDrawable(context).color(ContextCompat.getColor(context, R.color.md_grey_300)).icon(GoogleMaterial.Icon.gmd_image))
+                        .fit()
+                        .into(holder.photo);
+            }
         }
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return getList().size();
+    }
+
+    public List<UserModel> getList() {
+        return list;
     }
 
     public static class Holder extends RecyclerView.ViewHolder {
@@ -80,7 +93,7 @@ public class AdminUserAdapter extends RecyclerView.Adapter<AdminUserAdapter.Hold
             photo = itemView.findViewById(R.id.foto);
         }
 
-        public void bind(final User user, final RecyclerViewClickListener listener) {
+        public void bind(final UserModel user, final RecyclerViewClickListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     listener.onItemClick(user);
