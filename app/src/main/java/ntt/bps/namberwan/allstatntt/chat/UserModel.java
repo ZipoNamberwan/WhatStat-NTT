@@ -18,6 +18,12 @@ public class UserModel {
         this.setUsername(username);
     }
 
+    public UserModel(String id, String username, String urlPhoto){
+        this.setId(id);
+        this.setUsername(username);
+        this.setUrlPhoto(urlPhoto);
+    }
+
     public UserModel(String id, String username, String urlPhoto, long lastSeen){
         this.setId(id);
         this.setUsername(username);

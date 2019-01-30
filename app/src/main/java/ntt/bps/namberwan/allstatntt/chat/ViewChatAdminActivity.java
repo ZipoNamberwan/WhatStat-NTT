@@ -3,20 +3,20 @@ package ntt.bps.namberwan.allstatntt.chat;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,6 +35,7 @@ public class ViewChatAdminActivity extends AppCompatActivity {
     public static final int SIGN_IN_REQUEST_CODE = 0;
 
     private RecyclerView recyclerView;
+    private ProgressBar progressBar;
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference reference;
@@ -55,14 +56,15 @@ public class ViewChatAdminActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
+        progressBar = findViewById(R.id.progress_bar);
 
+        firebaseAuth = FirebaseAuth.getInstance();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        firebaseAuth = FirebaseAuth.getInstance();
-        if(firebaseAuth == null) {
+        if(firebaseAuth.getCurrentUser() == null) {
             // Start sign in/sign up activity
             startActivityForResult(
                     AuthUI.getInstance()
@@ -80,16 +82,21 @@ public class ViewChatAdminActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG)
                     .show();
 
-            firebaseAuth = FirebaseAuth.getInstance();
-            reference = FirebaseDatabase.getInstance().getReference();
-
-            createUserModel();
-
-            updateUserInformation(userModel.getId(), userModel.getUsername(),
-                    userModel.getUrlPhoto(), userModel.getLastSeen(), true, false);
-
-            displayListAdmin();
+            setupDialogList();
         }
+    }
+
+    private void setupDialogList() {
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        reference = FirebaseDatabase.getInstance().getReference();
+
+        createUserModel();
+
+        updateUserInformation(userModel.getId(), userModel.getUsername(),
+                userModel.getUrlPhoto(), userModel.getLastSeen(), true, false);
+
+        displayListAdmin();
     }
 
     private void createUserModel() {
@@ -100,7 +107,7 @@ public class ViewChatAdminActivity extends AppCompatActivity {
         }
         String urlPhoto = "";
         if (firebaseAuth.getCurrentUser().getPhotoUrl() != null){
-            urlPhoto = firebaseAuth.getCurrentUser().getPhotoUrl().getPath();
+            urlPhoto = firebaseAuth.getCurrentUser().getPhotoUrl().toString();
         }
         long lastSeen = System.currentTimeMillis();
 
@@ -133,6 +140,8 @@ public class ViewChatAdminActivity extends AppCompatActivity {
                             userModel.setOnline(temp.getIsOnline());
                             userModel.setTyping(temp.getIsTyping());
                             userModel.setLastSeen(temp.getLastSeen());
+                            userModel.setUsername(temp.getUsername());
+                            userModel.setUrlPhoto(temp.getUrlPhoto());
                             adminUsers.add(userModel);
                         }
                     }
@@ -144,11 +153,15 @@ public class ViewChatAdminActivity extends AppCompatActivity {
                         Intent i = new Intent(ViewChatAdminActivity.this, ChatActivity.class);
                         i.putExtra(ChatActivity.ID_ADMIN_RECEIVER, ((UserModel) object).getId());
                         i.putExtra(ChatActivity.ID_USER_SENDER, userModel.getId());
+                        i.putExtra(ChatActivity.USERNAME_RECEIVER, ((UserModel) object).getUsername());
+                        i.putExtra(ChatActivity.URL_PHOTO_RECEIVER, ((UserModel) object).getUrlPhoto());
                         startActivity(i);
                     }
                 });
 
                 recyclerView.setAdapter(adapter);
+
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
@@ -161,17 +174,21 @@ public class ViewChatAdminActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        updateUserInformation(userModel.getId(), userModel.getUsername(),
-                userModel.getUrlPhoto(), System.currentTimeMillis(),
-                true, false);
+        if(firebaseAuth.getCurrentUser() != null) {
+            updateUserInformation(userModel.getId(), userModel.getUsername(),
+                    userModel.getUrlPhoto(), System.currentTimeMillis(),
+                    true, false);
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        updateUserInformation(userModel.getId(), userModel.getUsername(),
-                userModel.getUrlPhoto(), System.currentTimeMillis(),
-                false, false);
+        if(firebaseAuth.getCurrentUser() != null) {
+            updateUserInformation(userModel.getId(), userModel.getUsername(),
+                    userModel.getUrlPhoto(), System.currentTimeMillis(),
+                    false, false);
+        }
     }
 
     @Override
@@ -185,7 +202,7 @@ public class ViewChatAdminActivity extends AppCompatActivity {
                         "Successfully signed in. Welcome!",
                         Toast.LENGTH_LONG)
                         .show();
-                displayListAdmin();
+                setupDialogList();
             } else {
                 Toast.makeText(this,
                         "We couldn't sign you in. Please try again later.",
@@ -193,6 +210,7 @@ public class ViewChatAdminActivity extends AppCompatActivity {
                         .show();
 
                 // Close the app
+                onPause();
                 finish();
             }
         }
@@ -223,9 +241,13 @@ public class ViewChatAdminActivity extends AppCompatActivity {
                                     .show();
 
                             // Close activity
+                            onPause();
                             finish();
                         }
                     });
+        }else if (item.getItemId() == R.id.menu_edit_profile){
+            Intent intent = new Intent(this, SettingsProfileActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

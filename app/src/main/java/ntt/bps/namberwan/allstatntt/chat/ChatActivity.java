@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
@@ -28,11 +29,16 @@ import java.util.List;
 import java.util.Map;
 
 import ntt.bps.namberwan.allstatntt.R;
+import ntt.bps.namberwan.allstatntt.chat.notifications.Client;
+import ntt.bps.namberwan.allstatntt.chat.notifications.Token;
 
 public class ChatActivity extends AppCompatActivity implements MessageInput.InputListener, MessageInput.TypingListener {
 
-    public static final String ID_ADMIN_RECEIVER = "id receiver";
     public static final String ID_USER_SENDER = "id sender";
+    public static final String ID_ADMIN_RECEIVER = "id receiver";
+    public static final String USERNAME_RECEIVER = "username receiver";
+    public static final String URL_PHOTO_RECEIVER = "url photo receiver";
+
 
     private MessageInput messageInput;
     private MessagesList messagesList;
@@ -41,9 +47,11 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
     private User sender;
     private User receiver;
 
-    private String idReceiver;
     private String idSender;
     private String idChat;
+    private String idReceiver;
+    private String usernameReceiver;
+    private String photoReceiver;
 
     private FirebaseDatabase firebaseDatabase;
     private FirebaseUser firebaseUser;
@@ -51,6 +59,8 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
     private DatabaseReference reference;
 
     private UserModel userModel;
+
+    private APIService apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +81,9 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
         updateUserInformation(userModel.getId(), userModel.getUsername(),
                 userModel.getUrlPhoto(), userModel.getLastSeen(), true, false);
 
-        setupChatRoom();
-
         setupReceiverInformation();
+
+        setupChatRoom();
 
         initView();
 
@@ -105,7 +115,15 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
 
     private void setupReceiverInformation() {
 
-        setTitle(receiver.getName());
+        idReceiver = getIntent().getStringExtra(ID_ADMIN_RECEIVER);
+        usernameReceiver = getIntent().getStringExtra(USERNAME_RECEIVER);
+        photoReceiver = getIntent().getStringExtra(URL_PHOTO_RECEIVER);
+
+        UserModel receiverUM = new UserModel(idReceiver, usernameReceiver, photoReceiver);
+
+        receiver = new User(receiverUM.getId(), receiverUM.getUsername(), receiverUM.getUrlPhoto(), "", true);
+
+        setTitle(usernameReceiver);
 
         if (getSupportActionBar()!=null){
 
@@ -152,11 +170,14 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
         reference = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        updateToken(FirebaseInstanceId.getInstance().getToken());
+
+        apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
     }
 
     private void setupChatRoom() {
 
-        idReceiver = getIntent().getStringExtra(ID_ADMIN_RECEIVER);
         idSender = getIntent().getStringExtra(ID_USER_SENDER);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -167,10 +188,6 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
         }
 
         sender = new User(idSender, firebaseUser.getDisplayName(), urlAvatar, "",true);
-
-        UserModel receiverUM = ChatUtils.getAdminById(idReceiver);
-
-        receiver = new User(receiverUM.getId(), receiverUM.getUsername(), receiverUM.getUrlPhoto(), "", receiverUM.getIsOnline());
 
         idChat = createIdChat(idSender, idReceiver);
 
@@ -286,17 +303,21 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
     @Override
     protected void onResume() {
         super.onResume();
-        updateUserInformation(userModel.getId(), userModel.getUsername(),
-                userModel.getUrlPhoto(), System.currentTimeMillis(),
-                true, false);
+        if (firebaseAuth.getCurrentUser() != null){
+            updateUserInformation(userModel.getId(), userModel.getUsername(),
+                    userModel.getUrlPhoto(), System.currentTimeMillis(),
+                    true, false);
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        updateUserInformation(userModel.getId(), userModel.getUsername(),
-                userModel.getUrlPhoto(), System.currentTimeMillis(),
-                false, false);
+        if (firebaseAuth.getCurrentUser() != null){
+            updateUserInformation(userModel.getId(), userModel.getUsername(),
+                    userModel.getUrlPhoto(), System.currentTimeMillis(),
+                    false, false);
+        }
     }
 
     @Override
@@ -311,5 +332,12 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
         updateUserInformation(userModel.getId(), userModel.getUsername(),
                 userModel.getUrlPhoto(), System.currentTimeMillis(),
                 true, false);
+    }
+
+    private void updateToken(String token){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
+        Token token1 = new Token(token);
+        reference.child(idSender).setValue(token1);
+
     }
 }

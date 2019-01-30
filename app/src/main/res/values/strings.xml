@@ -121,7 +121,7 @@ Quam libero nulla netus eu porta curae, ut nulla bibendum facilisis et urna sed,
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_view_chat">ViewChatActivity</string>
+    <string name="title_activity_view_chat">Tanya Kami!</string>
     <string name="sign_out">Sign out</string>
     <string name="title_activity_chat">ChatActivity</string>
     <string name="hint_enter_a_message">Type a message…</string>
@@ -130,4 +130,6 @@ Quam libero nulla netus eu porta curae, ut nulla bibendum facilisis et urna sed,
     <string name="search_hint">Search Anything…</string>
     <string name="title_activity_search_result">SearchResultActivity</string>
     <string name="action_search">Search</string>
+    <string name="title_activity_settings_profile">SettingsProfileActivity</string>
+    <string name="edit_profile">Edit Profil</string>
 </resources>
