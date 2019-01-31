@@ -10,37 +10,68 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
+import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.chat.ChatActivity;
 
 public class MyFirebaseMessaging extends FirebaseMessagingService {
+
+    private static final String CHANNEL_ID = "id notifikasi channel indikator strategis NTT";
+
+    private static final int NOTIFICATION_DOWNLOAD_ID = 116951;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        android.os.Debug.waitForDebugger();
-
         String sented = remoteMessage.getData().get("sented");
+
+        Log.i("SENTED", sented);
+        Log.i("USER", remoteMessage.getData().get("user"));
+        Log.i("TITLE", remoteMessage.getData().get("title"));
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if (firebaseUser != null && sented.equals(firebaseUser.getUid())){
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
                 sendOreoNotification(remoteMessage);
-            } else {
+            }else {
                 sendNotification(remoteMessage);
-            }
+            }*/
+
+            send(remoteMessage);
         }
+
     }
 
-    private void sendOreoNotification(RemoteMessage remoteMessage) {
+    private void send(RemoteMessage remoteMessage) {
+        String user = remoteMessage.getData().get("user");
+        String icon = remoteMessage.getData().get("icon");
+        String title = remoteMessage.getData().get("title");
+        String body = remoteMessage.getData().get("body");
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID);
+        mBuilder.build();
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        mBuilder.setSmallIcon(R.drawable.baseline_save_24)
+                .setContentTitle(title)
+                .setContentText(body)
+                .setOnlyAlertOnce(true)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        notificationManager.notify(NOTIFICATION_DOWNLOAD_ID, mBuilder.build());
+    }
+
+/*    private void sendOreoNotification(RemoteMessage remoteMessage) {
         String user = remoteMessage.getData().get("user");
         String icon = remoteMessage.getData().get("icon");
         String title = remoteMessage.getData().get("title");
@@ -102,5 +133,5 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         }
 
         notificationManager.notify(i, builder.build());
-    }
+    }*/
 }
