@@ -383,7 +383,7 @@ public class AppUtils {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
             // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
+            // or other data behaviors after this
             NotificationManager notificationManager = activity.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }

@@ -14,6 +14,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.stfalcon.chatkit.messages.MessageInput;
@@ -30,7 +31,13 @@ import java.util.Map;
 
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.chat.notifications.Client;
+import ntt.bps.namberwan.allstatntt.chat.notifications.Data;
+import ntt.bps.namberwan.allstatntt.chat.notifications.MyResponse;
+import ntt.bps.namberwan.allstatntt.chat.notifications.Sender;
 import ntt.bps.namberwan.allstatntt.chat.notifications.Token;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ChatActivity extends AppCompatActivity implements MessageInput.InputListener, MessageInput.TypingListener {
 
@@ -61,6 +68,8 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
     private UserModel userModel;
 
     private APIService apiService;
+
+    private boolean notify = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,8 +180,6 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        updateToken(FirebaseInstanceId.getInstance().getToken());
-
         apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
     }
 
@@ -190,6 +197,8 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
         sender = new User(idSender, firebaseUser.getDisplayName(), urlAvatar, "",true);
 
         idChat = createIdChat(idSender, idReceiver);
+
+        updateToken(FirebaseInstanceId.getInstance().getToken());
 
     }
 
@@ -276,6 +285,47 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
 
         Message message = new Message(idSender, sender, input.toString());
         adapter.addToStart(message, true);
+
+        if (notify) {
+            sendNotification(idReceiver, usernameReceiver, input.toString());
+        }
+        notify = false;
+    }
+
+    private void sendNotification(String receiver, final String username, final String message){
+        DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
+        Query query = tokens.orderByKey().equalTo(receiver);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Token token = snapshot.getValue(Token.class);
+                    Data data = new Data(idSender, R.mipmap.ic_launcher, message, username, idReceiver);
+                    Sender sender = new Sender(data, token.getToken());
+
+                    apiService.sendNotification(sender).enqueue(new Callback<MyResponse>() {
+                        @Override
+                        public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+                            if (response.code() == 200){
+                                if (response.body().success == 1){
+                                    Toast.makeText(ChatActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<MyResponse> call, Throwable t) {
+                            int i = 0;
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -287,6 +337,7 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
     @Override
     public boolean onSubmit(CharSequence input) {
         if (!input.equals("")){
+            notify = true;
             sendMessage(input);
         } else {
             Toast.makeText(ChatActivity.this, "Isi pesan kosong, mau kirim apa?", Toast.LENGTH_SHORT).show();
@@ -338,6 +389,5 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
         Token token1 = new Token(token);
         reference.child(idSender).setValue(token1);
-
     }
 }
