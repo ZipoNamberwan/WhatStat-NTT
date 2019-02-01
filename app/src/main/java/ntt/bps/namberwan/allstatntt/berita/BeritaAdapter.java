@@ -68,6 +68,8 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.Holder> {
                 .fit()
                 .into(holder.photo);
 
+        holder.photo.setVisibility(View.GONE);
+
         setupButton(holder.share, holder.bookmark, holder.expand, holder.rincian, item);
         setupCardView(holder.cardView);
     }

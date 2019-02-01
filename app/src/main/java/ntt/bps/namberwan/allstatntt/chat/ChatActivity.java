@@ -106,7 +106,7 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
         }
         String urlPhoto = "";
         if (firebaseAuth.getCurrentUser().getPhotoUrl() != null){
-            urlPhoto = firebaseAuth.getCurrentUser().getPhotoUrl().getPath();
+            urlPhoto = firebaseAuth.getCurrentUser().getPhotoUrl().toString();
         }
         long lastSeen = System.currentTimeMillis();
 
@@ -287,7 +287,7 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
         adapter.addToStart(message, true);
 
         if (notify) {
-            sendNotification(idReceiver, usernameReceiver, input.toString());
+            sendNotification(idReceiver, userModel.getUsername(), input.toString());
         }
         notify = false;
     }
@@ -300,22 +300,21 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Token token = snapshot.getValue(Token.class);
-                    Data data = new Data(idSender, R.mipmap.ic_launcher, message, username, idReceiver);
+                    Data data = new Data(idSender, userModel.getUsername(), userModel.getUrlPhoto(), R.drawable.ic_bps_launcher, message, username + " (Admin BPS)", idReceiver);
                     Sender sender = new Sender(data, token.getToken());
 
                     apiService.sendNotification(sender).enqueue(new Callback<MyResponse>() {
                         @Override
                         public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
-                            if (response.code() == 200){
+                            /*if (response.code() == 200){
                                 if (response.body().success == 1){
                                     Toast.makeText(ChatActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                                 }
-                            }
+                            }*/
                         }
 
                         @Override
                         public void onFailure(Call<MyResponse> call, Throwable t) {
-                            int i = 0;
                         }
                     });
                 }
