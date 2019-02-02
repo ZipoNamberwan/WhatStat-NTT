@@ -242,14 +242,16 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
 
     private void displayMessage(final String idSender, final String idReceiver) {
 
+        //display history
         final List<Message> messages = new ArrayList<>();
-        DatabaseReference reference = firebaseDatabase.getReference("Chats").child(idChat);
+        final DatabaseReference reference = firebaseDatabase.getReference("Chats").child(idChat);
         reference.keepSynced(true);
         reference.orderByChild("createdAt");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                messages.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     MessageModel temp = snapshot.getValue(MessageModel.class);
                     if (temp.getSender().equals(idSender) && temp.getReceiver().equals(idReceiver)
@@ -260,6 +262,7 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
                     }
                 }
 
+                //adapter = new MessagesListAdapter<>(idSender, null);
                 adapter.clear();
                 adapter.addToEnd(messages, true);
             }
@@ -305,7 +308,7 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
 
                     apiService.sendNotification(sender).enqueue(new Callback<MyResponse>() {
                         @Override
-                        public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+                        public void onResponse(@NonNull Call<MyResponse> call, Response<MyResponse> response) {
                             /*if (response.code() == 200){
                                 if (response.body().success == 1){
                                     Toast.makeText(ChatActivity.this, "Failed", Toast.LENGTH_SHORT).show();
@@ -314,7 +317,7 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
                         }
 
                         @Override
-                        public void onFailure(Call<MyResponse> call, Throwable t) {
+                        public void onFailure(@NonNull Call<MyResponse> call, Throwable t) {
                         }
                     });
                 }

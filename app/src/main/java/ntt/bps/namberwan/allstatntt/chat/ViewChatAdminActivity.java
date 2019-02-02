@@ -231,6 +231,11 @@ public class ViewChatAdminActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.menu_sign_out) {
+            if(firebaseAuth.getCurrentUser() != null) {
+                updateUserInformation(userModel.getId(), userModel.getUsername(),
+                        userModel.getUrlPhoto(), System.currentTimeMillis(),
+                        false, false);
+            }
             AuthUI.getInstance().signOut(this)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -241,7 +246,6 @@ public class ViewChatAdminActivity extends AppCompatActivity {
                                     .show();
 
                             // Close activity
-                            onPause();
                             finish();
                         }
                     });
