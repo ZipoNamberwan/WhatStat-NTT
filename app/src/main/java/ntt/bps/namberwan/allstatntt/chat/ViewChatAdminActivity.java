@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -34,6 +35,8 @@ public class ViewChatAdminActivity extends AppCompatActivity {
 
     public static final int SIGN_IN_REQUEST_CODE = 0;
 
+    private CardView listCardView;
+    private CardView infoCardView;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
 
@@ -57,6 +60,8 @@ public class ViewChatAdminActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
         progressBar = findViewById(R.id.progress_bar);
+        listCardView = findViewById(R.id.card_view);
+        infoCardView = findViewById(R.id.information);
 
         firebaseAuth = FirebaseAuth.getInstance();
     }
@@ -125,6 +130,9 @@ public class ViewChatAdminActivity extends AppCompatActivity {
 
     private void displayListAdmin() {
 
+        listCardView.setVisibility(View.GONE);
+        infoCardView.setVisibility(View.GONE);
+
         DatabaseReference ref = reference.child("Users");
 
         ref.addValueEventListener(new ValueEventListener() {
@@ -161,6 +169,8 @@ public class ViewChatAdminActivity extends AppCompatActivity {
 
                 recyclerView.setAdapter(adapter);
 
+                listCardView.setVisibility(View.VISIBLE);
+                infoCardView.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
             }
 
@@ -249,10 +259,10 @@ public class ViewChatAdminActivity extends AppCompatActivity {
                             finish();
                         }
                     });
-        }else if (item.getItemId() == R.id.menu_edit_profile){
+        }/*else if (item.getItemId() == R.id.menu_edit_profile){
             Intent intent = new Intent(this, SettingsProfileActivity.class);
             startActivity(intent);
-        }
+        }*/
         return super.onOptionsItemSelected(item);
     }
 }

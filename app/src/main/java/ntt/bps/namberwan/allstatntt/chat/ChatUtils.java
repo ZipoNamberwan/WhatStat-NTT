@@ -18,7 +18,7 @@ public class ChatUtils {
         ArrayList<UserModel> adminUsers = new ArrayList<>();
         adminUsers.add(new UserModel("HV8p5WYKBDVewiRiYyJkePhpNbi1", "Test Admin"));
         adminUsers.add(new UserModel("xZMJl3pua3N5BIj96O4PcZ5iPB53", "Test Admin 2"));
-        adminUsers.add(new UserModel("oDEQuIwa5tf8ElXfeqja3aVb0Ux2", "Test Admin 3"));
+        //adminUsers.add(new UserModel("oDEQuIwa5tf8ElXfeqja3aVb0Ux2", "Test Admin 3"));
 
         return adminUsers;
     }

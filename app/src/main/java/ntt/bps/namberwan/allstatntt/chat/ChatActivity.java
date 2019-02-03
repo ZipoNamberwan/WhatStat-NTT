@@ -47,8 +47,6 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
     public static final String URL_PHOTO_RECEIVER = "url photo receiver";
 
 
-    private MessageInput messageInput;
-    private MessagesList messagesList;
     private MessagesListAdapter<Message> adapter;
 
     private User sender;
@@ -57,8 +55,6 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
     private String idSender;
     private String idChat;
     private String idReceiver;
-    private String usernameReceiver;
-    private String photoReceiver;
 
     private FirebaseDatabase firebaseDatabase;
     private FirebaseUser firebaseUser;
@@ -125,8 +121,8 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
     private void setupReceiverInformation() {
 
         idReceiver = getIntent().getStringExtra(ID_ADMIN_RECEIVER);
-        usernameReceiver = getIntent().getStringExtra(USERNAME_RECEIVER);
-        photoReceiver = getIntent().getStringExtra(URL_PHOTO_RECEIVER);
+        String usernameReceiver = getIntent().getStringExtra(USERNAME_RECEIVER);
+        String photoReceiver = getIntent().getStringExtra(URL_PHOTO_RECEIVER);
 
         UserModel receiverUM = new UserModel(idReceiver, usernameReceiver, photoReceiver);
 
@@ -212,11 +208,11 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
 
     private void initView() {
 
-        messageInput = findViewById(R.id.input);
+        MessageInput messageInput = findViewById(R.id.input);
         messageInput.setInputListener(this);
         messageInput.setTypingListener(this);
 
-        messagesList = findViewById(R.id.messages_list);
+        MessagesList messagesList = findViewById(R.id.messages_list);
 
         //initial setup adapter
         adapter = new MessagesListAdapter<>(idSender, null);
