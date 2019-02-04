@@ -17,7 +17,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import ntt.bps.namberwan.allstatntt.DatabaseHelper;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.RecyclerViewClickListener;
 
@@ -25,13 +24,11 @@ public class AdminUserAdapter extends RecyclerView.Adapter<AdminUserAdapter.Hold
 
     private List<UserModel> list;
     private Context context;
-    private DatabaseHelper db;
     private RecyclerViewClickListener listener;
 
     public AdminUserAdapter(List<UserModel> list, Context context, RecyclerViewClickListener listener) {
         this.list = list;
         this.context = context;
-        db = new DatabaseHelper(context);
         this.listener = listener;
     }
 

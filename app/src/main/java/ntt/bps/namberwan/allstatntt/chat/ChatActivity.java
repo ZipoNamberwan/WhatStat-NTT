@@ -305,11 +305,7 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
                     apiService.sendNotification(sender).enqueue(new Callback<MyResponse>() {
                         @Override
                         public void onResponse(@NonNull Call<MyResponse> call, Response<MyResponse> response) {
-                            /*if (response.code() == 200){
-                                if (response.body().success == 1){
-                                    Toast.makeText(ChatActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-                                }
-                            }*/
+
                         }
 
                         @Override
