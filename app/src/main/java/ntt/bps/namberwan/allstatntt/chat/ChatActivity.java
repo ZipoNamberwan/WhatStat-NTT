@@ -278,7 +278,8 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
         hashMap.put("sender", sender.getId());
         hashMap.put("receiver", receiver.getId());
         hashMap.put("message", input.toString());
-        hashMap.put("createdAt", System.currentTimeMillis());
+        long now = System.currentTimeMillis();
+        hashMap.put("createdAt", now);
 
         reference.child("Chats").child(idChat).push().setValue(hashMap);
 
@@ -289,6 +290,32 @@ public class ChatActivity extends AppCompatActivity implements MessageInput.Inpu
             sendNotification(idReceiver, userModel.getUsername(), input.toString());
         }
         notify = false;
+
+        makeChatList(input.toString(), now);
+    }
+
+    private void makeChatList(String input, long now) {
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chatlist").child(idReceiver);
+
+        Map<String, Object> update = new HashMap<>();
+        update.put("username", userModel.getUsername());
+        if (userModel.getUrlPhoto() != null){
+            update.put("urlPhoto", userModel.getUrlPhoto());
+        } else {
+            update.put("urlPhoto", "");
+        }
+
+        update.put("lastMessage", input);
+
+        update.put("messageSent", now);
+
+        update.put("idSender", userModel.getId());
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/" + idSender + "/", update);
+
+        reference.updateChildren(childUpdates);
     }
 
     private void sendNotification(String receiver, final String username, final String message){

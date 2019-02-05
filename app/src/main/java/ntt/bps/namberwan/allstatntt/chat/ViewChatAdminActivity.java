@@ -44,6 +44,8 @@ public class ViewChatAdminActivity extends AppCompatActivity {
     private DatabaseReference reference;
     private UserModel userModel;
 
+    boolean isFirstCreate = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +66,8 @@ public class ViewChatAdminActivity extends AppCompatActivity {
         infoCardView = findViewById(R.id.information);
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+        isFirstCreate = true;
     }
 
     @Override
@@ -80,12 +84,16 @@ public class ViewChatAdminActivity extends AppCompatActivity {
         } else {
             // User is already signed in. Therefore, display
             // a welcome Toast
-            Toast.makeText(this,
-                    "Welcome " + FirebaseAuth.getInstance()
-                            .getCurrentUser()
-                            .getDisplayName(),
-                    Toast.LENGTH_LONG)
-                    .show();
+            if (isFirstCreate){
+                Toast.makeText(this,
+                        "Welcome " + FirebaseAuth.getInstance()
+                                .getCurrentUser()
+                                .getDisplayName(),
+                        Toast.LENGTH_LONG)
+                        .show();
+
+                isFirstCreate = false;
+            }
 
             setupDialogList();
         }
