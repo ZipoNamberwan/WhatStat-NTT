@@ -36,6 +36,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+            <intent-filter>
+                <action android:name=".MainActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value="ntt.bps.namberwan.allstatntt.search.SearchResultActivity" />
@@ -109,11 +114,16 @@
 
         <service android:name=".chat.notifications.MyFirebaseMessaging"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            android:stopWithTask="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_bps_launcher" />
     </application>
 
 </manifest>

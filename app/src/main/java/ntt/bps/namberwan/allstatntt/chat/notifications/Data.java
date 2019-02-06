@@ -8,14 +8,22 @@ public class Data {
     private String title;
     private String photo;
     private String username;
+    private String click_action;
 
     public Data() {
+    }
+
+    public Data(String title, String body, String click_action) {
+        this.body = body;
+        this.title = title;
+        this.click_action = click_action;
     }
 
     public Data(String user, String username, String photo, int icon, String body, String title, String sented) {
 
         this.user = user;
         this.icon = icon;
+
         this.body = body;
         this.title = title;
         this.sented = sented;

@@ -24,6 +24,7 @@ import android.view.View;
 
 import ntt.bps.namberwan.allstatntt.berita.BeritaFragment;
 import ntt.bps.namberwan.allstatntt.brs.BrsFragment;
+import ntt.bps.namberwan.allstatntt.chat.ChatActivity;
 import ntt.bps.namberwan.allstatntt.chat.ViewChatAdminActivity;
 import ntt.bps.namberwan.allstatntt.indikator.IndikatorFragment;
 import ntt.bps.namberwan.allstatntt.publikasi.PublikasiFragment;
@@ -33,20 +34,36 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String SEARCH_KEYWORD = "search keyword";
 
-    private Toolbar toolbar;
-    private FloatingActionButton fab;
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        viewPager = findViewById(R.id.viewpager);
-        tabLayout = findViewById(R.id.tabs);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            if (bundle.getString("sented")!=null){
+                String sender = bundle.getString("sented");
+                String receiver = bundle.getString("user");
+                String username = bundle.getString("username");
+                String photo = bundle.getString("photo");
+
+                Intent i = new Intent(this, ChatActivity.class);
+                i.putExtra(ChatActivity.ID_ADMIN_RECEIVER, receiver);
+                i.putExtra(ChatActivity.ID_USER_SENDER, sender);
+                i.putExtra(ChatActivity.USERNAME_RECEIVER, username);
+                i.putExtra(ChatActivity.URL_PHOTO_RECEIVER, photo);
+                startActivity(i);
+            }
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        ViewPager viewPager = findViewById(R.id.viewpager);
+        TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
         if (getSupportActionBar()!=null){
@@ -74,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
         AppUtils.createNotificationChannel(this);
 
-        fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,9 +99,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
-        //fab.setVisibility(View.GONE);
-
     }
 
     private void checkPermission() {

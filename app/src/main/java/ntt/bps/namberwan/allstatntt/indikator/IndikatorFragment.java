@@ -30,7 +30,6 @@ import java.util.Comparator;
 
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import ntt.bps.namberwan.allstatntt.DatabaseHelper;
 import ntt.bps.namberwan.allstatntt.EndlessRecyclerViewScrollListener;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.RecyclerViewClickListener;
@@ -41,9 +40,7 @@ import ntt.bps.namberwan.allstatntt.VolleySingleton;
  */
 public class IndikatorFragment extends Fragment {
 
-    private DatabaseHelper db;
     private RequestQueue queue;
-    private boolean isLoading;
 
     private ArrayList<IndikatorItem> list;
     private IndikatorAdapter adapter;
@@ -61,7 +58,6 @@ public class IndikatorFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_indikator, container, false);
 
-        db = new DatabaseHelper(getContext());
         queue = VolleySingleton.getInstance(getContext()).getRequestQueue();
 
         shimmerFrameLayout = view.findViewById(R.id.shimmer);
@@ -170,7 +166,6 @@ public class IndikatorFragment extends Fragment {
     }
 
     private void addDataToArray(final int page) {
-        isLoading = true;
         if (list.isEmpty()){
             setViewVisibility(false, true, false);
         }
@@ -183,12 +178,10 @@ public class IndikatorFragment extends Fragment {
                             setViewVisibility(true, false, false);
                         }
                         addJSONToAdapter(jsonObject, page);
-                        isLoading = false;
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                isLoading = false;
                 if (list.isEmpty()){
                     setViewVisibility(false, false, true);
                 }
