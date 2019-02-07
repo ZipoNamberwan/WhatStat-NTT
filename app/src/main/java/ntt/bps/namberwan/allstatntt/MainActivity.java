@@ -41,27 +41,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            if (bundle.getString("sented")!=null){
-                String sender = bundle.getString("sented");
-                String receiver = bundle.getString("user");
-                String username = bundle.getString("username");
-                String photo = bundle.getString("photo");
-
-                Intent i = new Intent(this, ChatActivity.class);
-                i.putExtra(ChatActivity.ID_ADMIN_RECEIVER, receiver);
-                i.putExtra(ChatActivity.ID_USER_SENDER, sender);
-                i.putExtra(ChatActivity.USERNAME_RECEIVER, username);
-                i.putExtra(ChatActivity.URL_PHOTO_RECEIVER, photo);
-                startActivity(i);
-            }
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
         ViewPager viewPager = findViewById(R.id.viewpager);
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
@@ -99,6 +78,28 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            if (bundle.getString("sented")!=null){
+                String sender = bundle.getString("sented");
+                String receiver = bundle.getString("user");
+                String username = bundle.getString("username");
+                String photo = bundle.getString("photo");
+
+                Intent i = new Intent(this, ChatActivity.class);
+                i.putExtra(ChatActivity.ID_ADMIN_RECEIVER, receiver);
+                i.putExtra(ChatActivity.ID_USER_SENDER, sender);
+                i.putExtra(ChatActivity.USERNAME_RECEIVER, username);
+                i.putExtra(ChatActivity.URL_PHOTO_RECEIVER, photo);
+                startActivity(i);
+            }
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     private void checkPermission() {
