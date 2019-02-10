@@ -60,7 +60,6 @@ public class IndikatorViewActivity extends AppCompatActivity {
 
     public static final String VAR_ID = "var id";
 
-    private RequestQueue queue;
     private boolean isLoading;
 
     private JSONObject jsonObject;
@@ -155,7 +154,7 @@ public class IndikatorViewActivity extends AppCompatActivity {
 
     private void getData(String idVar) {
         isLoading = true;
-        queue = VolleySingleton.getInstance(this).getRequestQueue();
+        RequestQueue queue = VolleySingleton.getInstance(this).getRequestQueue();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getString(R.string.web_service_path_detail_indicators)
                 + getString(R.string.api_key) + "&var=" + idVar, null,
                 new Response.Listener<JSONObject>() {
@@ -664,6 +663,72 @@ public class IndikatorViewActivity extends AppCompatActivity {
                     turTahunArrayJson.getJSONObject(i).getString("label")));
         }
         turunanTahunVariabels = sortTurTahunList(turunanTahunVariabels);
+
+        //and then come this shit
+        if (defVar.equals("")){
+            switch (idVar) {
+                case "46":
+                    //IPM
+                    defVar = getString(R.string.desc_ipm);
+                    note = getString(R.string.source_ipm);
+                    break;
+                case "28":
+                    //jumlah penduduk
+                    defVar = getString(R.string.desc_jml_penduduk);
+                    note = getString(R.string.source_jml_penduduk);
+                    break;
+                case "1":
+                    //inflasi
+                    defVar = getString(R.string.desc_inflasi);
+                    note = getString(R.string.source_inflasi);
+                    break;
+                case "584":
+                    //jml penduduk miskin
+                    defVar = getString(R.string.desc_kemiskinan);
+                    note = getString(R.string.source_kemiskinan);
+                    break;
+                case "522":
+                    //pengangguran
+                    defVar = getString(R.string.desc_pengangguran);
+                    note = getString(R.string.source_pengangguran);
+                    break;
+                case "438":
+                    //pertumbuhan ekonomi
+                    defVar = getString(R.string.desc_pertumbuhan_ekonomi);
+                    note = getString(R.string.source_pertumbuhan_ekonomi);
+                    break;
+                case "583":
+                    //Harapan Hidup
+                    defVar = getString(R.string.desc_ahh);
+                    note = getString(R.string.source_ahh);
+                    break;
+                case "107":
+                    //Ekspor
+                    defVar = getString(R.string.desc_ekspor_impor);
+                    note = getString(R.string.source_ekspor_impor);
+                    break;
+                case "109":
+                    //Impor
+                    defVar = getString(R.string.desc_ekspor_impor);
+                    note = getString(R.string.source_ekspor_impor);
+                    break;
+                case "104":
+                    //NTP
+                    defVar = getString(R.string.desc_ntp);
+                    note = getString(R.string.source_ntp);
+                    break;
+                case "67":
+                    //Jumlah Wisman
+                    defVar = getString(R.string.desc_jml_wisatawan);
+                    note = getString(R.string.source_jml_wisatawan);
+                    break;
+                case "616":
+                    //Gini Rasio
+                    defVar = getString(R.string.desc_gini_rasio);
+                    note = getString(R.string.source_gini_rasio);
+                    break;
+            }
+        }
     }
 
     private AlertDialog createVervarDialog() {

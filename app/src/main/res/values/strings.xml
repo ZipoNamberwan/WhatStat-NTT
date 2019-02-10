@@ -132,4 +132,36 @@ Quam libero nulla netus eu porta curae, ut nulla bibendum facilisis et urna sed,
     <string name="action_search">Search</string>
     <string name="title_activity_settings_profile">SettingsProfileActivity</string>
     <string name="edit_profile">Edit Profil</string>
+
+    <string name="desc_ipm">Menurut UNDP, Indeks Pembangunan Manusia (IPM) mengukur capaian pembangunan manusia berbasis sejumlah komponen dasar kualitas hidup. Sebagai ukuran kualitas hidup, IPM dibangun melalui pendekatan tiga dimensi dasar. Dimensi tersebut mencakup umur panjang dan sehat; penegtahuan, dan kehidupan yang layak.
+Angka IPM memberikan gambaran komprehensip mengenai tingkat pencapaian pembagunan manusia sebagai dampak dari kegiatan pembangunan yang akan dilakukan oleh suatu negara/daerah. Semakin tinggi nilai IPM suatu negara/daerah, menunjukkan pencapaian pembangunan manusianya semakin baik.
+</string>
+    <string name="desc_inflasi">Inflasi adalah persentase tingkat kenaikan harga sejumlah barang dan jasa yang secara umum dikonsumsi rumah tangga.</string>
+    <string name="desc_jml_penduduk"> </string>
+    <string name="desc_kemiskinan">Untuk mengukur kemiskinan, BPS menggunakan konsep kemampuan memenuhi kebutuhan dasar (basic needs approach). Dengan pendekatan ini, kemiskinan dipandang sebagai ketidakmampuan dari sisi ekonomi untuk memenuhi kebutuhan dasar makanan dan bukan makanan yang diukur dari sisi pengeluaran. Jadi Penduduk Miskin adalah penduduk yang memiliki rata-rata pengeluaran perkapita perbulan dibawah garis kemiskinan.</string>
+    <string name="desc_pengangguran">Persentase jumlah pengangguran terhadap jumlah angkatan kerja. TPT yang tinggi menunjukkan bahwa terdapat banyak angkatan kerja yang tidak terserap pada pasar kerja.</string>
+    <string name="desc_pertumbuhan_ekonomi"> </string>
+    <string name="desc_ahh">Angka Harapan Hidup saat Lahir (AHH) didefinisikan sebagai rata-rata perkiraan banyak tahun yang dapat ditempuh oleh seseorang sejak lahir.</string>
+    <string name="desc_ekspor_impor"> </string>
+    <string name="desc_ntp">Perbandingan antara indeks harga yang diterima petani (It) dengan indeks harga yang dibayar petani (Ib) yang dinyatakan dalam persentase. Secara konsep NTP menyatakan tingkat kemampuan tukar atas barang-barang (produk) yang dihasilkan petani di pedesaan terhadap barang/jasa yang dibutuhkan untuk konsumsi rumah tangga dan keperluan dalam proses produksi pertanian.
+\n a. NTP &gt; 100 : berarti petani mengalami surplus. Pendapatan petani naik lebih besar daro pengeluarannnya, dengan demikian tingkat kesejahteraan petani lebih baik dibanding tingkat kesejahteraan petani sebelumnya.
+\n b. NTP = 100 : berarti petani mengalami impas/break even. Tingkat kesejahteraan petani tidak mengalami perubahan.
+\n c. NTP &lt; 100 : berarti petani mengalami defisit. Tingkat kesejahteraan petani pada suatu periode mengalami penurunan dibanding tingkat kesejahteraan petani pada periode sebelumnya.
+</string>
+    <string name="desc_jml_wisatawan"> </string>
+    <string name="desc_gini_rasio">Melihat ketimpangan pendapatan/pengeluaran penduduk di suatu wilayah. Koefisien Gini berkisar antara 0 sampai 1. Apabila koefisien Gini berniali 0 berarti pemerataan sempurna, sedangkan apabila bernilai 1 berarti ketimpangan sempurna.
+</string>
+
+    <string name="source_ipm">Survei Sosial Ekonomi Nasional</string>
+    <string name="source_inflasi">Survei Harga Konsumen</string>
+    <string name="source_jml_penduduk"> </string>
+    <string name="source_kemiskinan">Survei Sosial Ekonomi Nasional</string>
+    <string name="source_pengangguran">Survei Angkatan Kerja Nasional</string>
+    <string name="source_pertumbuhan_ekonomi"> </string>
+    <string name="source_ahh"> </string>
+    <string name="source_ekspor_impor"> </string>
+    <string name="source_ntp">Survei Harga Konsumen Perdesaan dan Survei Harga Produsen Perdesaan</string>
+    <string name="source_jml_wisatawan"> </string>
+    <string name="source_gini_rasio"> </string>
+
 </resources>

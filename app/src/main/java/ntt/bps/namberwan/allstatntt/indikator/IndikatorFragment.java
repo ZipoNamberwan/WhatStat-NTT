@@ -196,16 +196,17 @@ public class IndikatorFragment extends Fragment {
                 JSONArray jsonArray = jsonObject.getJSONArray("data").getJSONArray(1);
                 ArrayList<IndikatorItem> subList = new ArrayList<>();
                 for (int i = 0; i < jsonArray.length(); i++){
+                    int position = getPosition(jsonArray.getJSONObject(i).getString("indicator_id"));
                     subList.add(new IndikatorItem(jsonArray.getJSONObject(i).getString("indicator_id"),
                             jsonArray.getJSONObject(i).getString("title"), jsonArray.getJSONObject(i).getString("name"),
                             jsonArray.getJSONObject(i).getString("data_source"), jsonArray.getJSONObject(i).getString("value"),
-                            jsonArray.getJSONObject(i).getString("unit")));
+                            jsonArray.getJSONObject(i).getString("unit"), position));
                 }
                 Collections.sort(subList, new Comparator<IndikatorItem>() {
                     @Override
                     public int compare(IndikatorItem o1, IndikatorItem o2) {
-                        Integer a = Integer.parseInt(o1.getId());
-                        Integer b = Integer.parseInt(o2.getId());
+                        Integer a = o1.getPosition();
+                        Integer b = o2.getPosition();
                         return a.compareTo(b);
                     }
                 });
@@ -215,6 +216,49 @@ public class IndikatorFragment extends Fragment {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    private int getPosition(String indikatorId) {
+        switch (indikatorId) {
+            case "1":
+                //IPM
+                return 2;
+            case "2":
+                //jumlah penduduk
+                return 1;
+            case "3":
+                //inflasi
+                return 5;
+            case "4":
+                //jml penduduk miskin
+                return 3;
+            case "5":
+                //pengangguran
+                return 4;
+            case "7":
+                //pertumbuhan ekonomi
+                return 9;
+            case "8":
+                //Harapan Hidup
+                return 10;
+            case "9":
+                //Ekspor
+                return 7;
+            case "10":
+                //Impor
+                return 8;
+            case "11":
+                //NTP
+                return 6;
+            case "12":
+                //Jumlah Wisman
+                return 1;
+            case "13":
+                //Gini Rasio
+                return 1;
+            default:
+                return 1;
         }
     }
 

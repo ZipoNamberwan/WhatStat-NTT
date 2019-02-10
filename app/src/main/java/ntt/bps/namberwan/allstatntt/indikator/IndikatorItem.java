@@ -8,14 +8,21 @@ public class IndikatorItem {
     private String sumber;
     private String nilai;
     private String satuan;
+    private int position;
 
-    public IndikatorItem(String id, String judul, String nama, String sumber, String nilai, String satuan){
+    public int getPosition() {
+        return position;
+    }
+
+    public IndikatorItem(String id, String judul, String nama, String sumber, String nilai, String satuan, int position){
         this.id = id;
         this.judul = judul;
         this.nama = nama;
         this.sumber = sumber;
         this.nilai= nilai;
         this.satuan = satuan;
+        this.position = position;
+
     }
 
     public String getId() {
