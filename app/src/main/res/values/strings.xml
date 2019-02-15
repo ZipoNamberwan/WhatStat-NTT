@@ -163,5 +163,6 @@ Angka IPM memberikan gambaran komprehensip mengenai tingkat pencapaian pembaguna
     <string name="source_ntp">Survei Harga Konsumen Perdesaan dan Survei Harga Produsen Perdesaan</string>
     <string name="source_jml_wisatawan"> </string>
     <string name="source_gini_rasio"> </string>
+    <string name="detail_popup">Detail Indikator</string>
 
 </resources>

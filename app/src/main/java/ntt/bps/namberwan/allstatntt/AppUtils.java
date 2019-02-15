@@ -415,4 +415,59 @@ public class AppUtils {
         return prefix + tanggalUrl + "/" + id +"/" + titleUrl + ".html";
 
     }
+
+    public static String getVarId(String indikatorId){
+        String s = "";
+        switch (indikatorId) {
+            case "1":
+                //IPM
+                s = "46";
+                break;
+            case "2":
+                //jumlah penduduk
+                s = "28";
+                break;
+            case "3":
+                //inflasi
+                s =  "1";
+                break;
+            case "4":
+                //jml penduduk miskin
+                s = "584";
+                break;
+            case "5":
+                //pengangguran
+                s = "522";
+                break;
+            case "7":
+                //pertumbuhan ekonomi
+                s = "438";
+                break;
+            case "8":
+                //Harapan Hidup
+                s = "583";
+                break;
+            case "9":
+                //Ekspor
+                s = "107";
+                break;
+            case "10":
+                //Impor
+                s = "109";
+                break;
+            case "11":
+                //NTP
+                s = "104";
+                break;
+            case "12":
+                //Jumlah Wisman
+                s = "67";
+                break;
+            case "13":
+                //Gini Rasio
+                s = "616";
+                break;
+        }
+        return s;
+    }
 }

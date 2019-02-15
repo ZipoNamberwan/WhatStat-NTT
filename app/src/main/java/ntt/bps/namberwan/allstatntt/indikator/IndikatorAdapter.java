@@ -1,11 +1,15 @@
 package ntt.bps.namberwan.allstatntt.indikator;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -34,7 +38,7 @@ public class IndikatorAdapter extends RecyclerView.Adapter<IndikatorAdapter.Hold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Holder holder, int position) {
+    public void onBindViewHolder(@NonNull final Holder holder, int position) {
         final IndikatorItem item = list.get(position);
         holder.bind(item, listener);
         holder.judul.setText(item.getJudul());
@@ -49,6 +53,28 @@ public class IndikatorAdapter extends RecyclerView.Adapter<IndikatorAdapter.Hold
         }
         String s = "*Sumber: "+item.getSumber();
         holder.sumber.setText(s);
+
+        holder.button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                PopupMenu popup = new PopupMenu(context, holder.button);
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.pop_up_menu, popup.getMenu());
+
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        Intent i = new Intent(context, IndikatorViewActivity.class);
+                        i.putExtra(IndikatorViewActivity.VAR_ID, AppUtils.getVarId(item.getId()));
+                        context.startActivity(i);
+                        return true;
+                    }
+                });
+
+                popup.show();
+            }
+        });
     }
 
     @Override
@@ -62,6 +88,7 @@ public class IndikatorAdapter extends RecyclerView.Adapter<IndikatorAdapter.Hold
         private TextView nilai;
         private TextView satuan;
         private TextView sumber;
+        private ImageButton button;
 
         public Holder(View itemView) {
             super(itemView);
@@ -69,6 +96,7 @@ public class IndikatorAdapter extends RecyclerView.Adapter<IndikatorAdapter.Hold
             nilai = itemView.findViewById(R.id.nilai);
             satuan = itemView.findViewById(R.id.satuan);
             sumber = itemView.findViewById(R.id.sumber);
+            button = itemView.findViewById(R.id.more_button);
         }
 
         public void bind(final IndikatorItem bukuItem, final RecyclerViewClickListener listener) {

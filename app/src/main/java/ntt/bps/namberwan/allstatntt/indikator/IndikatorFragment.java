@@ -30,6 +30,7 @@ import java.util.Comparator;
 
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
+import ntt.bps.namberwan.allstatntt.AppUtils;
 import ntt.bps.namberwan.allstatntt.EndlessRecyclerViewScrollListener;
 import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.RecyclerViewClickListener;
@@ -83,68 +84,8 @@ public class IndikatorFragment extends Fragment {
             public void onItemClick(Object object) {
                 //do shit here
                 Intent i = new Intent(getActivity(), IndikatorViewActivity.class);
-                switch (((IndikatorItem) object).getId()) {
-                    case "1":
-                        //IPM
-                        i.putExtra(IndikatorViewActivity.VAR_ID, "46");
-                        startActivity(i);
-                        break;
-                    case "2":
-                        //jumlah penduduk
-                        i.putExtra(IndikatorViewActivity.VAR_ID, "28");
-                        startActivity(i);
-                        break;
-                    case "3":
-                        //inflasi
-                        i.putExtra(IndikatorViewActivity.VAR_ID, "1");
-                        startActivity(i);
-                        break;
-                    case "4":
-                        //jml penduduk miskin
-                        i.putExtra(IndikatorViewActivity.VAR_ID, "584");
-                        startActivity(i);
-                        break;
-                    case "5":
-                        //pengangguran
-                        i.putExtra(IndikatorViewActivity.VAR_ID, "522");
-                        startActivity(i);
-                        break;
-                    case "7":
-                        //pertumbuhan ekonomi
-                        i.putExtra(IndikatorViewActivity.VAR_ID, "438");
-                        startActivity(i);
-                        break;
-                    case "8":
-                        //Harapan Hidup
-                        i.putExtra(IndikatorViewActivity.VAR_ID, "583");
-                        startActivity(i);
-                        break;
-                    case "9":
-                        //Ekspor
-                        i.putExtra(IndikatorViewActivity.VAR_ID, "107");
-                        startActivity(i);
-                        break;
-                    case "10":
-                        //Impor
-                        i.putExtra(IndikatorViewActivity.VAR_ID, "109");
-                        startActivity(i);
-                        break;
-                    case "11":
-                        //NTP
-                        i.putExtra(IndikatorViewActivity.VAR_ID, "104");
-                        startActivity(i);
-                        break;
-                    case "12":
-                        //Jumlah Wisman
-                        i.putExtra(IndikatorViewActivity.VAR_ID, "67");
-                        startActivity(i);
-                        break;
-                    case "13":
-                        //Gini Rasio
-                        i.putExtra(IndikatorViewActivity.VAR_ID, "616");
-                        startActivity(i);
-                        break;
-                }
+                i.putExtra(IndikatorViewActivity.VAR_ID, AppUtils.getVarId(((IndikatorItem) object).getId()));
+                startActivity(i);
             }
         });
 

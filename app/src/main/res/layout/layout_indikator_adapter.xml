@@ -1,4 +1,6 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,32 +11,49 @@
         android:layout_height="wrap_content"
         android:id="@+id/card_view"
         app:cardCornerRadius="5dp"
-        android:layout_margin="5dp">
+        android:layout_margin="3dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center">
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:lines="2"
-                android:ellipsize="end"
-                android:id="@+id/judul"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:textColor="@color/material_drawer_primary_text"
                 android:layout_marginTop="5dp"
-                android:gravity="center"/>
+                android:layout_marginBottom="5dp">
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:lines="3"
+                    android:ellipsize="end"
+                    android:id="@+id/judul"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:textColor="@color/material_drawer_primary_text"
+                    tools:ignore="RelativeOverlap"
+                    android:layout_toLeftOf="@+id/more_button"
+                    android:layout_toStartOf="@+id/more_button"
+                    android:layout_centerVertical="true"/>
+                <android.support.v7.widget.AppCompatImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    app:srcCompat="@drawable/baseline_more_vert_24"
+                    android:backgroundTint="@color/md_white_1000"
+                    android:tint="@color/primary"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:id="@+id/more_button"/>
+            </RelativeLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp">
+                android:orientation="vertical">
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
