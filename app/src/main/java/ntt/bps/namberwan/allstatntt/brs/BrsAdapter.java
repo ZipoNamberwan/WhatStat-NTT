@@ -62,7 +62,7 @@ public class BrsAdapter extends RecyclerView.Adapter<BrsAdapter.Holder>{
             bookmark = itemView.findViewById(R.id.bookmark_button);
             download = itemView.findViewById(R.id.download_button);
             share = itemView.findViewById(R.id.share_button);
-            cardView = itemView.findViewById(R.id.card_view);
+            cardView = itemView.findViewById(R.id.card_view_chat);
         }
 
         public void bind(final BrsItem brsItem, final RecyclerViewClickListener listener) {

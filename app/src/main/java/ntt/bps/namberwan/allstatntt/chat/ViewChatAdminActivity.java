@@ -1,6 +1,7 @@
 package ntt.bps.namberwan.allstatntt.chat;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -37,7 +38,9 @@ public class ViewChatAdminActivity extends AppCompatActivity {
 
     private CardView listCardView;
     private CardView infoCardView;
-    private RecyclerView recyclerView;
+    private CardView emailCardView;
+    private RecyclerView chatRecyclerView;
+    private RecyclerView kontakRecyclerView;
     private ProgressBar progressBar;
 
     private FirebaseAuth firebaseAuth;
@@ -58,12 +61,16 @@ public class ViewChatAdminActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(true);
+        chatRecyclerView = findViewById(R.id.recycler_view);
+        chatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        chatRecyclerView.setHasFixedSize(true);
+        kontakRecyclerView = findViewById(R.id.email_recycler_view);
+        kontakRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        kontakRecyclerView.setHasFixedSize(true);
         progressBar = findViewById(R.id.progress_bar);
-        listCardView = findViewById(R.id.card_view);
+        listCardView = findViewById(R.id.card_view_chat);
         infoCardView = findViewById(R.id.information);
+        emailCardView = findViewById(R.id.card_view_email);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -110,6 +117,7 @@ public class ViewChatAdminActivity extends AppCompatActivity {
                 userModel.getUrlPhoto(), userModel.getLastSeen(), true, false);
 
         displayListAdmin();
+        displayEmailAdmin();
     }
 
     private void createUserModel() {
@@ -140,6 +148,7 @@ public class ViewChatAdminActivity extends AppCompatActivity {
 
         listCardView.setVisibility(View.GONE);
         infoCardView.setVisibility(View.GONE);
+        emailCardView.setVisibility(View.GONE);
 
         DatabaseReference ref = reference.child("Users");
 
@@ -175,10 +184,11 @@ public class ViewChatAdminActivity extends AppCompatActivity {
                     }
                 });
 
-                recyclerView.setAdapter(adapter);
+                chatRecyclerView.setAdapter(adapter);
 
                 listCardView.setVisibility(View.VISIBLE);
                 infoCardView.setVisibility(View.VISIBLE);
+                emailCardView.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
             }
 
@@ -187,6 +197,35 @@ public class ViewChatAdminActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void displayEmailAdmin(){
+        ArrayList<Kontak> kontaks = new ArrayList<>();
+
+        kontaks.add(new Kontak(R.drawable.ic_email_black_24dp, "Email", "Kirim email ke kami tentang pertanyaan seputar data-data statistik", "Email"));
+        kontaks.add(new Kontak(R.drawable.ic_call_black_24dp, "Telepon", "Hubungi kami melalui telepon di jam kerja", "Telepon"));
+
+        KontakAdapter adapter = new KontakAdapter(kontaks, ViewChatAdminActivity.this, new RecyclerViewClickListener() {
+            @Override
+            public void onItemClick(Object object) {
+                if (((Kontak) object).getJudul().equals("Email")){
+                    Intent i = new Intent(ViewChatAdminActivity.this, SendEmailActivity.class);
+                    startActivity(i);
+                }else if (((Kontak) object).getJudul().equals("Telepon")){
+                    callAdmin();
+                }
+            }
+        });
+
+        kontakRecyclerView.setAdapter(adapter);
+    }
+
+    private void callAdmin() {
+        String no = "0380826289";
+        String uri = "tel:" + no ;
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse(uri));
+        startActivity(intent);
     }
 
     @Override

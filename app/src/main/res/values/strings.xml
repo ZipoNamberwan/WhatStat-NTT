@@ -125,8 +125,8 @@ Quam libero nulla netus eu porta curae, ut nulla bibendum facilisis et urna sed,
     <string name="sign_out">Sign out</string>
     <string name="title_activity_chat">ChatActivity</string>
     <string name="hint_enter_a_message">Type a message…</string>
-    <string name="date_header_today">Today</string>
-    <string name="date_header_yesterday">Yesterday</string>
+    <string name="date_header_today">Hari ini</string>
+    <string name="date_header_yesterday">Kemarin</string>
     <string name="search_hint">Search Anything…</string>
     <string name="title_activity_search_result">SearchResultActivity</string>
     <string name="action_search">Search</string>
@@ -164,5 +164,6 @@ Angka IPM memberikan gambaran komprehensip mengenai tingkat pencapaian pembaguna
     <string name="source_jml_wisatawan"> </string>
     <string name="source_gini_rasio"> </string>
     <string name="detail_popup">Detail Indikator</string>
+    <string name="title_activity_send_email">SendEmailActivity</string>
 
 </resources>

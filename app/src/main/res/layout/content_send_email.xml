@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".chat.SendEmailActivity"
+    tools:showIn="@layout/activity_send_email">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:text="Kirim ke"
+            android:id="@+id/send_to_text"
+            android:layout_marginBottom="5dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="pst5300@bps.go.id"
+            android:layout_below="@+id/send_to_text"
+            android:id="@+id/send_to_input"
+            android:layout_marginBottom="5dp"
+            android:hint=""
+            android:autofillHints=""/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:text="Judul"
+            android:id="@+id/judul_text"
+            android:layout_marginBottom="5dp"
+            android:layout_below="@+id/send_to_input"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/judul_text"
+            android:id="@+id/judul_input"
+            android:inputType="text"
+            android:layout_marginBottom="5dp"
+            android:hint="Ketik judul di sini..."
+            android:autofillHints="Ketik judul di sini..."/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:text="Pesan"
+            android:id="@+id/pesan_text"
+            android:layout_below="@+id/judul_input"
+            android:layout_marginBottom="5dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pesan_text"
+            android:id="@+id/pesan_input"
+            android:inputType="text"
+            android:layout_marginBottom="5dp"
+            android:hint="Ketik pesan di sini..."
+            android:autofillHints="Ketik pesan di sini..."/>
+
+        <android.support.v7.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kirim"
+            android:id="@+id/kirim_button"
+            android:layout_below="@id/pesan_input"
+            style="@style/Widget.AppCompat.Button.Colored"/>
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

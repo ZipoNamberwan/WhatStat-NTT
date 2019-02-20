@@ -9,7 +9,7 @@
     <android.support.v7.widget.CardView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/card_view"
+        android:id="@+id/card_view_chat"
         app:cardCornerRadius="5dp">
         <RelativeLayout
             android:layout_width="match_parent"

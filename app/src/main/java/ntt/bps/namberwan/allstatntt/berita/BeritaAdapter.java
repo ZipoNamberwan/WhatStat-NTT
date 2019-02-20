@@ -175,7 +175,7 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.Holder> {
             bookmark = itemView.findViewById(R.id.bookmark_button);
             share = itemView.findViewById(R.id.share_button);
             expand = itemView.findViewById(R.id.desc_button);
-            cardView = itemView.findViewById(R.id.card_view);
+            cardView = itemView.findViewById(R.id.card_view_chat);
         }
 
         public void bind(final BeritaItem item, final RecyclerViewClickListener listener) {

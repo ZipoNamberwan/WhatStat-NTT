@@ -404,9 +404,9 @@ public class IndikatorViewActivity extends AppCompatActivity {
     }
 
     private void insertRow(TableLayout tableLayout, TableRow tr, String label, String value, boolean isHeader, boolean isEvenRow) {
-        tr.setLayoutParams(new TableRow.LayoutParams(
+        /*tr.setLayoutParams(new TableRow.LayoutParams(
                 TableRow.LayoutParams.WRAP_CONTENT,
-                TableRow.LayoutParams.WRAP_CONTENT));
+                TableRow.LayoutParams.WRAP_CONTENT));*/
 
         View rowView = View.inflate(this,R.layout.layout_cell_tabel, null);
         if (isEvenRow){

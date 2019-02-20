@@ -35,9 +35,9 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name=".MainActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
@@ -98,32 +98,37 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-
         <activity
             android:name=".chat.SettingsProfileActivity"
             android:label="@string/title_activity_settings_profile"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <service android:name=".chat.notifications.MyFirebaseIdService"
+        <service
+            android:name=".chat.notifications.MyFirebaseIdService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-
-        <service android:name=".chat.notifications.MyFirebaseMessaging"
+        <service
+            android:name=".chat.notifications.MyFirebaseMessaging"
             android:enabled="true"
             android:exported="true"
             android:stopWithTask="false">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_bps_launcher" />
+
+        <activity
+            android:name=".chat.SendEmailActivity"
+            android:label="@string/title_activity_send_email"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

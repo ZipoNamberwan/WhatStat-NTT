@@ -2,11 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:foreground="?android:attr/selectableItemBackground"
     android:descendantFocusability="blocksDescendants">
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/container">
         <RelativeLayout
@@ -14,60 +13,48 @@
             android:layout_height="wrap_content"
             android:background="@color/md_white_1000"
             android:padding="5dp">
-
-            <!--<android.support.v7.widget.AppCompatImageView
+            <ImageView
                 android:layout_width="65dp"
                 android:layout_height="65dp"
-                android:id="@+id/foto"
-                android:layout_margin="10dp"
-                android:contentDescription="@string/app_name"/>-->
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                android:id="@+id/foto"
+                android:id="@+id/icon"
                 android:layout_margin="10dp"
                 android:contentDescription="@string/app_name"
-                app:civ_border_width="2dp"
-                app:civ_border_color="@color/md_grey_300"/><!--
-                app:civ_border_width="2dp"
-                app:civ_border_color="#FF000000"-->
+                android:tint="@color/md_grey_700"
+                android:padding="5dp"/>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/foto"
-                android:layout_toRightOf="@+id/foto"
+                android:layout_toEndOf="@+id/icon"
+                android:layout_toRightOf="@+id/icon"
                 android:layout_centerVertical="true">
                 <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/admin_no"
+                    android:id="@+id/jenis_kontak"
+                    android:visibility="gone"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
                 <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/last_seen"
+                    android:id="@+id/deskripsi_kontak"
                     android:layout_marginLeft="5dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_below="@+id/nama"
-                    android:textColor="@color/material_drawer_secondary_text"
-                    android:inputType="text|textCapWords"
-                    android:lines="1"
-                    android:ellipsize="end"/>
+                    android:layout_below="@+id/judul_kontak"
+                    android:textColor="@color/material_drawer_secondary_text"/>
                 <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/nama"
+                    android:id="@+id/judul_kontak"
                     android:lineSpacingExtra="@dimen/linespaceextra"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:textColor="@color/md_black_1000"
                     android:textStyle="bold"
-                    android:layout_below="@+id/admin_no"/>
+                    android:layout_below="@+id/jenis_kontak"/>
             </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>
