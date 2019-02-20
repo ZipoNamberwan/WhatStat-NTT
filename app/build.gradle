@@ -6,8 +6,8 @@ android {
         applicationId "ntt.bps.namberwan.allstatntt"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 4
-        versionName "2.0"
+        versionCode 5
+        versionName "2.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         renderscriptTargetApi 18
         renderscriptSupportModeEnabled true
