@@ -165,6 +165,7 @@ public class ViewChatAdminActivity extends AppCompatActivity {
                             userModel.setOnline(temp.getIsOnline());
                             userModel.setTyping(temp.getIsTyping());
                             userModel.setLastSeen(temp.getLastSeen());
+                            //userModel.setUsername("Admin Konsultasi Statistik Online");
                             userModel.setUsername(temp.getUsername());
                             userModel.setUrlPhoto(temp.getUrlPhoto());
                             adminUsers.add(userModel);
@@ -202,16 +203,16 @@ public class ViewChatAdminActivity extends AppCompatActivity {
     private void displayEmailAdmin(){
         ArrayList<Kontak> kontaks = new ArrayList<>();
 
-        kontaks.add(new Kontak(R.drawable.ic_email_black_24dp, "Email", "Kirim email ke kami tentang pertanyaan seputar data-data statistik", "Email"));
+        kontaks.add(new Kontak(R.drawable.ic_email_black_24dp, "Email (pst5300@bps.go.id)", "Kirim email ke kami tentang pertanyaan seputar data-data statistik", "Email"));
         kontaks.add(new Kontak(R.drawable.ic_call_black_24dp, "Telepon", "Hubungi kami melalui telepon di jam kerja", "Telepon"));
 
         KontakAdapter adapter = new KontakAdapter(kontaks, ViewChatAdminActivity.this, new RecyclerViewClickListener() {
             @Override
             public void onItemClick(Object object) {
-                if (((Kontak) object).getJudul().equals("Email")){
+                if (((Kontak) object).getJenis().equals("Email")){
                     Intent i = new Intent(ViewChatAdminActivity.this, SendEmailActivity.class);
                     startActivity(i);
-                }else if (((Kontak) object).getJudul().equals("Telepon")){
+                }else if (((Kontak) object).getJenis().equals("Telepon")){
                     callAdmin();
                 }
             }
@@ -306,7 +307,7 @@ public class ViewChatAdminActivity extends AppCompatActivity {
                             finish();
                         }
                     });
-        }/*else if (item.getItemId() == R.id.menu_edit_profile){
+        } /*else if (item.getItemId() == R.id.menu_edit_profile){
             Intent intent = new Intent(this, SettingsProfileActivity.class);
             startActivity(intent);
         }*/

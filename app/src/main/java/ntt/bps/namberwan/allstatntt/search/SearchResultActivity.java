@@ -13,7 +13,6 @@ import ntt.bps.namberwan.allstatntt.R;
 import ntt.bps.namberwan.allstatntt.ViewPagerAdapter;
 import ntt.bps.namberwan.allstatntt.berita.BeritaFragment;
 import ntt.bps.namberwan.allstatntt.brs.BrsFragment;
-import ntt.bps.namberwan.allstatntt.indikator.IndikatorFragment;
 import ntt.bps.namberwan.allstatntt.publikasi.PublikasiFragment;
 import ntt.bps.namberwan.allstatntt.tabelstatis.TabelFragment;
 

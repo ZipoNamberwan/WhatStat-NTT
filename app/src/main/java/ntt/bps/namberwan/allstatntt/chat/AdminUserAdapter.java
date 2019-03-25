@@ -3,17 +3,12 @@ package ntt.bps.namberwan.allstatntt.chat;
 import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -44,7 +39,7 @@ public class AdminUserAdapter extends RecyclerView.Adapter<AdminUserAdapter.Hold
         final UserModel user = getList().get(position);
         holder.bind(user, listener);
         holder.nama.setText(user.getUsername());
-        String adminNoString = "Admin - "+ (position+1);
+        String adminNoString = "Admin";
         holder.adminNo.setText(adminNoString);
 
         if (user.getIsOnline()){
@@ -54,7 +49,9 @@ public class AdminUserAdapter extends RecyclerView.Adapter<AdminUserAdapter.Hold
             holder.lastSeen.setText(ChatUtils.getLastSeen((Activity) context, user.getLastSeen()));
         }
 
-        if (user.getUrlPhoto() != null){
+        holder.photo.setImageResource(R.drawable.ic_person_black_24dp);
+
+        /*if (user.getUrlPhoto() != null){
             if (!user.getUrlPhoto().equals("")){
                 Picasso.get()
                         .load(user.getUrlPhoto())
@@ -63,7 +60,7 @@ public class AdminUserAdapter extends RecyclerView.Adapter<AdminUserAdapter.Hold
                         .fit()
                         .into(holder.photo);
             }
-        }
+        }*/
     }
 
     @Override

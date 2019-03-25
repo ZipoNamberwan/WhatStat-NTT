@@ -35,8 +35,9 @@ public class SettingsProfileActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
+        updateProfil(firebaseAuth.getCurrentUser().getUid(),"Admin Konsultasi Statistik Online", "https://community.bps.go.id/images/avatar/340015532_20170620102514.jpg");
         //updateProfil(firebaseAuth.getCurrentUser().getUid(),"Indra Achmad Sofian Souri S.ST, M.Si", "https://community.bps.go.id/images/avatar/340015532_20170620102514.jpg");
-        updateProfil(firebaseAuth.getCurrentUser().getUid(),"Nofriana Florida Djami Raga SST", "https://community.bps.go.id/images/avatar/57164.jpg");
+        //updateProfil(firebaseAuth.getCurrentUser().getUid(),"Nofriana Florida Djami Raga SST", "https://community.bps.go.id/images/avatar/57164.jpg");
     }
 
     private void updateProfil(String idUser, String username, String photo){

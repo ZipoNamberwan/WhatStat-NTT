@@ -199,7 +199,7 @@ public class IndikatorFragment extends Fragment {
                 //Gini Rasio
                 return 1;
             default:
-                return 1;
+                return 99;
         }
     }
 

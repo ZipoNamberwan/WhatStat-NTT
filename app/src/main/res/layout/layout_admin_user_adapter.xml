@@ -22,16 +22,27 @@
                 android:layout_margin="10dp"
                 android:contentDescription="@string/app_name"/>-->
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <!--<de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="65dp"
                 android:layout_height="65dp"
                 android:id="@+id/foto"
                 android:layout_margin="10dp"
                 android:contentDescription="@string/app_name"
                 app:civ_border_width="2dp"
-                app:civ_border_color="@color/md_grey_300"/><!--
+                app:civ_border_color="@color/md_grey_300"/>--><!--
                 app:civ_border_width="2dp"
                 app:civ_border_color="#FF000000"-->
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:id="@+id/foto"
+                android:layout_margin="10dp"
+                android:tint="@color/md_grey_700"
+                android:contentDescription="@string/app_name"
+                app:civ_border_width="2dp"
+                app:civ_border_color="@color/md_grey_300"/>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
