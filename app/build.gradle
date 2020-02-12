@@ -41,7 +41,7 @@ dependencies {
 
     implementation 'com.mikepenz:google-material-typeface:2.2.0.1.original@aar'
     implementation 'com.mikepenz:fontawesome-typeface:4.5.0.1@aar'
-    implementation 'com.mikepenz:community-material-typeface:+@aar'
+    implementation 'com.mikepenz:community-material-typeface:3.5.95.1@aar'
 
     implementation 'jp.wasabeef:recyclerview-animators:2.3.0'
 
