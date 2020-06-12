@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -36,7 +36,7 @@
                         android:layout_marginRight="5dp"
                         android:layout_marginEnd="5dp"
                         android:visibility="gone"/>
-                    <android.support.v7.widget.AppCompatTextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -48,7 +48,7 @@
                         android:id="@+id/tanggal_berita"
                         android:textColor="@color/md_white_1000"/>
                 </RelativeLayout>
-                <android.support.v7.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/md_white_1000"
@@ -57,7 +57,7 @@
                     android:id="@+id/judul"
                     android:lineSpacingExtra="@dimen/linespaceextra"
                     android:layout_below="@+id/tanggal_view"/>
-                <android.support.v7.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/judul"
@@ -73,7 +73,7 @@
                 android:background="@color/background"
                 android:padding="5dp"
                 android:layout_below="@+id/judul_view">
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/card_view_chat"
@@ -84,8 +84,8 @@
                         android:id="@+id/rincian_berita"
                         android:layout_marginTop="10dp"
                         android:visibility="gone"/>
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
             </RelativeLayout>
         </RelativeLayout>
     </ScrollView>
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

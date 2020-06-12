@@ -2,11 +2,6 @@ package ntt.bps.namberwan.allstatntt.publikasi;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,12 +10,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.squareup.picasso.Picasso;
@@ -220,11 +221,11 @@ public class ViewPublikasiActivity extends AppCompatActivity {
         if (isMainVisible){
             main1.setVisibility(View.VISIBLE);
             main2.setVisibility(View.VISIBLE);
-            fab.setVisibility(View.VISIBLE);
+            fab.show();
         }else {
             main1.setVisibility(View.GONE);
             main2.setVisibility(View.GONE);
-            fab.setVisibility(View.GONE);
+            fab.hide();
         }
 
         if (isShimmerVisible){

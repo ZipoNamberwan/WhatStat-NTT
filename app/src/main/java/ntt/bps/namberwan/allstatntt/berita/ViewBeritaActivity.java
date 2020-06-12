@@ -1,9 +1,6 @@
 package ntt.bps.namberwan.allstatntt.berita;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,11 +9,15 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -94,7 +95,7 @@ public class ViewBeritaActivity extends AppCompatActivity {
                     tanggal.setText(AppUtils.getDate(tanggalString, false));
                     rincian.loadData(Html.fromHtml(jsonObject.getString("news")).toString(), "text/html; charset=UTF-8", null);
 
-                    fab.setVisibility(View.VISIBLE);
+                    fab.show();
                     scheduleImage.setVisibility(View.VISIBLE);
                     rincian.setVisibility(View.VISIBLE);
 

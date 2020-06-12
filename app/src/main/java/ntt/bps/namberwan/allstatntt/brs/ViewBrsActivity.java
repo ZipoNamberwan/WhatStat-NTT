@@ -2,10 +2,6 @@ package ntt.bps.namberwan.allstatntt.brs;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,12 +10,17 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -171,10 +172,10 @@ public class ViewBrsActivity extends AppCompatActivity {
 
         if (isMainVisible){
             mainView.setVisibility(View.VISIBLE);
-            fab.setVisibility(View.VISIBLE);
+            fab.show();
         }else {
             mainView.setVisibility(View.GONE);
-            fab.setVisibility(View.GONE);
+            fab.hide();
         }
 
         if (isShimmerVisible){

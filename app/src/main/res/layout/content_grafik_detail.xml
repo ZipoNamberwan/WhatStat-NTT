@@ -9,7 +9,7 @@
     tools:context=".indikator.GrafikDetailActivity"
     tools:showIn="@layout/activity_grafik_detail"
     android:padding="10dp">
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/judul_grafik"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,14 +27,14 @@
         android:id="@+id/control"
         android:gravity="center_vertical"
         android:layout_below="@+id/judul_grafik">
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/pilih_series_label"
             android:text="Pilih Series: "
             android:layout_marginRight="10dp"
             android:layout_marginEnd="10dp"/>
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/spinner_vervar"
             style="?android:attr/spinnerStyle"
             android:layout_width="150dp"
@@ -44,7 +44,7 @@
             android:minWidth="0dp"
             android:ellipsize="end"
             android:maxLines="1"/>
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             style="?android:attr/spinnerStyle"

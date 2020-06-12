@@ -15,25 +15,7 @@
             android:background="@color/md_white_1000"
             android:padding="5dp">
 
-            <!--<android.support.v7.widget.AppCompatImageView
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                android:id="@+id/foto"
-                android:layout_margin="10dp"
-                android:contentDescription="@string/app_name"/>-->
-
-            <!--<de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                android:id="@+id/foto"
-                android:layout_margin="10dp"
-                android:contentDescription="@string/app_name"
-                app:civ_border_width="2dp"
-                app:civ_border_color="@color/md_grey_300"/>--><!--
-                app:civ_border_width="2dp"
-                app:civ_border_color="#FF000000"-->
-
-            <android.support.v7.widget.AppCompatImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="65dp"
                 android:layout_height="65dp"
                 android:id="@+id/foto"
@@ -49,14 +31,14 @@
                 android:layout_toEndOf="@+id/foto"
                 android:layout_toRightOf="@+id/foto"
                 android:layout_centerVertical="true">
-                <android.support.v7.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/admin_no"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
-                <android.support.v7.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/last_seen"
@@ -69,7 +51,7 @@
                     android:inputType="text|textCapWords"
                     android:lines="1"
                     android:ellipsize="end"/>
-                <android.support.v7.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/nama"

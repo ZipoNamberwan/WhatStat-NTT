@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:foreground="?android:attr/selectableItemBackground"
     android:descendantFocusability="blocksDescendants">
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/card_view_chat"
@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp">
-                <android.support.v7.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
@@ -38,7 +38,7 @@
                     android:layout_toLeftOf="@+id/more_button"
                     android:layout_toStartOf="@+id/more_button"
                     android:layout_centerVertical="true"/>
-                <android.support.v7.widget.AppCompatImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <android.support.v7.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="25sp"
@@ -67,7 +67,7 @@
                     android:gravity="center"
                     android:lines="1"
                     android:ellipsize="end"/>
-                <android.support.v7.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/satuan"
@@ -89,7 +89,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:gravity="end">
-                <android.support.v7.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/sumber"
@@ -106,5 +106,5 @@
                     android:ellipsize="end"/>
             </RelativeLayout>
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>

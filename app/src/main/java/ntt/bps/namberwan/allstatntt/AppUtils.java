@@ -11,10 +11,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Parcelable;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.content.FileProvider;
 import android.webkit.MimeTypeMap;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.FileProvider;
 
 import com.tonyodev.fetch2.Download;
 import com.tonyodev.fetch2.Error;
